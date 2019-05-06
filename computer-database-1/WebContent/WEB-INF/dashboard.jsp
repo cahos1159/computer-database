@@ -14,7 +14,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="http://localhost:8080/computer-database-1/cdb"> Application - Computer Database </a>
+            <a class="navbar-brand" href="http://localhost:8080/cdb/"> Application - Computer Database </a>
         </div>
     </header>
 
@@ -33,13 +33,13 @@
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="http://localhost:8080/computer-database-1/cdb/computer-add">Add Computer</a> 
+                    <a class="btn btn-success" id="addComputer" href="http://localhost:8080/cdb/computer-add">Add Computer</a> 
                     <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
                 </div>
             </div>
         </div>
 
-        <form id="deleteForm" action="#" method="POST">
+        <form id="deleteForm" action="." method="POST">
             <input type="hidden" name="selection" value="">
         </form>
 
@@ -81,11 +81,11 @@
                 	
                     <tr>
                         <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
+                            <input type="checkbox" name="cb" class="cb" value="${computer.id}">
                         </td>
                         
                         <td>
-                            <a href="editComputer.html" onclick="" value="${computer.name}">${computer.name}</a>
+                            <a href="http://localhost:8080/cdb/computer-edit?id=${computer.id}" onclick="" value="${computer.id}">${computer.name}</a>
                         </td>
                         
     						

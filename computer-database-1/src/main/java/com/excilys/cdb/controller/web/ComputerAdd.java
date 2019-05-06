@@ -77,6 +77,7 @@ public class ComputerAdd extends HttpServlet {
 	}
 	
 	private String formatDate(String date) {
+		if(date == null) return null;
 		date.replace("/", "-");
 		String res = (date.length() <= 10 ) ? date.concat(" 12:00:00") : date;
 		return res;

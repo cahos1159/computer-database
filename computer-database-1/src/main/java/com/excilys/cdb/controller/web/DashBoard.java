@@ -1,6 +1,7 @@
 package com.excilys.cdb.controller.web;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.cdb.dto.ComputerDto;
 import com.excilys.cdb.service.ComputerService;
+
 
 
 public class DashBoard extends HttpServlet {
@@ -52,6 +54,12 @@ public class DashBoard extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			System.out.print("Post");
+			deleteComputer(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		doGet(request, response);
 	}
 	
@@ -85,6 +93,14 @@ public class DashBoard extends HttpServlet {
 	private int getNbOrdiPage(HttpServletRequest request) {
 		DashBoard.nbOrdiPage =(request.getParameter("nbOrdiPage") == null) ? DashBoard.nbOrdiPage : Integer.valueOf(request.getParameter("nbOrdiPage"));
 		return DashBoard.nbOrdiPage;
+	}
+	private void deleteComputer(HttpServletRequest request) throws RuntimeException, Exception {
+		String idaggreg = (String) request.getParameter("selection");
+		System.out.println(idaggreg);
+		List<String> ids = Arrays.asList(idaggreg.split(","));
+		for(String id : ids) {
+			ComputerService.getInstance().delete(ComputerService.getInstance().read(id));
+		}
 	}
 
 }
