@@ -2,12 +2,15 @@ package com.excilys.cdb.dao;
 
 import java.util.List;
 
+import com.excilys.cdb.DataBase.DataBaseAccess;
+import com.excilys.cdb.DataBase.DataBaseCredentials;
 import com.excilys.cdb.model.Model;
 
 public abstract class Dao<T extends Model> {
-	protected final String DBACCESS = "jdbc:mysql://localhost:3306/computer-database-db?serverTimezone=UTC";
-	protected final String DBUSER = "admincdb";
-	protected final String DBPASS = "qwerty1234";
+
+	
+	protected DataBaseCredentials credentials;
+	protected DataBaseAccess dataBase;
 	
 	protected final String SQL_CREATE;
 	protected final String SQL_UPDATE;
@@ -23,12 +26,10 @@ public abstract class Dao<T extends Model> {
 		this.SQL_SELECT = sqlSelect;
 		this.SQL_LISTALL = sqlListall;
 		this.SQL_LIST = sqlList;
+		//this.credentials = new DataBaseCredentials(this.DBACCESS,this.DBUSER,this.DBPASS);
+		this.dataBase = new DataBaseAccess();
 		
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public abstract T create(T obj) throws Exception;

@@ -32,7 +32,7 @@ public class CompanyDao extends Dao<Company>{
 		}
 		
 		try (
-			Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_CREATE);
 		) {
 			preparedStatement.setInt(1,obj.getId());
@@ -52,7 +52,7 @@ public class CompanyDao extends Dao<Company>{
 	public Company update(Company obj) throws Exception {
 		Company company = this.read(obj.getId());
 		try (
-			Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_UPDATE);
 		) {
 			company.setName(obj.getName());
@@ -78,7 +78,7 @@ public class CompanyDao extends Dao<Company>{
 	public Company deleteById(int id) throws Exception {
 		Company company = this.read(id);
 		try (
-			Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_DELETE);
 		) {
 			preparedStatement.setInt(1, id);
@@ -99,7 +99,7 @@ public class CompanyDao extends Dao<Company>{
 		}
 		
 		try (
-			Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_SELECT);
 		) {
 			preparedStatement.setInt(1, id);
@@ -119,7 +119,7 @@ public class CompanyDao extends Dao<Company>{
 	@Override
 	public List<Company> listAll() throws Exception {
 		try (
-			Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_LISTALL);
 		) {
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -145,7 +145,7 @@ public class CompanyDao extends Dao<Company>{
 		int offset = (page-1)*size;
 		
 		try (
-			Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_LIST);
 		) {
 			preparedStatement.setInt(1, offset);

@@ -37,7 +37,7 @@ public class ComputerDao extends Dao<Computer>{
 		}
 		
 		try (
-			Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_CREATE)
 		) {
 			preparedStatement.setInt(1,obj.getId());
@@ -59,7 +59,7 @@ public class ComputerDao extends Dao<Computer>{
 			}
 		} else {
 			try (
-				Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+					Connection connection = dataBase.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_SELECT_UPDATE_COMPANY);
 			) {
 				preparedStatement.setInt(1, obj.getManufacturer());
@@ -95,7 +95,7 @@ public class ComputerDao extends Dao<Computer>{
 		}
 		
 		try (
-			Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_UPDATE);
 		) {
 			preparedStatement.setString(1, returnComputer.getName());
@@ -126,7 +126,7 @@ public class ComputerDao extends Dao<Computer>{
 	public Computer deleteById(int id) throws Exception {
 		Computer returnComputer = this.read(id);
 		try (
-			Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_DELETE);
 		) {
 			preparedStatement.setInt(1, id);
@@ -148,7 +148,7 @@ public class ComputerDao extends Dao<Computer>{
 		}
 		
 		try (
-			Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_SELECT);
 		) {
 			preparedStatement.setInt(1, id);
@@ -167,7 +167,7 @@ public class ComputerDao extends Dao<Computer>{
 	@Override
 	public List<Computer> listAll() throws Exception {
 		try (
-			Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_LISTALL);
 		) {
 			
@@ -194,7 +194,7 @@ public class ComputerDao extends Dao<Computer>{
 		int offset = (page-1)*size;
 		
 		try (
-			Connection connection = DriverManager.getConnection(this.DBACCESS, this.DBUSER, this.DBPASS);
+			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_LIST);
 		) {
 			preparedStatement.setInt(1, offset);

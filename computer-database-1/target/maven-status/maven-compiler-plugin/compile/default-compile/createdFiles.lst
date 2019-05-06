@@ -8,6 +8,7 @@ com/excilys/cdb/service/CompanyService.class
 com/excilys/cdb/model/Model.class
 com/excilys/cdb/exception/InvalidIdException.class
 com/excilys/cdb/service/Service.class
+com/excilys/cdb/DataBase/DataBaseCredentials.class
 com/excilys/cdb/dto/CompanyDto.class
 com/excilys/cdb/enums/CommandEnum.class
 com/excilys/cdb/exception/InvalidIntegerException.class
@@ -19,6 +20,7 @@ com/excilys/cdb/exception/InvalidDateValueException.class
 com/excilys/cdb/controller/CdbController.class
 com/excilys/cdb/enums/CreateOptionEnum.class
 com/excilys/cdb/exception/InvalidDateOrderException.class
+com/excilys/cdb/DataBase/DataBaseAccess.class
 com/excilys/cdb/mapper/CompanyMapper.class
 com/excilys/cdb/dto/Dto.class
 com/excilys/cdb/exception/PrimaryKeyViolationException.class

@@ -20,6 +20,7 @@ import com.excilys.cdb.service.ComputerService;
 
 public class ComputerAdd extends HttpServlet {
 	private static final long serialVersionUID = 1L;  
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -66,12 +67,18 @@ public class ComputerAdd extends HttpServlet {
 	private void createOrdi(HttpServletRequest request) throws Exception {
 			int nbComputer = ComputerService.getInstance().listAllElements().size() + 100;
 			CompanyDto comp = new CompanyDto(request.getParameter("companyId"));
-			ComputerDto elem = new ComputerDto(""+nbComputer+"",request.getParameter("computerName"), request.getParameter("introduced"), request.getParameter("discontinued"), comp);
-			request.setAttribute("titre", elem.toString());
+			String intro = formatDate(request.getParameter("introduced"));
+			String disc = formatDate(request.getParameter("discontinued"));
+			ComputerDto elem = new ComputerDto(""+nbComputer+"",request.getParameter("computerName"), intro, disc, comp);
 			ComputerService.getInstance().create(elem);
 			request.setAttribute("titre", elem.toString());
 			
 		
 	}
 	
+	private String formatDate(String date) {
+		date.replace("/", "-");
+		String res = (date.length() <= 10 ) ? date.concat(" 12:00:00") : date;
+		return res;
+	}
 }

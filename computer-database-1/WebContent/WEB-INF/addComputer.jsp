@@ -49,7 +49,7 @@
                         <div class="actions pull-right">
                             <input type="submit" value="Add" id="btnSubmit" class="btn btn-primary">
                             or
-                            <a href="http://localhost:7938/computer-database-1/cdb" class="btn btn-default">Cancel</a>
+                            <a href="http://localhost:8080/computer-database-1/cdb" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>

@@ -25,9 +25,11 @@ function isDate(inputDate){
 	else if(regexOtherDate.test(inputDate)){
 	
 		if($("#introduced").val().localeCompare(inputDate)){
+			alert($("#introduced").val());
 			return true;
 		}
 		else{
+			alert($("#discontinued").val());
 			return true
 		}
 	}
