@@ -50,8 +50,8 @@ public class DashBoard extends HttpServlet {
 			else {
 				
 				List<ComputerDto> ordi = ComputerService.getInstance().computerOrderSearch(request.getParameter("colonne"),mode,request.getParameter("search"));
-				ordi = Pagination.getInstance().MiseEnPage(ordi, nbOrdiPage, page);
 				int nbComputer = ordi == null ? 0 : ordi.size();
+				ordi = Pagination.getInstance().MiseEnPage(ordi, nbOrdiPage, page);
 				setListComputer(request,ordi);
 				setPage(request,page,nbComputer,nbOrdiPage);
 				setNumberOfComputer(request,nbComputer);
