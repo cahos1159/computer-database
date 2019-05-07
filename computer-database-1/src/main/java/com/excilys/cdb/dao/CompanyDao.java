@@ -22,13 +22,7 @@ public class CompanyDao extends Dao<Company>{
 		);
 	}
 	
-	public List<Computer> computerOrderSearch(String colonne, int chx, String keyWord) throws Exception{
-		return null;
-	}
 	
-	public  List<Computer> computerOrder(String mode,int colonne) throws Exception{
-		return null;
-	}
 	
 	public static CompanyDao getInstance() {
 		return instance;
@@ -180,9 +174,6 @@ public class CompanyDao extends Dao<Company>{
 			throw new FailedSQLQueryException(this.SQL_LIST);
 		}
 	}
-	public List<Company> computerSearch(String keyWord) throws Exception {
-		List<Company> res = null;
-		return  res ;
-	}
+	
 
 }

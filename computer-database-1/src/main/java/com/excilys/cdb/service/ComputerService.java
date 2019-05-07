@@ -22,7 +22,7 @@ public class ComputerService extends Service<ComputerDto, Computer> {
 
 	public List<ComputerDto> computerSearch(String keyWord) throws Exception {
 
-		List<ComputerDto> res = this.dao.computerSearch(keyWord).stream().map(s -> mapper.modelToDto(s))
+		List<ComputerDto> res = ((ComputerDao) this.dao).computerSearch(keyWord).stream().map(s -> mapper.modelToDto(s))
 				.collect(Collectors.toList());
 
 		return res;
@@ -30,7 +30,7 @@ public class ComputerService extends Service<ComputerDto, Computer> {
 
 	public List<ComputerDto> computerOrder(String colonne,int mode) throws Exception {
 
-		List<ComputerDto> res = this.dao.computerOrder(colonne,mode).stream().map(s -> mapper.modelToDto(s))
+		List<ComputerDto> res = ((ComputerDao) this.dao).computerOrder(colonne,mode).stream().map(s -> mapper.modelToDto(s))
 				.collect(Collectors.toList());
 
 		return res;
@@ -38,7 +38,7 @@ public class ComputerService extends Service<ComputerDto, Computer> {
 	
 	public List<ComputerDto> computerOrderSearch(String colonne,int mode,String keyWord ) throws Exception {
 
-		List<ComputerDto> res = this.dao.computerOrderSearch(colonne,mode,keyWord).stream().map(s -> mapper.modelToDto(s))
+		List<ComputerDto> res = ((ComputerDao) this.dao).computerOrderSearch(colonne,mode,keyWord).stream().map(s -> mapper.modelToDto(s))
 				.collect(Collectors.toList());
 
 		return res;

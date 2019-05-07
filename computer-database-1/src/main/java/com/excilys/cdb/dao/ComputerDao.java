@@ -214,7 +214,7 @@ public class ComputerDao extends Dao<Computer>{
 		}
 	}
 	
-	@Override
+	
 	public List<Computer> computerSearch(String keyWord) throws Exception {
 		if(keyWord == null) {
 			return listAll();
@@ -237,7 +237,6 @@ public class ComputerDao extends Dao<Computer>{
 		}
 	}
 	
-	@Override
 	public List<Computer> computerOrder(String colonne, int chx) throws Exception {
 		String mode = chx == 0 ? "ASC":"DESC";
 		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return listAll();
@@ -263,7 +262,7 @@ public class ComputerDao extends Dao<Computer>{
 		}
 	}
 	
-	@Override
+	
 	public List<Computer> computerOrderSearch(String colonne, int chx, String keyWord) throws Exception {
 		String mode = chx == 0 ? "ASC":"DESC";
 		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return computerSearch(keyWord);

@@ -42,9 +42,5 @@ public abstract class Dao<T extends Model> {
 	public abstract T read(int id) throws RuntimeException;
 	public abstract List<T> listAll() throws Exception;
 	public abstract List<T> list(int page, int size) throws Exception;
-	public abstract List<T> computerSearch(String keyWord) throws Exception;
-	public abstract List<Computer> computerOrder(String colonne,int mode) throws Exception;
-
-	public abstract List<Computer> computerOrderSearch(String colonne, int chx, String keyWord) throws Exception;
 	
 }

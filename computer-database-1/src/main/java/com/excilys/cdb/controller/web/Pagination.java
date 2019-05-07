@@ -20,6 +20,9 @@ public class Pagination {
 		System.out.println(size + "<>" + pageSize);
 		if (size == 0)
 			return null;
+		if (size == 1) {
+			return elem ;
+		}
 		if (size <= pageSize)
 			return elem.subList(0, size - 1);
 		int nbPage = (size % pageSize == 0) ? Integer.valueOf(size / pageSize) : Integer.valueOf(size / pageSize) + 1;
