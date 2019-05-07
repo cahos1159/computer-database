@@ -22,6 +22,7 @@ public class ComputerDao extends Dao<Computer>{
 			"SELECT * FROM computer;",
 			"SELECT * FROM computer LIMIT ?,?;",
 			"SELECT * FROM computer WHERE name LIKE ?;"
+			
 		);
 	}
 	
@@ -233,6 +234,58 @@ public class ComputerDao extends Dao<Computer>{
 			return computerList;
 		} catch (SQLException e) {
 			throw new FailedSQLQueryException(this.SQL_SEARCH);
+		}
+	}
+	
+	@Override
+	public List<Computer> computerOrder(String colonne, int chx) throws Exception {
+		String mode = chx == 0 ? "ASC":"DESC";
+		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return listAll();
+		String requete = "SELECT * FROM computer ORDER BY "+colonne+" "+mode+";";
+		if(colonne == null || colonne == "") {
+			return listAll();
+		}
+		
+		try (
+			Connection connection = dataBase.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(requete);
+		) {
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			List<Computer> computerList = new ArrayList<Computer>();
+			while(resultSet.next()) {
+				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
+			}
+			System.out.println(computerList.toString());
+			return computerList;
+		} catch (SQLException e) {
+			throw new FailedSQLQueryException(requete);
+		}
+	}
+	
+	@Override
+	public List<Computer> computerOrderSearch(String colonne, int chx, String keyWord) throws Exception {
+		String mode = chx == 0 ? "ASC":"DESC";
+		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return computerSearch(keyWord);
+		String requete = "SELECT * FROM computer WHERE name LIKE ? ORDER BY "+colonne+" "+mode+";";
+		if(colonne == null || colonne == "") {
+			return computerSearch(keyWord);
+		}
+		
+		try (
+			Connection connection = dataBase.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(requete);
+		) {
+			preparedStatement.setString(1, "%" + keyWord + "%");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			List<Computer> computerList = new ArrayList<Computer>();
+			while(resultSet.next()) {
+				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
+			}
+			System.out.println(computerList.toString());
+			return computerList;
+		} catch (SQLException e) {
+			throw new FailedSQLQueryException(requete);
 		}
 	}
 

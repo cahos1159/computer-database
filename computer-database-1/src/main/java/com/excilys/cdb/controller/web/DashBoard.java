@@ -37,26 +37,30 @@ public class DashBoard extends HttpServlet {
 			final int page = getPage(request);
 			
 			if(request.getParameter("search") == "" || request.getParameter("search") == null) {
-				int nbComputer =ComputerService.getInstance().listAllElements().size();
-				final List<ComputerDto> ordi = ComputerService.getInstance().list(""+page+"", ""+nbOrdiPage+"");
-				
+				int mode = (request.getParameter("mode") == null ||(request.getParameter("mode") == "")) ? 0 : Integer.valueOf(request.getParameter("mode"));
+				int nbComputer =ComputerService.getInstance().computerOrder(request.getParameter("colonne"),mode).size();
+				List<ComputerDto> ordi = ComputerService.getInstance().computerOrder(request.getParameter("colonne"),mode);
+				ordi = Pagination.getInstance().MiseEnPage(ordi, nbOrdiPage, page);
 				setListComputer(request,ordi);
 				setPage(request,page,nbComputer,nbOrdiPage);
 				setNumberOfComputer(request,nbComputer);
 				setNbOrdiPage(request,nbOrdiPage);
+				setField(request);
 			}
 			else {
-				System.out.println("-"+request.getParameter("search")+"-");
-				final List<ComputerDto> ordi = ComputerService.getInstance().MiseEnPageSearch(request.getParameter("search"),nbOrdiPage,page );
-				System.out.println("--"+ordi.toString()+"--");
-				int nbComputer =ComputerService.getInstance().computerSearch(request.getParameter("search")).size();
-				System.out.println("--"+nbComputer+"--");
+				int mode = (request.getParameter("mode") == null ||(request.getParameter("mode") == "")) ? 0 : Integer.valueOf(request.getParameter("mode"));
+				List<ComputerDto> ordi = ComputerService.getInstance().computerOrderSearch(request.getParameter("colonne"),mode,request.getParameter("search"));
+				ordi = Pagination.getInstance().MiseEnPage(ordi, nbOrdiPage, page);
+				int nbComputer =ComputerService.getInstance().computerOrderSearch(request.getParameter("colonne"),mode,request.getParameter("search")).size();
 				setListComputer(request,ordi);
 				setPage(request,page,nbComputer,nbOrdiPage);
 				setNumberOfComputer(request,nbComputer);
 				setNbOrdiPage(request,nbOrdiPage);
-				setResearchField(request,request.getParameter("search"));
+				setField(request);
+				
+				
 			}
+			
 			this.getServletContext().getRequestDispatcher( "/WEB-INF/dashboard.jsp" ).forward( request, response );
 			
 		} catch (Exception e) {
@@ -85,8 +89,10 @@ public class DashBoard extends HttpServlet {
 	private void setNumberOfComputer(HttpServletRequest request, int nbComputer) {
 		request.setAttribute("numberOfComputer", nbComputer);
 	}
-	private void setResearchField(HttpServletRequest request,String keyWord) {
-		request.setAttribute("search", keyWord);
+	private void setField(HttpServletRequest request) {
+		request.setAttribute("search", request.getParameter("search"));
+		request.setAttribute("mode", request.getParameter("mode"));
+		request.setAttribute("colonne", request.getParameter("colonne"));
 	}
 	
 	private void setNbOrdiPage(HttpServletRequest request, int nbOrdiPage) {

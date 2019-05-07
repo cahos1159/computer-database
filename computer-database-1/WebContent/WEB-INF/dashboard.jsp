@@ -60,17 +60,25 @@
                         </th>
                         <th>
                             Computer name
+                            <a  href="?mode=0&colonne=name&search=${search}" ><i class="fa fa-long-arrow-up" aria-hidden="false"></i></a>
+                           	<a  href="?mode=1&colonne=name&search=${search}" ><i class="fa fa-long-arrow-down" aria-hidden="false"></i></a>
                         </th>
                         <th>
                             Introduced date
+                             <a  href="?mode=0&colonne=introduced&search=${search}" ><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
+                             <a  href="?mode=1&colonne=introduced&search=${search}" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
                             Discontinued date
+                             <a  href="?mode=0&colonne=discontinued&search=${search}" ><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
+                             <a  href="?mode=1&colonne=discontinued&search=${search}" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
                         </th>
                         <!-- Table header for Company -->
                         <th>
                             Company
+                             <a  href="?mode=0&colonne=company_id&search=${search}" ><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
+                             <a  href="?mode=1&colonne=company_id&search=${search}" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
                         </th>
 
                     </tr>
@@ -105,22 +113,22 @@
         <div class="container text-center">
             <ul class="pagination">
                 <li>
-                    <a href="?page=${previous}&search=${search}" aria-label="Previous">
+                    <a href="?page=${previous}&search=${search}&mode=${mode}&colonne=${colonne}" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                   </a>
               </li>
               <li><a href="?page=${page}">${page}</a></li>
               <li>
-                <a href="?page=${next}&search=${search}" aria-label="Next">
+                <a href="?page=${next}&search=${search}&mode=${mode}&colonne=${colonne}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
         </ul>
 
         <div class="btn-group btn-group-sm pull-right" role="group" >
-            <a class="btn btn-default" href="?nbOrdiPage=10&search=${search}"  >10</a>
-            <a class="btn btn-default"  href="?nbOrdiPage=50&search=${search}" >50</a>
-            <a class="btn btn-default" href="?nbOrdiPage=100&search=${search}" >100</a>
+            <a class="btn btn-default" href="?nbOrdiPage=10&search=${search}&mode=${mode}&colonne=${colonne}"  >10</a>
+            <a class="btn btn-default"  href="?nbOrdiPage=50&search=${search}&mode=${mode}&colonne=${colonne}" >50</a>
+            <a class="btn btn-default" href="?nbOrdiPage=100&search=${search}&mode=${mode}&colonne=${colonne}" >100</a>
         </div>
 
     </footer>

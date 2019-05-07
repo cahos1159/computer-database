@@ -22,6 +22,14 @@ public class CompanyDao extends Dao<Company>{
 		);
 	}
 	
+	public List<Computer> computerOrderSearch(String colonne, int chx, String keyWord) throws Exception{
+		return null;
+	}
+	
+	public  List<Computer> computerOrder(String mode,int colonne) throws Exception{
+		return null;
+	}
+	
 	public static CompanyDao getInstance() {
 		return instance;
 	}
@@ -80,12 +88,21 @@ public class CompanyDao extends Dao<Company>{
 		Company company = this.read(id);
 		try (
 			Connection connection = dataBase.getConnection();
+			PreparedStatement preparedStatement1 = connection.prepareStatement("DELETE FROM computer WHERE company_id=?;");
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_DELETE);
+			
 		) {
+			connection.setAutoCommit(false);
+			preparedStatement1.setInt(1, id);
+			preparedStatement1.executeUpdate();
 			preparedStatement.setInt(1, id);
 			
-			if (preparedStatement.executeUpdate() == 1) 
+			
+			if (preparedStatement.executeUpdate() == 1) {
+				connection.commit();
+				connection.setAutoCommit(true);
 				return company;
+				}
 			else
 				throw new FailedSQLQueryException(this.SQL_DELETE);
 		} catch (SQLException e) {

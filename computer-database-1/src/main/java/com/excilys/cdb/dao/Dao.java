@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.cdb.DataBase.DataBaseAccess;
 import com.excilys.cdb.DataBase.DataBaseCredentials;
+import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Model;
 
 public abstract class Dao<T extends Model> {
@@ -19,7 +20,7 @@ public abstract class Dao<T extends Model> {
 	protected final String SQL_LISTALL;
 	protected final String SQL_LIST;
 	protected final String SQL_SEARCH;
-	
+
 	protected Dao(String sqlCreate, String sqlUpdate, String sqlDelete, String sqlSelect, String sqlListall, String sqlList, String sqlSearch) {
 		this.SQL_CREATE = sqlCreate;
 		this.SQL_UPDATE = sqlUpdate;
@@ -42,5 +43,8 @@ public abstract class Dao<T extends Model> {
 	public abstract List<T> listAll() throws Exception;
 	public abstract List<T> list(int page, int size) throws Exception;
 	public abstract List<T> computerSearch(String keyWord) throws Exception;
+	public abstract List<Computer> computerOrder(String colonne,int mode) throws Exception;
+
+	public abstract List<Computer> computerOrderSearch(String colonne, int chx, String keyWord) throws Exception;
 	
 }
