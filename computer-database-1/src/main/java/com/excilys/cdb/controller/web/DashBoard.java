@@ -31,17 +31,32 @@ public class DashBoard extends HttpServlet {
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			int nbComputer = ComputerService.getInstance().listAllElements().size();
+			
 			
 			final int nbOrdiPage = getNbOrdiPage(request);
 			final int page = getPage(request);
-			final List<ComputerDto> ordi = ComputerService.getInstance().list(""+page+"", ""+nbOrdiPage+"");
 			
-			setListComputer(request,ordi);
-			setPage(request,page,nbComputer,nbOrdiPage);
-			setNumberOfComputer(request,nbComputer);
-			setNbOrdiPage(request,nbOrdiPage);
-			
+			if(request.getParameter("search") == "" || request.getParameter("search") == null) {
+				int nbComputer =ComputerService.getInstance().listAllElements().size();
+				final List<ComputerDto> ordi = ComputerService.getInstance().list(""+page+"", ""+nbOrdiPage+"");
+				
+				setListComputer(request,ordi);
+				setPage(request,page,nbComputer,nbOrdiPage);
+				setNumberOfComputer(request,nbComputer);
+				setNbOrdiPage(request,nbOrdiPage);
+			}
+			else {
+				System.out.println("-"+request.getParameter("search")+"-");
+				final List<ComputerDto> ordi = ComputerService.getInstance().MiseEnPageSearch(request.getParameter("search"),nbOrdiPage,page );
+				System.out.println("--"+ordi.toString()+"--");
+				int nbComputer =ComputerService.getInstance().computerSearch(request.getParameter("search")).size();
+				System.out.println("--"+nbComputer+"--");
+				setListComputer(request,ordi);
+				setPage(request,page,nbComputer,nbOrdiPage);
+				setNumberOfComputer(request,nbComputer);
+				setNbOrdiPage(request,nbOrdiPage);
+				setResearchField(request,request.getParameter("search"));
+			}
 			this.getServletContext().getRequestDispatcher( "/WEB-INF/dashboard.jsp" ).forward( request, response );
 			
 		} catch (Exception e) {
@@ -69,6 +84,9 @@ public class DashBoard extends HttpServlet {
 	
 	private void setNumberOfComputer(HttpServletRequest request, int nbComputer) {
 		request.setAttribute("numberOfComputer", nbComputer);
+	}
+	private void setResearchField(HttpServletRequest request,String keyWord) {
+		request.setAttribute("search", keyWord);
 	}
 	
 	private void setNbOrdiPage(HttpServletRequest request, int nbOrdiPage) {

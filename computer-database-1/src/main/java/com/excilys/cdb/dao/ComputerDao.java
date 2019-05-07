@@ -20,7 +20,8 @@ public class ComputerDao extends Dao<Computer>{
 			"DELETE FROM computer WHERE id=?;",
 			"SELECT * FROM computer WHERE id=?;",
 			"SELECT * FROM computer;",
-			"SELECT * FROM computer LIMIT ?,?;"
+			"SELECT * FROM computer LIMIT ?,?;",
+			"SELECT * FROM computer WHERE name LIKE ?;"
 		);
 	}
 	
@@ -163,7 +164,7 @@ public class ComputerDao extends Dao<Computer>{
 			throw new FailedSQLQueryException(this.SQL_SELECT);
 		}
 	}
-
+	
 	@Override
 	public List<Computer> listAll() throws Exception {
 		try (
@@ -209,6 +210,29 @@ public class ComputerDao extends Dao<Computer>{
 			
 		} catch (SQLException e) {
 			throw new FailedSQLQueryException(this.SQL_LIST);
+		}
+	}
+	
+	@Override
+	public List<Computer> computerSearch(String keyWord) throws Exception {
+		if(keyWord == null) {
+			return listAll();
+		}
+		
+		try (
+			Connection connection = dataBase.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_SEARCH);
+		) {
+			preparedStatement.setString(1, "%" + keyWord + "%");
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			List<Computer> computerList = new ArrayList<Computer>();
+			while(resultSet.next()) {
+				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
+			}
+			return computerList;
+		} catch (SQLException e) {
+			throw new FailedSQLQueryException(this.SQL_SEARCH);
 		}
 	}
 

@@ -17,7 +17,8 @@ public class CompanyDao extends Dao<Company>{
 			"DELETE FROM company WHERE id=?;",
 			"SELECT * FROM company WHERE id=?;",
 			"SELECT * FROM company;",
-			"SELECT * FROM company LIMIT ?,?;"
+			"SELECT * FROM company LIMIT ?,?;",
+			"SELECT * FROM computer WHERE name LIKE(?)"
 		);
 	}
 	
@@ -161,6 +162,10 @@ public class CompanyDao extends Dao<Company>{
 		} catch (SQLException e) {
 			throw new FailedSQLQueryException(this.SQL_LIST);
 		}
+	}
+	public List<Company> computerSearch(String keyWord) throws Exception {
+		List<Company> res = null;
+		return  res ;
 	}
 
 }

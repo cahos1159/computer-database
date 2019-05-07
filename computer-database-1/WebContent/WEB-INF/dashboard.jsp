@@ -27,7 +27,7 @@
                 <div class="pull-left">
                     <form id="searchForm" action="#" method="GET" class="form-inline">
 
-                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
+                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Computer name" />
                         <input type="submit" id="searchsubmit" value="Filter by name"
                         class="btn btn-primary" />
                     </form>
@@ -105,22 +105,22 @@
         <div class="container text-center">
             <ul class="pagination">
                 <li>
-                    <a href="?page=${previous}" aria-label="Previous">
+                    <a href="?page=${previous}&search=${search}" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                   </a>
               </li>
               <li><a href="?page=${page}">${page}</a></li>
               <li>
-                <a href="?page=${next}" aria-label="Next">
+                <a href="?page=${next}&search=${search}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
         </ul>
 
         <div class="btn-group btn-group-sm pull-right" role="group" >
-            <a class="btn btn-default" href="?nbOrdiPage=10"  >10</a>
-            <a class="btn btn-default"  href="?nbOrdiPage=50" >50</a>
-            <a class="btn btn-default" href="?nbOrdiPage=100" >100</a>
+            <a class="btn btn-default" href="?nbOrdiPage=10&search=${search}"  >10</a>
+            <a class="btn btn-default"  href="?nbOrdiPage=50&search=${search}" >50</a>
+            <a class="btn btn-default" href="?nbOrdiPage=100&search=${search}" >100</a>
         </div>
 
     </footer>
