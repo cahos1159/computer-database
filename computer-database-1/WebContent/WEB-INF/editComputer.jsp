@@ -64,7 +64,7 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Edit" class="btn btn-primary">
+							<input type="submit" value="Edit" id="btnSubmit"class="btn btn-primary">
 							or <a href="http://localhost:8080/cdb/" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
@@ -72,5 +72,7 @@
 			</div>
 		</div>
 	</section>
+	<script src="AppCdb/js/jquery.min.js"></script>
+    <script src="AppCdb/js/valideDate.js"></script>
 </body>
 </html>

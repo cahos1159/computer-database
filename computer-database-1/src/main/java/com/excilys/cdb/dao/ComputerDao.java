@@ -21,7 +21,7 @@ public class ComputerDao extends Dao<Computer>{
 			"SELECT * FROM computer WHERE id=?;",
 			"SELECT * FROM computer;",
 			"SELECT * FROM computer LIMIT ?,?;",
-			"SELECT * FROM computer WHERE name LIKE ?;"
+			"SELECT * FROM computer WHERE name LIKE ? LIMIT ?,?;"
 			
 		);
 	}
@@ -185,6 +185,8 @@ public class ComputerDao extends Dao<Computer>{
 		}
 	}
 	
+	
+	
 	@Override
 	public List<Computer> list(int page, int size) throws Exception {
 		if (size <= 0) {
@@ -215,16 +217,24 @@ public class ComputerDao extends Dao<Computer>{
 	}
 	
 	
-	public List<Computer> computerSearch(String keyWord) throws Exception {
+	public List<Computer> computerSearch(int page, int size ,String keyWord) throws Exception {
+		if (size <= 0) {
+			throw new InvalidPageSizeException(size);
+		}
+		if (page <= 0) {
+			throw new InvalidPageValueException(page);
+		}
 		if(keyWord == null) {
 			return listAll();
 		}
-		
+		int offset = (page-1)*size;
 		try (
 			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_SEARCH);
 		) {
 			preparedStatement.setString(1, "%" + keyWord + "%");
+			preparedStatement.setInt(2, offset);
+			preparedStatement.setInt(3, size);
 			
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<Computer> computerList = new ArrayList<Computer>();
@@ -237,10 +247,17 @@ public class ComputerDao extends Dao<Computer>{
 		}
 	}
 	
-	public List<Computer> computerOrder(String colonne, int chx) throws Exception {
+	public List<Computer> computerOrder(int page, int size ,String colonne, int chx) throws Exception {
+		if (size <= 0) {
+			throw new InvalidPageSizeException(size);
+		}
+		if (page <= 0) {
+			throw new InvalidPageValueException(page);
+		}
+		int offset = (page-1)*size;
 		String mode = chx == 0 ? "ASC":"DESC";
 		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return listAll();
-		String requete = "SELECT * FROM computer ORDER BY "+colonne+" "+mode+";";
+		String requete = "SELECT * FROM computer ORDER BY "+colonne+" "+mode+" LIMIT ?,?;";
 		if(colonne == null || colonne == "") {
 			return listAll();
 		}
@@ -249,7 +266,8 @@ public class ComputerDao extends Dao<Computer>{
 			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(requete);
 		) {
-			
+			preparedStatement.setInt(1, offset);
+			preparedStatement.setInt(2, size);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<Computer> computerList = new ArrayList<Computer>();
 			while(resultSet.next()) {
@@ -263,29 +281,70 @@ public class ComputerDao extends Dao<Computer>{
 	}
 	
 	
-	public List<Computer> computerOrderSearch(String colonne, int chx, String keyWord) throws Exception {
+	public List<Computer> computerOrderSearch(int page, int size ,String colonne, int chx, String keyWord) throws Exception {
+		if (size <= 0) {
+			throw new InvalidPageSizeException(size);
+		}
+		if (page <= 0) {
+			throw new InvalidPageValueException(page);
+		}
+		int offset = (page-1)*size;
 		String mode = chx == 0 ? "ASC":"DESC";
-		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return computerSearch(keyWord);
-		String requete = "SELECT * FROM computer WHERE name LIKE ? ORDER BY "+colonne+" "+mode+";";
+		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return computerSearch(page,size,keyWord);
+		String requete = "SELECT * FROM computer WHERE name LIKE ? ORDER BY "+colonne+" "+mode+" LIMIT ?,?;";
 		if(colonne == null || colonne == "") {
-			return computerSearch(keyWord);
+			return computerSearch(page,size,keyWord);
 		}
 		
 		try (
 			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(requete);
 		) {
+			
 			preparedStatement.setString(1, "%" + keyWord + "%");
+			preparedStatement.setInt(2, offset);
+			preparedStatement.setInt(3, size);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<Computer> computerList = new ArrayList<Computer>();
 			while(resultSet.next()) {
 				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
 			}
-			System.out.println(computerList.toString());
 			return computerList;
 		} catch (SQLException e) {
 			throw new FailedSQLQueryException(requete);
 		}
+	}
+	
+	public int count(String keyWord, int mode) {
+		int res;
+		String stat;
+		switch(mode) {
+		
+		case 0:
+			stat = "SELECT COUNT(*) FROM computer;";
+			break;
+		
+		case 1:
+			stat = "SELECT COUNT(*) FROM computer WHERE name LIKE ?;";
+			break;
+	
+		default:
+			stat = "SELECT COUNT(*) FROM computer;";
+		}
+		try (
+				Connection connection = dataBase.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(stat);
+			) {
+				if(mode==1) preparedStatement.setString(1, "%" + keyWord + "%");
+				ResultSet resultSet = preparedStatement.executeQuery();
+				System.out.println("pass");
+				resultSet.next();
+				res = resultSet.getInt(1);
+				System.out.println(res);
+			} catch (SQLException e) {
+				throw new FailedSQLQueryException(stat);
+			}	
+		return res;
 	}
 
 }
