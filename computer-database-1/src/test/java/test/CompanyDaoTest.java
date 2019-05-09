@@ -6,12 +6,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.excilys.cdb.dao.CompanyDao;
-import com.excilys.cdb.dao.ComputerDao;
 import com.excilys.cdb.exception.FailedSQLQueryException;
 import com.excilys.cdb.exception.InvalidIdException;
 import com.excilys.cdb.exception.PrimaryKeyViolationException;
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
 
 
 class CompanyDaoTest {
