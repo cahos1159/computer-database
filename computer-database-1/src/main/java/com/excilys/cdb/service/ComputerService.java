@@ -20,25 +20,25 @@ public class ComputerService extends Service<ComputerDto, Computer> {
 		return instance;
 	}
 
-	public List<ComputerDto> computerSearch(String keyWord) throws Exception {
+	public List<ComputerDto> computerSearch(int page, int size ,String keyWord) throws Exception {
 
-		List<ComputerDto> res = ((ComputerDao) this.dao).computerSearch(keyWord).stream().map(s -> mapper.modelToDto(s))
+		List<ComputerDto> res = ((ComputerDao) this.dao).computerSearch(page,size,keyWord).stream().map(s -> mapper.modelToDto(s))
 				.collect(Collectors.toList());
 
 		return res;
 	}
 
-	public List<ComputerDto> computerOrder(String colonne,int mode) throws Exception {
+	public List<ComputerDto> computerOrder(int page, int size ,String colonne,int mode) throws Exception {
 
-		List<ComputerDto> res = ((ComputerDao) this.dao).computerOrder(colonne,mode).stream().map(s -> mapper.modelToDto(s))
+		List<ComputerDto> res = ((ComputerDao) this.dao).computerOrder(page,size,colonne,mode).stream().map(s -> mapper.modelToDto(s))
 				.collect(Collectors.toList());
 
 		return res;
 	}
 	
-	public List<ComputerDto> computerOrderSearch(String colonne,int mode,String keyWord ) throws Exception {
+	public List<ComputerDto> computerOrderSearch(int page, int size ,String colonne,int mode,String keyWord ) throws Exception {
 
-		List<ComputerDto> res = ((ComputerDao) this.dao).computerOrderSearch(colonne,mode,keyWord).stream().map(s -> mapper.modelToDto(s))
+		List<ComputerDto> res = ((ComputerDao) this.dao).computerOrderSearch(page,size,colonne,mode,keyWord).stream().map(s -> mapper.modelToDto(s))
 				.collect(Collectors.toList());
 
 		return res;

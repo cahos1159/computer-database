@@ -39,7 +39,7 @@ public class DashBoard extends HttpServlet {
 			
 			if(request.getParameter("search") == "" || request.getParameter("search") == null) {
 				
-				List<ComputerDto> ordi = ComputerService.getInstance().computerOrder(request.getParameter("colonne"),mode);
+				List<ComputerDto> ordi = ComputerService.getInstance().computerOrder(page,nbOrdiPage,request.getParameter("colonne"),mode);
 				int nbComputer = ordi == null ? 0 : ordi.size();
 				ordi = Pagination.getInstance().MiseEnPage(ordi, nbOrdiPage, page);
 				setListComputer(request,ordi);
@@ -49,7 +49,7 @@ public class DashBoard extends HttpServlet {
 			}
 			else {
 				
-				List<ComputerDto> ordi = ComputerService.getInstance().computerOrderSearch(request.getParameter("colonne"),mode,request.getParameter("search"));
+				List<ComputerDto> ordi = ComputerService.getInstance().computerOrderSearch(page,nbOrdiPage,request.getParameter("colonne"),mode,request.getParameter("search"));
 				int nbComputer = ordi == null ? 0 : ordi.size();
 				ordi = Pagination.getInstance().MiseEnPage(ordi, nbOrdiPage, page);
 				setListComputer(request,ordi);

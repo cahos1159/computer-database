@@ -81,7 +81,7 @@ class ComputerDaoTest {
 		dao.create(tmp1);
 		dao.create(tmp2);
 		List<Computer> res = Arrays.asList(tmp1,tmp2);
-		List<Computer> compare = dao.computerSearch("Création test");
+		List<Computer> compare = dao.computerSearch(1,10,"Création test");
 		dao.delete(tmp1);
 		dao.delete(tmp2);
 		assertEquals(res.get(0),compare.get(0));
@@ -96,7 +96,7 @@ class ComputerDaoTest {
 		dao.create(tmp1);
 		dao.create(tmp2);
 		List<Computer> res = Arrays.asList(tmp1,tmp2);
-		List<Computer> compare = dao.computerSearch("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
+		List<Computer> compare = dao.computerSearch(1,10,"ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
 		dao.delete(tmp1);
 		dao.delete(tmp2);
 		assertTrue(compare.isEmpty());
@@ -111,7 +111,7 @@ class ComputerDaoTest {
 		dao.create(tmp1);
 		dao.create(tmp2);
 		List<Computer> res = Arrays.asList(tmp1,tmp2);
-		List<Computer> compare = dao.computerOrderSearch("name",1,"Création test");
+		List<Computer> compare = dao.computerOrderSearch(1,10,"name",1,"Création test");
 		dao.delete(tmp1);
 		dao.delete(tmp2);
 		assertEquals(res.get(0),compare.get(0));
