@@ -65,11 +65,11 @@ public class ComputerAdd extends HttpServlet {
 	}
 	
 	private void createOrdi(HttpServletRequest request) throws Exception {
-			int nbComputer = ComputerService.getInstance().listAllElements().size() + 100;
+			
 			CompanyDto comp = new CompanyDto(request.getParameter("companyId"));
 			String intro = formatDate(request.getParameter("introduced"));
 			String disc = formatDate(request.getParameter("discontinued"));
-			ComputerDto elem = new ComputerDto(""+nbComputer+"",request.getParameter("computerName"), intro, disc, comp);
+			ComputerDto elem = new ComputerDto("-10",request.getParameter("computerName"), intro, disc, comp);
 			ComputerService.getInstance().create(elem);
 			request.setAttribute("titre", elem.toString());
 			

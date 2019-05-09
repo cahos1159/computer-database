@@ -16,15 +16,20 @@ public class ComputerDao extends Dao<Computer>{
 	private static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
 	private static ComputerDao instance = new ComputerDao();
 	
+	private final String order1 ="SELECT * FROM computer ORDER BY ";
+	private final String order2 =" LIMIT ?,?;";
+	private final String orderSearch1 ="SELECT * FROM computer WHERE name LIKE ? ORDER BY ";
+	private final String orderSearch2 =" LIMIT ?,?;";
+	
 	private ComputerDao() {
 		super(
-			"INSERT INTO computer VALUES (?,?,?,?,?);",
+			"INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?);",
 			"UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;",
 			"DELETE FROM computer WHERE id=?;",
-			"SELECT * FROM computer WHERE id=?;",
-			"SELECT * FROM computer;",
-			"SELECT * FROM computer LIMIT ?,?;",
-			"SELECT * FROM computer WHERE name LIKE ? LIMIT ?,?;"
+			"SELECT id,name,introduced,discontinued,company_id FROM computer WHERE id=?;",
+			"SELECT id,name,introduced,discontinued,company_id FROM computer;",
+			"SELECT id,name,introduced,discontinued,company_id FROM computer LIMIT ?,?;",
+			"SELECT id,name,introduced,discontinued,company_id FROM computer WHERE name LIKE ? LIMIT ?,?;"
 			
 		);
 	}
@@ -37,22 +42,27 @@ public class ComputerDao extends Dao<Computer>{
 	public Computer create(Computer obj) throws Exception {
 		int nbRow = 0;
 		
-		if(obj.getId() <= 0) {
-			  logger.error("",new InvalidIdException(obj.getId()));
-			  throw new InvalidIdException(obj.getId());
-		}
 		
 		try (
 			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_CREATE)
+			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_CREATE,Statement.RETURN_GENERATED_KEYS)
 		) {
-			preparedStatement.setInt(1,obj.getId());
-			preparedStatement.setString(2, obj.getName());
-			preparedStatement.setTimestamp(3, obj.getDateIntro());
-			preparedStatement.setTimestamp(4, obj.getDateDisc());
-			preparedStatement.setNull(5, java.sql.Types.INTEGER);
+			//preparedStatement.setInt(1,obj.getId());
+			preparedStatement.setString(1, obj.getName());
+			preparedStatement.setTimestamp(2, obj.getDateIntro());
+			preparedStatement.setTimestamp(3, obj.getDateDisc());
+			preparedStatement.setNull(4, java.sql.Types.INTEGER);
 			
 			nbRow = preparedStatement.executeUpdate();
+			System.out.println("----"+obj.getId());
+			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+				if (generatedKeys.next()) {
+					obj.setId((int)generatedKeys.getLong(1));
+					System.out.println("----"+obj.getId());
+					}
+				else
+					throw new FailedSQLQueryException("id non conforme");
+}
 		} catch (SQLException e) {
 			 logger.error("",new PrimaryKeyViolationException(obj.getId()));
 			 throw new PrimaryKeyViolationException(obj.getId());
@@ -279,7 +289,7 @@ public class ComputerDao extends Dao<Computer>{
 		int offset = (page-1)*size;
 		String mode = chx == 0 ? "ASC":"DESC";
 		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return listAll();
-		String requete = "SELECT * FROM computer ORDER BY "+colonne+" "+mode+" LIMIT ?,?;";
+		String requete = order1+colonne+" "+mode+order2;
 		if(colonne == null || colonne == "") {
 			return listAll();
 		}
@@ -316,7 +326,7 @@ public class ComputerDao extends Dao<Computer>{
 		int offset = (page-1)*size;
 		String mode = chx == 0 ? "ASC":"DESC";
 		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return computerSearch(page,size,keyWord);
-		String requete = "SELECT * FROM computer WHERE name LIKE ? ORDER BY "+colonne+" "+mode+" LIMIT ?,?;";
+		String requete = orderSearch1+colonne+" "+mode+orderSearch2;
 		if(colonne == null || colonne == "") {
 			return computerSearch(page,size,keyWord);
 		}
@@ -345,10 +355,6 @@ public class ComputerDao extends Dao<Computer>{
 		int res;
 		String stat;
 		switch(mode) {
-		
-		case 0:
-			stat = "SELECT COUNT(*) FROM computer;";
-			break;
 		
 		case 1:
 			stat = "SELECT COUNT(*) FROM computer WHERE name LIKE ?;";
