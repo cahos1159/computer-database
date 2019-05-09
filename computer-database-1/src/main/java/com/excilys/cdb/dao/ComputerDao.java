@@ -281,7 +281,6 @@ public class ComputerDao extends Dao<Computer>{
 			while(resultSet.next()) {
 				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
 			}
-			System.out.println(computerList.toString());
 			return computerList;
 		} catch (SQLException e) {
 			throw new FailedSQLQueryException(requete);

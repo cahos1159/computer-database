@@ -57,6 +57,6 @@
         </div>
     </section>
     <script src="../AppCdb/js/jquery.min.js"></script>
-    <script src="../AppCdb/js/addComputer.js"></script>
+    <script src="../AppCdb/js/valideDate.js"></script>
 </body>
 </html>
