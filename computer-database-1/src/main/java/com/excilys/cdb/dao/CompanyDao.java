@@ -4,12 +4,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
 
 public class CompanyDao extends Dao<Company>{
 	private static CompanyDao instance = new CompanyDao();
-	
+	private static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
 	private CompanyDao() {
 		super(
 			"INSERT INTO company VALUES (?,?);",
@@ -31,6 +34,7 @@ public class CompanyDao extends Dao<Company>{
 	@Override
 	public Company create(Company obj) throws Exception{
 		if(obj.getId() <= 0) {
+			logger.error("",new InvalidIdException(obj.getId()));
 			throw new InvalidIdException(obj.getId());
 		}
 		
@@ -45,8 +49,10 @@ public class CompanyDao extends Dao<Company>{
 			if (nbRow == 1)
 				return obj;
 			else
+				logger.error("",new FailedSQLQueryException(this.SQL_CREATE));
 				throw new FailedSQLQueryException(this.SQL_CREATE);
 		} catch (SQLException e) {
+			logger.error("",new PrimaryKeyViolationException(obj.getId()));
 			throw new PrimaryKeyViolationException(obj.getId());
 		}
 	}
@@ -66,8 +72,10 @@ public class CompanyDao extends Dao<Company>{
 			if (preparedStatement.executeUpdate() == 1) 
 				return company;
 			else
+				logger.error("",new FailedSQLQueryException(this.SQL_UPDATE));
 				throw new FailedSQLQueryException(this.SQL_UPDATE);
 		} catch (SQLException e) {
+			logger.error("",new FailedSQLQueryException(this.SQL_UPDATE));
 			throw new PrimaryKeyViolationException(obj.getId());
 		}
 	}
@@ -98,6 +106,7 @@ public class CompanyDao extends Dao<Company>{
 				return company;
 				}
 			else
+				logger.error("",new FailedSQLQueryException(this.SQL_DELETE));
 				throw new FailedSQLQueryException(this.SQL_DELETE);
 		} catch (SQLException e) {
 			throw e;
@@ -107,6 +116,7 @@ public class CompanyDao extends Dao<Company>{
 	@Override
 	public Company read(int id) throws RuntimeException {
 		if(id <= 0) {
+			logger.error("",new InvalidIdException(id));
 			throw new InvalidIdException(id);
 		}
 		
@@ -121,9 +131,11 @@ public class CompanyDao extends Dao<Company>{
 				Company company = new Company(id,resultSet.getString("name"));
 				return company;
 			} else {
+				logger.error("",new InvalidIdException(id));
 				throw new InvalidIdException(id);
 			}
 		} catch (SQLException e) {
+			logger.error("",new FailedSQLQueryException(this.SQL_SELECT));
 			throw new FailedSQLQueryException(this.SQL_SELECT);
 		}
 	}
@@ -142,6 +154,7 @@ public class CompanyDao extends Dao<Company>{
 			return companyList;
 			
 		} catch (SQLException e) {
+			logger.error("",new FailedSQLQueryException(this.SQL_LISTALL));
 			throw new FailedSQLQueryException(this.SQL_LISTALL);
 		}
 	}
@@ -149,9 +162,11 @@ public class CompanyDao extends Dao<Company>{
 	@Override
 	public List<Company> list(int page, int size) throws Exception {
 		if (size <= 0) {
+			logger.error("",new InvalidPageSizeException(size));
 			throw new InvalidPageSizeException(size);
 		}
 		if (page <= 0) {
+			logger.error("",new InvalidPageValueException(page));
 			throw new InvalidPageValueException(page);
 		}
 		int offset = (page-1)*size;
@@ -171,6 +186,7 @@ public class CompanyDao extends Dao<Company>{
 			return lst;
 			
 		} catch (SQLException e) {
+			logger.error("",new FailedSQLQueryException(this.SQL_LIST));
 			throw new FailedSQLQueryException(this.SQL_LIST);
 		}
 	}

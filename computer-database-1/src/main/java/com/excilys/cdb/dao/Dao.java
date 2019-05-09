@@ -3,14 +3,14 @@ package com.excilys.cdb.dao;
 import java.util.List;
 
 import com.excilys.cdb.DataBase.DataBaseAccess;
-import com.excilys.cdb.DataBase.DataBaseCredentials;
+
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Model;
 
 public abstract class Dao<T extends Model> {
 
 	
-	protected DataBaseCredentials credentials;
+
 	protected DataBaseAccess dataBase;
 	
 	protected final String SQL_CREATE;
