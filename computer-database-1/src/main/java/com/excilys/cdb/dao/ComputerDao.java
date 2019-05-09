@@ -3,6 +3,9 @@ package com.excilys.cdb.dao;
 import java.sql.*;
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
 
@@ -10,7 +13,7 @@ import com.excilys.cdb.model.*;
 
 public class ComputerDao extends Dao<Computer>{
 	private final String SQL_SELECT_UPDATE_COMPANY = "UPDATE computer SET company_id=? WHERE id=?;";
-	
+	private static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
 	private static ComputerDao instance = new ComputerDao();
 	
 	private ComputerDao() {
@@ -35,7 +38,8 @@ public class ComputerDao extends Dao<Computer>{
 		int nbRow = 0;
 		
 		if(obj.getId() <= 0) {
-			throw new InvalidIdException(obj.getId());
+			  logger.error("",new InvalidIdException(obj.getId()));
+			  throw new InvalidIdException(obj.getId());
 		}
 		
 		try (
@@ -50,14 +54,16 @@ public class ComputerDao extends Dao<Computer>{
 			
 			nbRow = preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			throw new PrimaryKeyViolationException(obj.getId());
+			 logger.error("",new PrimaryKeyViolationException(obj.getId()));
+			 throw new PrimaryKeyViolationException(obj.getId());
 		}
 		
 		if (obj.getManufacturer() == 0) {
 			if (nbRow == 1) {
 				return obj;
 			} else {
-				throw new FailedSQLQueryException(this.SQL_CREATE);
+				 logger.error("",new FailedSQLQueryException(this.SQL_CREATE));
+				 throw new FailedSQLQueryException(this.SQL_CREATE);
 			}
 		} else {
 			try (
@@ -71,10 +77,12 @@ public class ComputerDao extends Dao<Computer>{
 				if (nbRow == 2) {
 					return obj;
 				} else {
-					throw new FailedSQLQueryException(this.SQL_SELECT_UPDATE_COMPANY);
+					 logger.error("",new FailedSQLQueryException(this.SQL_SELECT_UPDATE_COMPANY));
+					 throw new FailedSQLQueryException(this.SQL_SELECT_UPDATE_COMPANY);
 				}
 			} catch (SQLException e) {
-				throw new ForeignKeyViolationException(obj.getManufacturer(), "company");
+				 logger.error("", new ForeignKeyViolationException(obj.getManufacturer(), "company"));
+				 throw new ForeignKeyViolationException(obj.getManufacturer(), "company");
 			}
 		}
 	}
@@ -113,10 +121,12 @@ public class ComputerDao extends Dao<Computer>{
 			if (preparedStatement.executeUpdate() == 1) {
 				return returnComputer;
 			} else {
-				throw new FailedSQLQueryException(this.SQL_UPDATE);
+				 logger.error("",new FailedSQLQueryException(this.SQL_UPDATE));
+				 throw new FailedSQLQueryException(this.SQL_UPDATE);
 			}		
 		} catch (SQLException e) {
-			throw new ForeignKeyViolationException(returnComputer.getManufacturer(), "company");
+			 logger.error("",new ForeignKeyViolationException(returnComputer.getManufacturer(), "company"));
+			 throw new ForeignKeyViolationException(returnComputer.getManufacturer(), "company");
 		}
 	}
 
@@ -136,17 +146,21 @@ public class ComputerDao extends Dao<Computer>{
 			if (preparedStatement.executeUpdate() == 1) {
 				return returnComputer;
 			} else {
-				throw new FailedSQLQueryException(this.SQL_DELETE);
+				
+				 logger.error("",new FailedSQLQueryException(this.SQL_DELETE));
+				 throw new FailedSQLQueryException(this.SQL_DELETE);
 			}
 		} catch (SQLException e) {
-			throw e;
+			 logger.error("",e);
+			 throw e;
 		}
 	}
 
 	@Override
 	public Computer read(int id) throws RuntimeException {
 		if(id <= 0) {
-			throw new InvalidIdException(id);
+			 logger.error("",new InvalidIdException(id));
+			 throw new InvalidIdException(id);
 		}
 		
 		try (
@@ -162,7 +176,8 @@ public class ComputerDao extends Dao<Computer>{
 				throw new InvalidIdException(id);
 			}
 		} catch (SQLException e) {
-			throw new FailedSQLQueryException(this.SQL_SELECT);
+			 logger.error("",new FailedSQLQueryException(this.SQL_SELECT));
+			 throw new FailedSQLQueryException(this.SQL_SELECT);
 		}
 	}
 	
@@ -181,7 +196,8 @@ public class ComputerDao extends Dao<Computer>{
 			return computerList;
 			
 		} catch (SQLException e) {
-			throw new FailedSQLQueryException(this.SQL_LISTALL);
+			 logger.error("",new FailedSQLQueryException(this.SQL_LISTALL));
+			 throw new FailedSQLQueryException(this.SQL_LISTALL);
 		}
 	}
 	
@@ -190,9 +206,11 @@ public class ComputerDao extends Dao<Computer>{
 	@Override
 	public List<Computer> list(int page, int size) throws Exception {
 		if (size <= 0) {
-			throw new InvalidPageSizeException(size);
+			 logger.error("",new InvalidPageSizeException(size));
+			 throw new InvalidPageSizeException(size);
 		}
 		if (page <= 0) {
+			logger.error("",new InvalidPageValueException(page));
 			throw new InvalidPageValueException(page);
 		}
 		int offset = (page-1)*size;
@@ -212,6 +230,7 @@ public class ComputerDao extends Dao<Computer>{
 			return computerList;
 			
 		} catch (SQLException e) {
+			logger.error("",new FailedSQLQueryException(this.SQL_LIST));
 			throw new FailedSQLQueryException(this.SQL_LIST);
 		}
 	}
@@ -243,15 +262,18 @@ public class ComputerDao extends Dao<Computer>{
 			}
 			return computerList;
 		} catch (SQLException e) {
+			logger.error("",new FailedSQLQueryException(this.SQL_SEARCH));
 			throw new FailedSQLQueryException(this.SQL_SEARCH);
 		}
 	}
 	
 	public List<Computer> computerOrder(int page, int size ,String colonne, int chx) throws Exception {
 		if (size <= 0) {
+			logger.error("",new InvalidPageSizeException(size));
 			throw new InvalidPageSizeException(size);
 		}
 		if (page <= 0) {
+			logger.error("",new InvalidPageSizeException(page));
 			throw new InvalidPageValueException(page);
 		}
 		int offset = (page-1)*size;
@@ -276,6 +298,7 @@ public class ComputerDao extends Dao<Computer>{
 			System.out.println(computerList.toString());
 			return computerList;
 		} catch (SQLException e) {
+			logger.error("",e);
 			throw new FailedSQLQueryException(requete);
 		}
 	}
@@ -283,9 +306,11 @@ public class ComputerDao extends Dao<Computer>{
 	
 	public List<Computer> computerOrderSearch(int page, int size ,String colonne, int chx, String keyWord) throws Exception {
 		if (size <= 0) {
+			logger.error("",new InvalidPageSizeException(size));
 			throw new InvalidPageSizeException(size);
 		}
 		if (page <= 0) {
+			logger.error("",new InvalidPageSizeException(page));
 			throw new InvalidPageValueException(page);
 		}
 		int offset = (page-1)*size;
@@ -311,6 +336,7 @@ public class ComputerDao extends Dao<Computer>{
 			}
 			return computerList;
 		} catch (SQLException e) {
+			logger.error("",new FailedSQLQueryException(requete));
 			throw new FailedSQLQueryException(requete);
 		}
 	}
@@ -342,6 +368,7 @@ public class ComputerDao extends Dao<Computer>{
 				res = resultSet.getInt(1);
 				System.out.println(res);
 			} catch (SQLException e) {
+				logger.error("",new FailedSQLQueryException(stat));
 				throw new FailedSQLQueryException(stat);
 			}	
 		return res;
