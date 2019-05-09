@@ -314,5 +314,37 @@ public class ComputerDao extends Dao<Computer>{
 			throw new FailedSQLQueryException(requete);
 		}
 	}
+	
+	public int count(String keyWord, int mode) {
+		int res;
+		String stat;
+		switch(mode) {
+		
+		case 0:
+			stat = "SELECT COUNT(*) FROM computer;";
+			break;
+		
+		case 1:
+			stat = "SELECT COUNT(*) FROM computer WHERE name LIKE ?;";
+			break;
+	
+		default:
+			stat = "SELECT COUNT(*) FROM computer;";
+		}
+		try (
+				Connection connection = dataBase.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(stat);
+			) {
+				if(mode==1) preparedStatement.setString(1, "%" + keyWord + "%");
+				ResultSet resultSet = preparedStatement.executeQuery();
+				System.out.println("pass");
+				resultSet.next();
+				res = resultSet.getInt(1);
+				System.out.println(res);
+			} catch (SQLException e) {
+				throw new FailedSQLQueryException(stat);
+			}	
+		return res;
+	}
 
 }

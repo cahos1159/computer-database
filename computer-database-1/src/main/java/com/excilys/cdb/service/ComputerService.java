@@ -44,4 +44,9 @@ public class ComputerService extends Service<ComputerDto, Computer> {
 		return res;
 	}
 	
+	public int count(String keyWord, int mode) {
+		return (int)((ComputerDao) this.dao).count(keyWord,mode);
+	}
+	
+	
 }

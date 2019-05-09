@@ -44,7 +44,7 @@ public class DashBoard extends HttpServlet {
 				ordi = Pagination.getInstance().MiseEnPage(ordi, nbOrdiPage, page);
 				setListComputer(request,ordi);
 				setPage(request,page,nbComputer,nbOrdiPage);
-				setNumberOfComputer(request,nbComputer);
+				setNumberOfComputer(request,ComputerService.getInstance().count(request.getParameter("search"),0));
 				
 			}
 			else {
@@ -54,7 +54,7 @@ public class DashBoard extends HttpServlet {
 				ordi = Pagination.getInstance().MiseEnPage(ordi, nbOrdiPage, page);
 				setListComputer(request,ordi);
 				setPage(request,page,nbComputer,nbOrdiPage);
-				setNumberOfComputer(request,nbComputer);
+				setNumberOfComputer(request,ComputerService.getInstance().count(request.getParameter("search"),1));
 				
 				
 			}
