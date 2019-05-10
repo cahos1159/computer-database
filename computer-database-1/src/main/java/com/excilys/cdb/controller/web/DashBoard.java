@@ -1,7 +1,9 @@
 package com.excilys.cdb.controller.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.cdb.dto.ComputerDto;
+import com.excilys.cdb.mapper.ComputerMapper;
+import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.ComputerService;
 
 
@@ -33,27 +37,27 @@ public class DashBoard extends HttpServlet {
 		try {
 			
 			
-			final int nbOrdiPage = getNbOrdiPage(request);
-			final int page = getPage(request);
+
+			Page page = new Page(getPage(request),getNbOrdiPage(request));
 			int mode = (request.getParameter("mode") == null ||(request.getParameter("mode") == "")) ? 0 : Integer.valueOf(request.getParameter("mode"));
 			
 			if(request.getParameter("search") == "" || request.getParameter("search") == null) {
 				
-				List<ComputerDto> ordi = ComputerService.getInstance().computerOrder(page,nbOrdiPage,request.getParameter("colonne"),mode);
+				List<Computer> ordi = ComputerService.getInstance().computerOrder(page,request.getParameter("colonne"),mode);
 				int nbComputer = ordi == null ? 0 : ordi.size();
-				ordi = Pagination.getInstance().MiseEnPage(ordi, nbOrdiPage, page);
+				ordi = Pagination.getInstance().MiseEnPage(ordi,page);
 				setListComputer(request,ordi);
-				setPage(request,page,nbComputer,nbOrdiPage);
+				setPage(request,page.getNumero(),nbComputer,page.getNbElem());
 				setNumberOfComputer(request,ComputerService.getInstance().count(request.getParameter("search"),0));
 				
 			}
 			else {
 				
-				List<ComputerDto> ordi = ComputerService.getInstance().computerOrderSearch(page,nbOrdiPage,request.getParameter("colonne"),mode,request.getParameter("search"));
+				List<Computer> ordi = ComputerService.getInstance().computerOrderSearch(page,request.getParameter("colonne"),mode,request.getParameter("search"));
 				int nbComputer = ordi == null ? 0 : ordi.size();
-				ordi = Pagination.getInstance().MiseEnPage(ordi, nbOrdiPage, page);
+				ordi = Pagination.getInstance().MiseEnPage(ordi,page);
 				setListComputer(request,ordi);
-				setPage(request,page,nbComputer,nbOrdiPage);
+				setPage(request,page.getNumero(),nbComputer,page.getNbElem());
 				setNumberOfComputer(request,ComputerService.getInstance().count(request.getParameter("search"),1));
 				
 				
@@ -82,8 +86,12 @@ public class DashBoard extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private void setListComputer(HttpServletRequest request, List<ComputerDto> ordi) {
-		request.setAttribute("ordi", ordi);
+	private void setListComputer(HttpServletRequest request, List<Computer> ordi) {
+		List<ComputerDto> res = new ArrayList<ComputerDto>();
+		for(Iterator<Computer> i=ordi.iterator();i.hasNext();) {
+			res.add(ComputerMapper.getInstance().modelToDto(i.next()));
+		}
+		request.setAttribute("ordi", res);
 	}
 	
 	private void setNumberOfComputer(HttpServletRequest request, int nbComputer) {
@@ -123,7 +131,7 @@ public class DashBoard extends HttpServlet {
 		System.out.println(idaggreg);
 		List<String> ids = Arrays.asList(idaggreg.split(","));
 		for(String id : ids) {
-			ComputerService.getInstance().delete(ComputerService.getInstance().read(id));
+			ComputerService.getInstance().delete(ComputerService.getInstance().read(Integer.parseInt(id)));
 		}
 	}
 

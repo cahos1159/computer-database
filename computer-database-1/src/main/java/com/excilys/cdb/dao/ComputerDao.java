@@ -6,6 +6,7 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
 
@@ -33,6 +34,14 @@ public class ComputerDao extends Dao<Computer>{
 			
 		);
 	}
+	static Map<String,String>  att = new HashMap<>();
+	static {		
+		att.put("name", "name");
+		att.put("introduced", "introduced");
+		att.put("discontinued", "discontinued");
+		att.put("company", "company");
+	}
+	
 	
 	public static ComputerDao getInstance() {
 		return instance;
@@ -101,18 +110,7 @@ public class ComputerDao extends Dao<Computer>{
 	public Computer update(Computer obj) throws Exception {
 		Computer returnComputer = this.read(obj.getId());
 
-		if (obj.getName().contentEquals("")) {
-			returnComputer.setName(obj.getName());
-		}
-		if (obj.getDateIntro() != null) {
-			returnComputer.setDateIntro(obj.getDateIntro());
-		}
-		if (obj.getDateDisc() != null) {
-			returnComputer.setDateDisc(obj.getDateDisc());
-		}
-		if (obj.getManufacturer() != -1) {
-			returnComputer.setManufacturer(obj.getManufacturer());
-		}
+		
 		
 		try (
 			Connection connection = dataBase.getConnection();
@@ -214,23 +212,23 @@ public class ComputerDao extends Dao<Computer>{
 	
 	
 	@Override
-	public List<Computer> list(int page, int size) throws Exception {
-		if (size <= 0) {
-			 logger.error("",new InvalidPageSizeException(size));
-			 throw new InvalidPageSizeException(size);
+	public List<Computer> list(Page page) throws Exception {
+		if (page.getNbElem() <= 0) {
+			 logger.error("",new InvalidPageSizeException(page.getNbElem()));
+			 throw new InvalidPageSizeException(page.getNbElem());
 		}
-		if (page <= 0) {
-			logger.error("",new InvalidPageValueException(page));
-			throw new InvalidPageValueException(page);
+		if (page.getNumero() <= 0) {
+			logger.error("",new InvalidPageValueException(page.getNumero()));
+			throw new InvalidPageValueException(page.getNumero());
 		}
-		int offset = (page-1)*size;
+		int offset = (page.getNumero()-1)*page.getNbElem();
 		
 		try (
 			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_LIST);
 		) {
 			preparedStatement.setInt(1, offset);
-			preparedStatement.setInt(2, size);
+			preparedStatement.setInt(2, page.getNbElem());
 			
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<Computer> computerList = new ArrayList<Computer>();
@@ -246,24 +244,24 @@ public class ComputerDao extends Dao<Computer>{
 	}
 	
 	
-	public List<Computer> computerSearch(int page, int size ,String keyWord) throws Exception {
-		if (size <= 0) {
-			throw new InvalidPageSizeException(size);
+	public List<Computer> computerSearch(Page page ,String keyWord) throws Exception {
+		if (page.getNbElem() <= 0) {
+			throw new InvalidPageSizeException(page.getNbElem());
 		}
-		if (page <= 0) {
-			throw new InvalidPageValueException(page);
+		if (page.getNumero() <= 0) {
+			throw new InvalidPageValueException(page.getNumero());
 		}
 		if(keyWord == null) {
 			return listAll();
 		}
-		int offset = (page-1)*size;
+		int offset = (page.getNumero()-1)*page.getNbElem();
 		try (
 			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_SEARCH);
 		) {
 			preparedStatement.setString(1, "%" + keyWord + "%");
 			preparedStatement.setInt(2, offset);
-			preparedStatement.setInt(3, size);
+			preparedStatement.setInt(3, page.getNbElem());
 			
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<Computer> computerList = new ArrayList<Computer>();
@@ -277,17 +275,19 @@ public class ComputerDao extends Dao<Computer>{
 		}
 	}
 	
-	public List<Computer> computerOrder(int page, int size ,String colonne, int chx) throws Exception {
-		if (size <= 0) {
-			logger.error("",new InvalidPageSizeException(size));
-			throw new InvalidPageSizeException(size);
+	public List<Computer> computerOrder(Page page ,String colonne, int chx) throws Exception {
+		if (page.getNbElem() <= 0) {
+			logger.error("",new InvalidPageSizeException(page.getNbElem()));
+			throw new InvalidPageSizeException(page.getNbElem());
 		}
-		if (page <= 0) {
-			logger.error("",new InvalidPageSizeException(page));
-			throw new InvalidPageValueException(page);
+		if (page.getNumero() <= 0) {
+			logger.error("",new InvalidPageSizeException(page.getNumero()));
+			throw new InvalidPageValueException(page.getNumero());
 		}
-		int offset = (page-1)*size;
+		int offset = (page.getNumero()-1)*page.getNbElem();
 		String mode = chx == 0 ? "ASC":"DESC";
+		
+		
 		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return listAll();
 		String requete = order1+colonne+" "+mode+order2;
 		if(colonne == null || colonne == "") {
@@ -299,7 +299,7 @@ public class ComputerDao extends Dao<Computer>{
 			PreparedStatement preparedStatement = connection.prepareStatement(requete);
 		) {
 			preparedStatement.setInt(1, offset);
-			preparedStatement.setInt(2, size);
+			preparedStatement.setInt(2, page.getNbElem());
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<Computer> computerList = new ArrayList<Computer>();
 			while(resultSet.next()) {
@@ -314,21 +314,21 @@ public class ComputerDao extends Dao<Computer>{
 	}
 	
 	
-	public List<Computer> computerOrderSearch(int page, int size ,String colonne, int chx, String keyWord) throws Exception {
-		if (size <= 0) {
-			logger.error("",new InvalidPageSizeException(size));
-			throw new InvalidPageSizeException(size);
+	public List<Computer> computerOrderSearch(Page page ,String colonne, int chx, String keyWord) throws Exception {
+		if (page.getNbElem() <= 0) {
+			logger.error("",new InvalidPageSizeException(page.getNbElem()));
+			throw new InvalidPageSizeException(page.getNbElem());
 		}
-		if (page <= 0) {
-			logger.error("",new InvalidPageSizeException(page));
-			throw new InvalidPageValueException(page);
+		if (page.getNumero() <= 0) {
+			logger.error("",new InvalidPageSizeException(page.getNumero()));
+			throw new InvalidPageValueException(page.getNumero());
 		}
-		int offset = (page-1)*size;
+		int offset = (page.getNumero()-1)*page.getNbElem();
 		String mode = chx == 0 ? "ASC":"DESC";
-		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return computerSearch(page,size,keyWord);
-		String requete = orderSearch1+colonne+" "+mode+orderSearch2;
+		if(!att.containsKey(colonne))return computerSearch(page,keyWord);
+		String requete = orderSearch1+att.get(colonne)+" "+mode+orderSearch2;
 		if(colonne == null || colonne == "") {
-			return computerSearch(page,size,keyWord);
+			return computerSearch(page,keyWord);
 		}
 		
 		try (
@@ -338,7 +338,7 @@ public class ComputerDao extends Dao<Computer>{
 			
 			preparedStatement.setString(1, "%" + keyWord + "%");
 			preparedStatement.setInt(2, offset);
-			preparedStatement.setInt(3, size);
+			preparedStatement.setInt(3, page.getNbElem());
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<Computer> computerList = new ArrayList<Computer>();
 			while(resultSet.next()) {

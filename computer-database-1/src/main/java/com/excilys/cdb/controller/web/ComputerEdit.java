@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.cdb.dto.CompanyDto;
 import com.excilys.cdb.dto.ComputerDto;
 import com.excilys.cdb.mapper.ComputerMapper;
+import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
@@ -36,9 +38,9 @@ public class ComputerEdit extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-			List<CompanyDto> company;
+			List<Company> company;
 			final int id = Integer.valueOf(request.getParameter("id"));
-			ComputerDto computer = ComputerService.getInstance().read(Integer.toString(id));
+			Computer computer = ComputerService.getInstance().read(id);
 			
 			
 
@@ -47,7 +49,7 @@ public class ComputerEdit extends HttpServlet {
 				company = CompanyService.getInstance().listAllElements();
 				setListCompany(request,company);
 				setIdComputer(request,id);
-				setComputer(request,computer);
+				setComputer(request,ComputerMapper.getInstance().modelToDto(computer));
 				
 			} catch (Exception e) {
 				
@@ -68,7 +70,7 @@ public class ComputerEdit extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private void setListCompany(HttpServletRequest request, List<CompanyDto> company) {
+	private void setListCompany(HttpServletRequest request, List<Company> company) {
 		request.setAttribute("company", company);
 	}
 	
@@ -84,7 +86,7 @@ public class ComputerEdit extends HttpServlet {
 		System.out.println(disc.toString());
 		ComputerDto elem = new ComputerDto(request.getParameter("id"),request.getParameter("name"), intro, disc, comp);
 		System.out.println(elem.toString());
-		ComputerService.getInstance().update(elem);
+		ComputerService.getInstance().update(ComputerMapper.getInstance().dtoToModel(elem));
 		
 	
 }

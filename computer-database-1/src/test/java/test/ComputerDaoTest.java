@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.dao.CompanyDao;
 import com.excilys.cdb.dao.ComputerDao;
 import com.excilys.cdb.exception.InvalidIdException;
@@ -64,10 +65,11 @@ class ComputerDaoTest {
 	@Test
 	void testUpdateComputer() throws Exception {
 		ComputerDao dao = ComputerDao.getInstance();
-		Computer tmp = new Computer(1000,"Création test",null,null,1);
-		Computer res = new Computer(1000,"Création test",null,null,2);
+		Computer tmp = new Computer(-1,"Création test",null,null,1);
+		tmp = dao.create(tmp);
 		tmp.setManufacturer(2);
-		dao.create(tmp);
+		Computer res = tmp;
+		res.setManufacturer(2);
 		Computer compare = dao.update(tmp);
 		dao.delete(tmp);
 		assertEquals(res,compare);
@@ -81,7 +83,8 @@ class ComputerDaoTest {
 		dao.create(tmp1);
 		dao.create(tmp2);
 		List<Computer> res = Arrays.asList(tmp1,tmp2);
-		List<Computer> compare = dao.computerSearch(1,10,"Création test");
+		Page page = new Page(1,10);
+		List<Computer> compare = dao.computerSearch(page,"Création test");
 		dao.delete(tmp1);
 		dao.delete(tmp2);
 		assertEquals(res.get(0),compare.get(0));
@@ -95,8 +98,9 @@ class ComputerDaoTest {
 		Computer tmp2 = new Computer(1001,"Création test2",null,null,1);
 		dao.create(tmp1);
 		dao.create(tmp2);
+		Page page = new Page(1,10);
 		List<Computer> res = Arrays.asList(tmp1,tmp2);
-		List<Computer> compare = dao.computerSearch(1,10,"ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
+		List<Computer> compare = dao.computerSearch(page,"ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
 		dao.delete(tmp1);
 		dao.delete(tmp2);
 		assertTrue(compare.isEmpty());
@@ -110,12 +114,13 @@ class ComputerDaoTest {
 		Computer tmp2 = new Computer(1001,"Création test2",null,null,1);
 		dao.create(tmp1);
 		dao.create(tmp2);
+		Page page = new Page(1,10);
 		List<Computer> res = Arrays.asList(tmp1,tmp2);
-		List<Computer> compare = dao.computerOrderSearch(1,10,"name",1,"Création test");
+		List<Computer> compare = dao.computerOrderSearch(page,"name",1,"Création test");
 		dao.delete(tmp1);
 		dao.delete(tmp2);
-		assertEquals(res.get(0),compare.get(0));
-		assertEquals(res.get(1),compare.get(1));
+		assertEquals(res.get(0),compare.get(1));
+		assertEquals(res.get(1),compare.get(0));
 	}
 	
 

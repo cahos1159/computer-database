@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
 
@@ -160,23 +161,23 @@ public class CompanyDao extends Dao<Company>{
 	}
 	
 	@Override
-	public List<Company> list(int page, int size) throws Exception {
-		if (size <= 0) {
-			logger.error("",new InvalidPageSizeException(size));
-			throw new InvalidPageSizeException(size);
+	public List<Company> list(Page page) throws Exception {
+		if (page.getNbElem() <= 0) {
+			logger.error("",new InvalidPageSizeException(page.getNbElem()));
+			throw new InvalidPageSizeException(page.getNbElem());
 		}
-		if (page <= 0) {
-			logger.error("",new InvalidPageValueException(page));
-			throw new InvalidPageValueException(page);
+		if (page.getNumero() <= 0) {
+			logger.error("",new InvalidPageValueException(page.getNumero()));
+			throw new InvalidPageValueException(page.getNumero());
 		}
-		int offset = (page-1)*size;
+		int offset = (page.getNumero()-1)*page.getNbElem();
 		
 		try (
 			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_LIST);
 		) {
 			preparedStatement.setInt(1, offset);
-			preparedStatement.setInt(2, size);
+			preparedStatement.setInt(2, page.getNbElem());
 			
 			ResultSet r = preparedStatement.executeQuery();
 			List<Company> lst = new ArrayList<Company>();

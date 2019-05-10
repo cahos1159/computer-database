@@ -3,7 +3,7 @@ package com.excilys.cdb.dao;
 import java.util.List;
 
 import com.excilys.cdb.DataBase.DataBaseAccess;
-
+import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Model;
 
@@ -41,6 +41,6 @@ public abstract class Dao<T extends Model> {
 	public abstract T deleteById(int i) throws Exception;
 	public abstract T read(int id) throws RuntimeException;
 	public abstract List<T> listAll() throws Exception;
-	public abstract List<T> list(int page, int size) throws Exception;
+	public abstract List<T> list(Page page) throws Exception;
 	
 }

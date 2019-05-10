@@ -3,42 +3,40 @@ package com.excilys.cdb.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.dao.*;
 import com.excilys.cdb.dto.*;
 import com.excilys.cdb.mapper.*;
 import com.excilys.cdb.model.Computer;
 
-public class ComputerService extends Service<ComputerDto, Computer> {
+public class ComputerService extends Service<Computer> {
 	private static ComputerService instance = new ComputerService();
 
 	private ComputerService() {
-		super(ComputerMapper.getInstance(), ComputerDao.getInstance());
+		super(ComputerDao.getInstance());
 	}
 
 	public static ComputerService getInstance() {
 		return instance;
 	}
 
-	public List<ComputerDto> computerSearch(int page, int size ,String keyWord) throws Exception {
+	public List<Computer> computerSearch(Page page ,String keyWord) throws Exception {
 
-		List<ComputerDto> res = ((ComputerDao) this.dao).computerSearch(page,size,keyWord).stream().map(s -> mapper.modelToDto(s))
-				.collect(Collectors.toList());
+		List<Computer> res = ((ComputerDao) this.dao).computerSearch(page,keyWord);
 
 		return res;
 	}
 
-	public List<ComputerDto> computerOrder(int page, int size ,String colonne,int mode) throws Exception {
+	public List<Computer> computerOrder(Page page ,String colonne,int mode) throws Exception {
 
-		List<ComputerDto> res = ((ComputerDao) this.dao).computerOrder(page,size,colonne,mode).stream().map(s -> mapper.modelToDto(s))
-				.collect(Collectors.toList());
+		List<Computer> res = ((ComputerDao) this.dao).computerOrder(page,colonne,mode);
 
 		return res;
 	}
 	
-	public List<ComputerDto> computerOrderSearch(int page, int size ,String colonne,int mode,String keyWord ) throws Exception {
+	public List<Computer> computerOrderSearch(Page page ,String colonne,int mode,String keyWord ) throws Exception {
 
-		List<ComputerDto> res = ((ComputerDao) this.dao).computerOrderSearch(page,size,colonne,mode,keyWord).stream().map(s -> mapper.modelToDto(s))
-				.collect(Collectors.toList());
+		List<Computer> res = ((ComputerDao) this.dao).computerOrderSearch(page,colonne,mode,keyWord);
 
 		return res;
 	}

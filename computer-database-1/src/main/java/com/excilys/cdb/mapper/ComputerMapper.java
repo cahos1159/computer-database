@@ -53,7 +53,7 @@ public class ComputerMapper extends Mapper<ComputerDto, Computer>{
 				modelObject.getName(),
 				(modelObject.getDateIntro() == null) ? "_" : modelObject.getDateIntro().toString(),
 				(modelObject.getDateDisc() == null) ? "_" : modelObject.getDateDisc().toString(),
-				(modelObject.getManufacturer() <= 0) ? new CompanyDto("0","") : CompanyService.getInstance().read(Integer.toString(modelObject.getManufacturer())))
+				(modelObject.getManufacturer() <= 0) ? new CompanyDto("0","") : CompanyMapper.getInstance().modelToDto(CompanyService.getInstance().read(modelObject.getManufacturer())))
 			;
 		}
 	}

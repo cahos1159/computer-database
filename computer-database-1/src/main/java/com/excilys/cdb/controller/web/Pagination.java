@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.cdb.dao.ComputerDao;
 import com.excilys.cdb.dto.ComputerDto;
+import com.excilys.cdb.model.Computer;
 
 public class Pagination {
 	
@@ -15,21 +16,21 @@ public class Pagination {
 		return instance;
 	}
 	
-	public List<ComputerDto> MiseEnPage(List<ComputerDto> elem, int pageSize, int numeroPage) throws Exception {
+	public List<Computer> MiseEnPage(List<Computer> elem,Page page) throws Exception {
 		int size = elem.size();
-		System.out.println(size + "<>" + pageSize);
+		System.out.println(size + "<>" + page.getNbElem());
 		if (size == 0)
 			return null;
 		if (size == 1) {
 			return elem ;
 		}
-		if (size <= pageSize)
+		if (size <= page.getNbElem())
 			return elem.subList(0, size - 1);
-		int nbPage = (size % pageSize == 0) ? Integer.valueOf(size / pageSize) : Integer.valueOf(size / pageSize) + 1;
-		if (numeroPage == nbPage) {
-			return elem.subList((numeroPage - 1) * pageSize, size - 1);
+		int nbPage = (size % page.getNbElem() == 0) ? Integer.valueOf(size / page.getNbElem()) : Integer.valueOf(size / page.getNbElem()) + 1;
+		if (page.getNumero() == nbPage) {
+			return elem.subList((page.getNumero() - 1) * page.getNbElem(), size - 1);
 		} else
-			return elem.subList((numeroPage - 1) * pageSize, (numeroPage * pageSize) - 1);
+			return elem.subList((page.getNumero() - 1) * page.getNbElem(), (page.getNumero() * page.getNbElem()) - 1);
 
 	}
 	

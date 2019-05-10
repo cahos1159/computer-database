@@ -3,6 +3,7 @@ package com.excilys.cdb.service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.dao.Dao;
 import com.excilys.cdb.dto.Dto;
 import com.excilys.cdb.exception.InvalidIntegerException;
@@ -10,40 +11,38 @@ import com.excilys.cdb.mapper.Mapper;
 import com.excilys.cdb.model.Model;
 
 
-public abstract class Service<T extends Dto, U extends Model> {
-	protected Mapper<T, U> mapper;
+public abstract class Service<U extends Model> {
 	protected Dao<U> dao;
 	
-	protected Service(Mapper<T, U> map, Dao<U> dao) {
-		this.mapper = map;
+	protected Service( Dao<U> dao) {
 		this.dao = dao;
 	}
 	
-	public T create(T dtoObject) throws Exception {
-		return this.mapper.modelToDto(this.dao.create(this.mapper.dtoToModel(dtoObject)));
+	public U create(U modelObject) throws Exception {
+		return this.dao.create(modelObject);
 	};
 	
-	public T update(T dtoObject) throws Exception {
-		return this.mapper.modelToDto(this.dao.update(this.mapper.dtoToModel(dtoObject)));
+	public U update(U modelObject) throws Exception {
+		return this.dao.update(modelObject);
 	};
 	
-	public T delete(T dtoObject) throws Exception {
-		return this.mapper.modelToDto(this.dao.delete(this.mapper.dtoToModel(dtoObject)));
+	public U delete(U modelObject) throws Exception {
+		return this.dao.delete(modelObject);
 	};
 	
-	public T read(String id) throws RuntimeException {
-		return this.mapper.modelToDto(this.dao.read(this.mapper.idToInt(id)));
+	public U read(int id) throws RuntimeException {
+		return this.dao.read(id);
 	};
 	
-	public List<T> listAllElements() throws Exception {
-		return (List<T>) this.dao.listAll().stream().map(s -> mapper.modelToDto(s)).collect(Collectors.toList());
+	public List<U> listAllElements() throws Exception {
+		return (List<U>) this.dao.listAll();
 	};
 	
-	public List<T> list(String pageStr, String sizeStr) throws Exception {
-		int page,size;
+	public List<U> list(String pageStr, String sizeStr) throws Exception {
+		int numero,size;
 		
 		try {
-			page = Integer.parseInt(pageStr);
+			numero = Integer.parseInt(pageStr);
 		} catch (IllegalArgumentException e) {
 			throw new InvalidIntegerException(pageStr);
 		}
@@ -52,7 +51,8 @@ public abstract class Service<T extends Dto, U extends Model> {
 		} catch (IllegalArgumentException e) {
 			throw new InvalidIntegerException(sizeStr);
 		}
+		Page page = new Page(numero,size);
 		
-		return (List<T>) this.dao.list(page,size).stream().map(s -> mapper.modelToDto(s)).collect(Collectors.toList());
+		return (List<U>) this.dao.list(page);
 	}
 }
