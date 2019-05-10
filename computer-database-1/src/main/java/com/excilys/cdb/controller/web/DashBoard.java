@@ -87,11 +87,14 @@ public class DashBoard extends HttpServlet {
 	}
 	
 	private void setListComputer(HttpServletRequest request, List<Computer> ordi) {
+		if(ordi==null)request.setAttribute("ordi", null);
+		else {
 		List<ComputerDto> res = new ArrayList<ComputerDto>();
 		for(Iterator<Computer> i=ordi.iterator();i.hasNext();) {
 			res.add(ComputerMapper.getInstance().modelToDto(i.next()));
 		}
 		request.setAttribute("ordi", res);
+		}
 	}
 	
 	private void setNumberOfComputer(HttpServletRequest request, int nbComputer) {
