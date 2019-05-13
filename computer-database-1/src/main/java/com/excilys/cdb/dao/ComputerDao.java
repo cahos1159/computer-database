@@ -5,13 +5,14 @@ import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
 
-// TODO: Throw les exceptions jusqu'au controller
 
+@Repository
 public class ComputerDao extends Dao<Computer>{
 	private final String SQL_SELECT_UPDATE_COMPANY = "UPDATE computer SET company_id=? WHERE id=?;";
 	private static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
@@ -46,8 +47,9 @@ public class ComputerDao extends Dao<Computer>{
 	public static ComputerDao getInstance() {
 		return instance;
 	}
-
+	
 	@Override
+	
 	public Computer create(Computer obj) throws Exception {
 		int nbRow = 0;
 		
@@ -288,7 +290,7 @@ public class ComputerDao extends Dao<Computer>{
 		String mode = chx == 0 ? "ASC":"DESC";
 		
 		
-		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return listAll();
+		if(!att.containsKey(colonne)) return listAll();
 		String requete = order1+colonne+" "+mode+order2;
 		if(colonne == null || colonne == "") {
 			return listAll();
@@ -338,7 +340,7 @@ public class ComputerDao extends Dao<Computer>{
 			
 			preparedStatement.setString(1, "%" + keyWord + "%");
 			preparedStatement.setInt(2, offset);
-			preparedStatement.setInt(3, page.getNbElem());
+			preparedStatement.setInt(3, offset+page.getNbElem());
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<Computer> computerList = new ArrayList<Computer>();
 			while(resultSet.next()) {

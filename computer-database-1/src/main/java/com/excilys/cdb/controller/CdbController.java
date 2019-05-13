@@ -13,11 +13,11 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Model;
 import com.excilys.cdb.service.*;
 
-// TODO: Sortir les display (passer les DTO)
+
 
 public class CdbController {
 	private String[] splitStr;
-	private final String dateFormat = "yyyy-MM-dd/HH:mm:ss";
+	private static final String dateFormat = "yyyy-MM-dd/HH:mm:ss";
 	
 	private static CdbController instance = new CdbController();
 	

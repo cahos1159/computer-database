@@ -6,11 +6,12 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
-
+@Repository
 public class CompanyDao extends Dao<Company>{
 	private static CompanyDao instance = new CompanyDao();
 	private static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
