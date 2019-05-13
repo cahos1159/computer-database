@@ -42,22 +42,23 @@ public class DashBoard extends HttpServlet {
 			int mode = (request.getParameter("mode") == null ||(request.getParameter("mode") == "")) ? 0 : Integer.valueOf(request.getParameter("mode"));
 			
 			if(request.getParameter("search") == "" || request.getParameter("search") == null) {
+				System.out.println(page.getNumero());
 				
 				List<Computer> ordi = ComputerService.getInstance().computerOrder(page,request.getParameter("colonne"),mode);
 				int nbComputer = ordi == null ? 0 : ordi.size();
 				ordi = Pagination.getInstance().MiseEnPage(ordi,page);
 				setListComputer(request,ordi);
-				setPage(request,page.getNumero(),nbComputer,page.getNbElem());
+				setPage(request,page.getNumero(),ComputerService.getInstance().count(request.getParameter("search"),1),page.getNbElem());
 				setNumberOfComputer(request,ComputerService.getInstance().count(request.getParameter("search"),0));
 				
 			}
 			else {
-				
+				System.out.println(page.getNumero());
 				List<Computer> ordi = ComputerService.getInstance().computerOrderSearch(page,request.getParameter("colonne"),mode,request.getParameter("search"));
-				int nbComputer = ordi == null ? 0 : ordi.size();
+	
 				ordi = Pagination.getInstance().MiseEnPage(ordi,page);
 				setListComputer(request,ordi);
-				setPage(request,page.getNumero(),nbComputer,page.getNbElem());
+				setPage(request,page.getNumero(),ComputerService.getInstance().count(request.getParameter("search"),1),page.getNbElem());
 				setNumberOfComputer(request,ComputerService.getInstance().count(request.getParameter("search"),1));
 				
 				
@@ -121,6 +122,7 @@ public class DashBoard extends HttpServlet {
 	}
 	
 	private int getPage(HttpServletRequest request) {
+		
 		int pageActuel = Integer.valueOf((request.getParameter("page") == null) ? "1" : request.getParameter("page"));
 		return pageActuel;
 	}

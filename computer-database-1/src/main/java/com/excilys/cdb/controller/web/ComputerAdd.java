@@ -18,6 +18,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.validateur.Validateur;
 
 
 /**
@@ -80,7 +81,7 @@ public class ComputerAdd extends HttpServlet {
 			String intro = formatDate(request.getParameter("introduced"));
 			String disc = formatDate(request.getParameter("discontinued"));
 			ComputerDto elem = new ComputerDto("-10",request.getParameter("computerName"), intro, disc, comp);
-			ComputerService.getInstance().create(ComputerMapper.getInstance().dtoToModel(elem));
+			ComputerService.getInstance().create(ComputerMapper.getInstance().dtoToModel((ComputerDto) Validateur.getInstance().valide(elem)));
 			request.setAttribute("titre", elem.toString());
 			
 		
