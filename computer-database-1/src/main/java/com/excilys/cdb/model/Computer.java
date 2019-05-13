@@ -2,6 +2,8 @@ package com.excilys.cdb.model;
 
 import java.sql.*;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.cdb.exception.InvalidDateOrderException;
 
 public class Computer extends Model {

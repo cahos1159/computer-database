@@ -5,18 +5,19 @@ import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.cdb.DataBase.DataBaseAccess;
 import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
 
-
+@Scope(value="singleton")
 @Repository
 public class ComputerDao extends Dao<Computer>{
 	private final String SQL_SELECT_UPDATE_COMPANY = "UPDATE computer SET company_id=? WHERE id=?;";
 	private static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
-	private static ComputerDao instance = new ComputerDao();
 	
 	private final String order1 ="SELECT * FROM computer ORDER BY ";
 	private final String order2 =" LIMIT ?,?;";
@@ -44,9 +45,7 @@ public class ComputerDao extends Dao<Computer>{
 	}
 	
 	
-	public static ComputerDao getInstance() {
-		return instance;
-	}
+	
 	
 	@Override
 	

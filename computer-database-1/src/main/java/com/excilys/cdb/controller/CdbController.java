@@ -2,6 +2,11 @@ package com.excilys.cdb.controller;
 
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+
 import com.excilys.cdb.dto.*;
 import com.excilys.cdb.enums.CommandEnum;
 import com.excilys.cdb.enums.CreateOptionEnum;
@@ -14,19 +19,34 @@ import com.excilys.cdb.model.Model;
 import com.excilys.cdb.service.*;
 
 
-
+@Scope(value="singleton")
+@Controller
 public class CdbController {
 	private String[] splitStr;
 	private static final String dateFormat = "yyyy-MM-dd/HH:mm:ss";
 	
-	private static CdbController instance = new CdbController();
+	@Autowired
+	final ComputerMapper c_uterMap;
+	@Autowired
+	final CompanyMapper c_anyMap;
+	@Autowired
+	final CompanyService c_anyServ;
+	@Autowired
+	final ComputerService c_uterServ;
 	
-	private CdbController() {}
 	
-	public static CdbController getInstance() {
-		return instance;
+	
+	
+	
+	private CdbController(ComputerMapper c_uterMap,CompanyMapper c_anyMap,CompanyService c_anyServ,ComputerService c_uterServ)
+	{
+		this.c_anyMap = c_anyMap;
+		this.c_anyServ = c_anyServ;
+		this.c_uterMap = c_uterMap;
+		this.c_uterServ = c_uterServ; 
 	}
 	
+
 	public String treatMessage(String msg) throws Exception {
 		// Parse message based on whitespace : Any amount might be placed beside and inbetween
 		this.splitStr = msg.trim().split("\\s+");
@@ -103,7 +123,7 @@ public class CdbController {
 					throw new MissingArgumentException(sizeComputerExpected,splitStr.length);
 				} else if (splitStr[1].toLowerCase().equals("company")) {
 					CompanyDto c = new CompanyDto(splitStr[2],splitStr[3]);
-					Company ret = CompanyService.getInstance().create(CompanyMapper.getInstance().dtoToModel(c));
+					Company ret = c_anyServ.create(c_anyMap.dtoToModel(c));
 					return (ret == null) ? "No company has been created" : "Create "+ret.toString();
 				} else {
 					throw new InvalidTableException(splitStr[1]);
@@ -127,7 +147,7 @@ public class CdbController {
 			case 7:
 				if (splitStr[1].toLowerCase().equals("computer")) {
 					ComputerDto c = new ComputerDto(splitStr[2],splitStr[3],this.castDate(splitStr[4]),this.castDate(splitStr[5]),new CompanyDto((splitStr[6].contentEquals("_")) ? "0" : splitStr[6]));
-					Computer ret = ComputerService.getInstance().create(ComputerMapper.getInstance().dtoToModel(c));
+					Computer ret = c_uterServ.create(c_uterMap.dtoToModel(c));
 					return (ret == null) ? "No computer has been created" : "Create "+ret.toString();
 				} else if (splitStr[1].toLowerCase().equals("company")) {
 					throw new TooManyArgumentsException(splitStr[5]);
@@ -158,9 +178,9 @@ public class CdbController {
 			case 3:
 				// Load dto by id
 				if (splitStr[1].toLowerCase().equals("computer")) {
-					c = ComputerMapper.getInstance().modelToDto(ComputerService.getInstance().read(Integer.parseInt(splitStr[2])));
+					c = c_uterMap.modelToDto(c_uterServ.read(Integer.parseInt(splitStr[2])));
 				} else if (splitStr[1].toLowerCase().equals("company")) {
-					c = CompanyMapper.getInstance().modelToDto(CompanyService.getInstance().read(Integer.parseInt(splitStr[2])));
+					c = c_anyMap.modelToDto(c_anyServ.read(Integer.parseInt(splitStr[2])));
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
@@ -181,9 +201,9 @@ public class CdbController {
 			case 3:
 				Dto ret;
 				if (splitStr[1].toLowerCase().equals("computer")) {
-					ret = ComputerMapper.getInstance().modelToDto(ComputerService.getInstance().delete(ComputerMapper.getInstance().dtoToModel(new ComputerDto(splitStr[2]))));
+					ret = c_uterMap.modelToDto(c_uterServ.delete(c_uterMap.dtoToModel(new ComputerDto(splitStr[2]))));
 				} else if (splitStr[1].toLowerCase().equals("company")) {
-					ret = CompanyMapper.getInstance().modelToDto(CompanyService.getInstance().delete(CompanyMapper.getInstance().dtoToModel(new CompanyDto(splitStr[2]))));
+					ret = c_anyMap.modelToDto(c_anyServ.delete(c_anyMap.dtoToModel(new CompanyDto(splitStr[2]))));
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
@@ -233,11 +253,11 @@ public class CdbController {
 				for (String s : Arrays.copyOfRange(splitStr, 3, splitStr.length)) {
 					this.updateTreatOption(c,s);
 				}
-				ret = ComputerMapper.getInstance().modelToDto(ComputerService.getInstance().update(ComputerMapper.getInstance().dtoToModel(c)));
+				ret = c_uterMap.modelToDto(c_uterServ.update(c_uterMap.dtoToModel(c)));
 			} else if (splitStr[1].toLowerCase().equals("company")) {
 				if(splitStr.length == 4) {
 					CompanyDto c = new CompanyDto(splitStr[2],splitStr[3]);
-					ret = CompanyMapper.getInstance().modelToDto(CompanyService.getInstance().update(CompanyMapper.getInstance().dtoToModel(c)));
+					ret = c_anyMap.modelToDto(c_anyServ.update(c_anyMap.dtoToModel(c)));
 				} else {
 					throw new TooManyArgumentsException(splitStr[4]);
 				}
@@ -255,9 +275,9 @@ public class CdbController {
 			case 2:
 				List<? extends Model> MList;
 				if (splitStr[1].toLowerCase().equals("computer")) {
-					MList = ComputerService.getInstance().listAllElements();
+					MList = c_uterServ.listAllElements();
 				} else if (splitStr[1].toLowerCase().equals("company")) {
-					MList = (List<? extends Model>) CompanyService.getInstance().listAllElements();
+					MList = (List<? extends Model>) c_anyServ.listAllElements();
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
@@ -283,9 +303,9 @@ public class CdbController {
 			case 4:
 				List<? extends Model> MList;
 				if (splitStr[1].toLowerCase().equals("computer")) {
-					MList = ComputerService.getInstance().list(splitStr[2], splitStr[3]);
+					MList = c_uterServ.list(splitStr[2], splitStr[3]);
 				} else if (splitStr[1].toLowerCase().equals("company")) {
-					MList = CompanyService.getInstance().list(splitStr[2], splitStr[3]);
+					MList = c_anyServ.list(splitStr[2], splitStr[3]);
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}

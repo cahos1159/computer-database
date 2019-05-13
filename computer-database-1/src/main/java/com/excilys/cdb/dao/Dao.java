@@ -2,12 +2,17 @@ package com.excilys.cdb.dao;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.DataBase.DataBaseAccess;
 import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Model;
+
+
+@Scope(value="singleton")
 @Repository
 public abstract class Dao<T extends Model> {
 

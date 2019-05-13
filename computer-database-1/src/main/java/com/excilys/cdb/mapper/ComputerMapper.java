@@ -2,20 +2,29 @@ package com.excilys.cdb.mapper;
 
 import java.sql.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.cdb.dto.CompanyDto;
 import com.excilys.cdb.dto.ComputerDto;
 import com.excilys.cdb.exception.InvalidDateValueException;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 
+@Scope(value="singleton")
+@Component
 public class ComputerMapper extends Mapper<ComputerDto, Computer>{
-	private static ComputerMapper instance = new ComputerMapper();	
 	
-	private ComputerMapper() {}	
+	@Autowired
+	final private CompanyMapper compMap;
+	@Autowired
+	final private CompanyService compServ;
 	
-	public static ComputerMapper getInstance() {
-		return instance;
-	}
+	private ComputerMapper(CompanyMapper cMap,CompanyService cServ) {
+		this.compMap = cMap;
+		this.compServ = cServ;
+	}	
 	
 	@Override
 	public Computer dtoToModel(ComputerDto dtoObject) throws RuntimeException {
@@ -53,7 +62,7 @@ public class ComputerMapper extends Mapper<ComputerDto, Computer>{
 				modelObject.getName(),
 				(modelObject.getDateIntro() == null) ? "_" : modelObject.getDateIntro().toString(),
 				(modelObject.getDateDisc() == null) ? "_" : modelObject.getDateDisc().toString(),
-				(modelObject.getManufacturer() <= 0) ? new CompanyDto("0","") : CompanyMapper.getInstance().modelToDto(CompanyService.getInstance().read(modelObject.getManufacturer())))
+				(modelObject.getManufacturer() <= 0) ? new CompanyDto("0","") : compMap.modelToDto(compServ.read(modelObject.getManufacturer())))
 			;
 		}
 	}

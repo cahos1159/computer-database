@@ -3,6 +3,9 @@ package com.excilys.cdb.service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.dao.Dao;
 import com.excilys.cdb.dto.Dto;
@@ -10,7 +13,8 @@ import com.excilys.cdb.exception.InvalidIntegerException;
 import com.excilys.cdb.mapper.Mapper;
 import com.excilys.cdb.model.Model;
 
-
+@Scope(value="singleton")
+@Component
 public abstract class Service<U extends Model> {
 	protected Dao<U> dao;
 	

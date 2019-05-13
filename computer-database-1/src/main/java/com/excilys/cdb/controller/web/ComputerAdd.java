@@ -21,9 +21,7 @@ import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validateur.Validateur;
 
 
-/**
- * Servlet implementation class ComputerAdd
- */
+
 
 public class ComputerAdd extends HttpServlet {
 	private static final long serialVersionUID = 1L;  

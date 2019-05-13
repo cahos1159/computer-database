@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.dao.ComputerDao;
 import com.excilys.cdb.dto.CompanyDto;
@@ -13,16 +15,14 @@ import com.excilys.cdb.dto.Dto;
 import com.excilys.cdb.exception.InvalidComputerOptionException;
 import com.excilys.cdb.exception.InvalidDateValueException;
 
+@Scope(value="singleton")
+@Component
 public class Validateur {
 	private static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
 	
-	private static Validateur instance = new Validateur();	
 		
 		private Validateur() {}	
-		
-		public static Validateur getInstance() {
-			return instance;
-		}
+
 		
 	public Dto valide(Dto elem) throws InvalidComputerOptionException {
 		boolean verif;
