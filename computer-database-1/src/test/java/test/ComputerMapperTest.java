@@ -116,7 +116,7 @@ class ComputerMapperTest {
 	
 	
 	@Test
-	void testNullModelToDtoComputer() {
+	void testNullModelToDtoComputer() throws Exception {
 		ComputerMapper mappTest = ctx.getBean(ComputerMapper.class);
 		CompanyDto cmp = new CompanyDto("2","Thinking Machines");
 		Computer objTest = new Computer(3,"CM-200",null,null,2);
@@ -124,7 +124,7 @@ class ComputerMapperTest {
 		ComputerDto compare = new ComputerDto("3","CM-200","_","_",cmp);
 		assertEquals(compare,res);
 	}
-	void testTimestampModelToDtoComputer() {
+	void testTimestampModelToDtoComputer() throws Exception {
 		ComputerMapper mappTest = ctx.getBean(ComputerMapper.class);
 		CompanyDto cmp = new CompanyDto("2");
 		int myYear = 1990;

@@ -9,21 +9,20 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.controller.web.Page;
-import com.excilys.cdb.database.DataBaseAccess;
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
 
 @Scope(value="singleton")
 @Repository
 public class ComputerDao extends Dao<Computer>{
-	private final String SQL_SELECT_UPDATE_COMPANY = "UPDATE computer SET company_id=? WHERE id=?;";
-	private static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
+	private final static  String SQL_SELECT_UPDATE_COMPANY = "UPDATE computer SET company_id=? WHERE id=?;";
+	private final static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
 	
-	private final String order1 ="SELECT * FROM computer ORDER BY ";
-	private final String order2 =" LIMIT ?,?;";
-	private final String orderSearch1 ="SELECT * FROM computer WHERE name LIKE ? ORDER BY ";
-	private final String orderSearch2 =" LIMIT ?,?;";
-	
+	private final static String order1 ="SELECT * FROM computer ORDER BY ";
+	private final static String order2 =" LIMIT ?,?;";
+	private final static String orderSearch1 ="SELECT * FROM computer WHERE name LIKE ? ORDER BY ";
+	private final static String orderSearch2 =" LIMIT ?,?;";
+	private final static String intro = "introduced";
 	private ComputerDao() {
 		super(
 			"INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?);",
@@ -166,7 +165,7 @@ public class ComputerDao extends Dao<Computer>{
 	}
 
 	@Override
-	public Computer read(int id) throws RuntimeException {
+	public Computer read(int id) throws RuntimeException, SQLException {
 		if(id <= 0) {
 			 logger.error("",new InvalidIdException(id));
 			 throw new InvalidIdException(id);
@@ -178,7 +177,7 @@ public class ComputerDao extends Dao<Computer>{
 		) {
 			preparedStatement.setInt(1, id);
 			
-			ResultSet resultSet = preparedStatement.executeQuery();
+			try(ResultSet resultSet = preparedStatement.executeQuery();){
 			if(resultSet.first()) {
 				return new Computer(id,resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id"));
 			} else {
@@ -187,6 +186,7 @@ public class ComputerDao extends Dao<Computer>{
 		} catch (SQLException e) {
 			 logger.error("",new FailedSQLQueryException(this.SQL_SELECT));
 			 throw new FailedSQLQueryException(this.SQL_SELECT);
+		}
 		}
 	}
 	
@@ -197,7 +197,7 @@ public class ComputerDao extends Dao<Computer>{
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_LISTALL);
 		) {
 			
-			ResultSet resultSet = preparedStatement.executeQuery();
+			try(ResultSet resultSet = preparedStatement.executeQuery();){
 			List<Computer> computerList = new ArrayList<Computer>();
 			while(resultSet.next()) {
 				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
@@ -207,6 +207,8 @@ public class ComputerDao extends Dao<Computer>{
 		} catch (SQLException e) {
 			 logger.error("",new FailedSQLQueryException(this.SQL_LISTALL));
 			 throw new FailedSQLQueryException(this.SQL_LISTALL);
+			 
+		}
 		}
 	}
 	
@@ -231,7 +233,7 @@ public class ComputerDao extends Dao<Computer>{
 			preparedStatement.setInt(1, offset);
 			preparedStatement.setInt(2, page.getNbElem());
 			
-			ResultSet resultSet = preparedStatement.executeQuery();
+			try(ResultSet resultSet = preparedStatement.executeQuery();){
 			List<Computer> computerList = new ArrayList<Computer>();
 			while(resultSet.next()) {
 				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
@@ -241,6 +243,7 @@ public class ComputerDao extends Dao<Computer>{
 		} catch (SQLException e) {
 			logger.error("",new FailedSQLQueryException(this.SQL_LIST));
 			throw new FailedSQLQueryException(this.SQL_LIST);
+		}
 		}
 	}
 	
@@ -264,7 +267,7 @@ public class ComputerDao extends Dao<Computer>{
 			preparedStatement.setInt(2, offset);
 			preparedStatement.setInt(3, page.getNbElem());
 			
-			ResultSet resultSet = preparedStatement.executeQuery();
+			try(ResultSet resultSet = preparedStatement.executeQuery();){
 			List<Computer> computerList = new ArrayList<Computer>();
 			while(resultSet.next()) {
 				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
@@ -273,6 +276,7 @@ public class ComputerDao extends Dao<Computer>{
 		} catch (SQLException e) {
 			logger.error("",new FailedSQLQueryException(this.SQL_SEARCH));
 			throw new FailedSQLQueryException(this.SQL_SEARCH);
+		}
 		}
 	}
 	
@@ -290,8 +294,8 @@ public class ComputerDao extends Dao<Computer>{
 		
 		
 		if(!att.containsKey(colonne)) return listAll();
-		String requete = order1+colonne+" "+mode+order2;
-		if(colonne == null || colonne == "") {
+		String requete = order1+att.get(colonne)+" "+mode+order2;
+		if(colonne == null ||  "".equals(colonne)) {
 			return listAll();
 		}
 		
@@ -301,7 +305,7 @@ public class ComputerDao extends Dao<Computer>{
 		) {
 			preparedStatement.setInt(1, offset);
 			preparedStatement.setInt(2, page.getNbElem());
-			ResultSet resultSet = preparedStatement.executeQuery();
+			try(ResultSet resultSet = preparedStatement.executeQuery();){
 			List<Computer> computerList = new ArrayList<Computer>();
 			while(resultSet.next()) {
 				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
@@ -311,6 +315,7 @@ public class ComputerDao extends Dao<Computer>{
 		} catch (SQLException e) {
 			logger.error("",e);
 			throw new FailedSQLQueryException(requete);
+		}
 		}
 	}
 	
@@ -328,7 +333,7 @@ public class ComputerDao extends Dao<Computer>{
 		String mode = chx == 0 ? "ASC":"DESC";
 		if(!att.containsKey(colonne))return computerSearch(page,keyWord);
 		String requete = orderSearch1+att.get(colonne)+" "+mode+orderSearch2;
-		if(colonne == null || colonne == "") {
+		if(colonne == null || "".equals(colonne)) {
 			return computerSearch(page,keyWord);
 		}
 		
@@ -336,11 +341,11 @@ public class ComputerDao extends Dao<Computer>{
 			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(requete);
 		) {
-			
-			preparedStatement.setString(1, "%" + keyWord + "%");
+			keyWord = "%" + keyWord + "%";
+			preparedStatement.setString(1, keyWord);
 			preparedStatement.setInt(2, offset);
 			preparedStatement.setInt(3, offset+page.getNbElem());
-			ResultSet resultSet = preparedStatement.executeQuery();
+			try(ResultSet resultSet = preparedStatement.executeQuery();){
 			List<Computer> computerList = new ArrayList<Computer>();
 			while(resultSet.next()) {
 				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
@@ -349,6 +354,7 @@ public class ComputerDao extends Dao<Computer>{
 		} catch (SQLException e) {
 			logger.error("",new FailedSQLQueryException(requete));
 			throw new FailedSQLQueryException(requete);
+		}
 		}
 	}
 	
@@ -369,11 +375,11 @@ public class ComputerDao extends Dao<Computer>{
 				PreparedStatement preparedStatement = connection.prepareStatement(stat);
 			) {
 				if(mode==1) preparedStatement.setString(1, "%" + keyWord + "%");
-				ResultSet resultSet = preparedStatement.executeQuery();
+				try(ResultSet resultSet = preparedStatement.executeQuery();){
 			
 				resultSet.next();
 				res = resultSet.getInt(1);
-				
+				}
 			} catch (SQLException e) {
 				logger.error("",new FailedSQLQueryException(stat));
 				throw new FailedSQLQueryException(stat);

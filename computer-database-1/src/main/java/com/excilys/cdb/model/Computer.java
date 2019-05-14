@@ -1,8 +1,6 @@
 package com.excilys.cdb.model;
 
-import java.sql.*;
-
-import org.springframework.stereotype.Component;
+import java.sql.Timestamp;
 
 import com.excilys.cdb.exception.InvalidDateOrderException;
 

@@ -10,18 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.excilys.cdb.dto.CompanyDto;
 import com.excilys.cdb.dto.ComputerDto;
-import com.excilys.cdb.mapper.CompanyMapper;
-import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyService;
-import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.validateur.Validateur;
 
 
 
@@ -33,7 +26,7 @@ public class ComputerAdd extends AbstractServlet {
      * @throws ServletException 
      * @see HttpServlet#HttpServlet()
      */
-	
+	private static Logger logger = LoggerFactory.getLogger(ComputerAdd.class);
 	
 
 	
@@ -54,11 +47,15 @@ public class ComputerAdd extends AbstractServlet {
 			
 		} catch (Exception e) {
 			
-			e.printStackTrace();
+			logger.error("", e);
 		}
 		
-		
+		try {
 		this.getServletContext().getRequestDispatcher( "/WEB-INF/addComputer.jsp" ).forward( request, response );
+		}
+		catch(Exception e){
+			logger.error("", e);
+		}
 	}
 
 	/**
@@ -67,11 +64,12 @@ public class ComputerAdd extends AbstractServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			createOrdi(request);
+			doGet(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			logger.error("", e);
 		}
-		doGet(request, response);
+		
 	}
 	
 	private void setListCompany(HttpServletRequest request, List<Company> company) {
@@ -96,8 +94,8 @@ public class ComputerAdd extends AbstractServlet {
 	
 	private String formatDate(String date) {
 		if(date == null) return null;
-		date.replace("/", "-");
-		String res = (date.length() <= 10 ) ? date.concat(" 12:00:00") : date;
+		date = date.replace("/", "-");
+	 	String res = (date.length() <= 10 ) ? date.concat(" 12:00:00") : date;
 		return res;
 	}
 }

@@ -2,8 +2,6 @@ package com.excilys.cdb.controller.web;
 
 import java.util.List;
 
-import com.excilys.cdb.dao.ComputerDao;
-import com.excilys.cdb.dto.ComputerDto;
 import com.excilys.cdb.model.Computer;
 
 public class Pagination {

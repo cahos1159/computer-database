@@ -2,9 +2,7 @@ package com.excilys.cdb.controller;
 
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import com.excilys.cdb.dto.*;

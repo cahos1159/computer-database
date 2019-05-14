@@ -3,12 +3,9 @@ package com.excilys.cdb.controller.web;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-
 import com.excilys.cdb.config.spring.AppConfig;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
@@ -19,6 +16,7 @@ import com.excilys.cdb.validateur.Validateur;
 public abstract class AbstractServlet extends HttpServlet {
 
 
+	
 	static protected ComputerMapper c_uterMap;
 
 	static protected CompanyMapper c_anyMap;

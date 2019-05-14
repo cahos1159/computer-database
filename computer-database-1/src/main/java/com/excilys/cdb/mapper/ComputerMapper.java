@@ -1,8 +1,7 @@
 package com.excilys.cdb.mapper;
 
-import java.sql.*;
+import java.sql.Timestamp;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -51,9 +50,9 @@ public class ComputerMapper extends Mapper<ComputerDto, Computer>{
 			throw new InvalidDateValueException(s);
 		}
 	}
-
+ 
 	@Override
-	public ComputerDto modelToDto(Computer modelObject) throws RuntimeException {
+	public ComputerDto modelToDto(Computer modelObject) throws Exception {
 		if (modelObject == null) {
 			return null;
 		} else {

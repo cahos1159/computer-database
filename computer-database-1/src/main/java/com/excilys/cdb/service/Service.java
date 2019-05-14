@@ -1,16 +1,13 @@
 package com.excilys.cdb.service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.dao.Dao;
-import com.excilys.cdb.dto.Dto;
 import com.excilys.cdb.exception.InvalidIntegerException;
-import com.excilys.cdb.mapper.Mapper;
 import com.excilys.cdb.model.Model;
 
 @Scope(value="singleton")
@@ -34,7 +31,7 @@ public abstract class Service<U extends Model> {
 		return this.dao.delete(modelObject);
 	};
 	
-	public U read(int id) throws RuntimeException {
+	public U read(int id) throws Exception {
 		return this.dao.read(id);
 	};
 	

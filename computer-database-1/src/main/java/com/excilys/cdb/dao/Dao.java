@@ -2,13 +2,11 @@ package com.excilys.cdb.dao;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.database.DataBaseAccess;
-import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Model;
 
 
@@ -46,7 +44,7 @@ public abstract class Dao<T extends Model> {
 	public abstract T update(T obj) throws Exception;
 	public abstract T delete(T obj) throws Exception;
 	public abstract T deleteById(int i) throws Exception;
-	public abstract T read(int id) throws RuntimeException;
+	public abstract T read(int id) throws RuntimeException, Exception;
 	public abstract List<T> listAll() throws Exception;
 	public abstract List<T> list(Page page) throws Exception;
 	

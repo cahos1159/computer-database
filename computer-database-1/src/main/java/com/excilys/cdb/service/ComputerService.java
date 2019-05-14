@@ -1,15 +1,12 @@
 package com.excilys.cdb.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.controller.web.Page;
-import com.excilys.cdb.dao.*;
-import com.excilys.cdb.dto.*;
-import com.excilys.cdb.mapper.*;
+import com.excilys.cdb.dao.ComputerDao;
 import com.excilys.cdb.model.Computer;
 
 @Scope(value="singleton")

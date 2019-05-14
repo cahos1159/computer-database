@@ -1,7 +1,9 @@
 package com.excilys.cdb.dao;
 
-import java.sql.*;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +13,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.controller.web.Page;
-import com.excilys.cdb.database.DataBaseAccess;
-import com.excilys.cdb.exception.*;
-import com.excilys.cdb.model.*;
+import com.excilys.cdb.exception.FailedSQLQueryException;
+import com.excilys.cdb.exception.InvalidIdException;
+import com.excilys.cdb.exception.InvalidPageSizeException;
+import com.excilys.cdb.exception.InvalidPageValueException;
+import com.excilys.cdb.exception.PrimaryKeyViolationException;
+import com.excilys.cdb.model.Company;
 
 @Scope(value="singleton")
 @Repository
@@ -119,7 +124,7 @@ public class CompanyDao extends Dao<Company>{
 	}
 
 	@Override
-	public Company read(int id) throws RuntimeException {
+	public Company read(int id) throws RuntimeException, Exception {
 		if(id <= 0) {
 			logger.error("",new InvalidIdException(id));
 			throw new InvalidIdException(id);
@@ -130,8 +135,8 @@ public class CompanyDao extends Dao<Company>{
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_SELECT);
 		) {
 			preparedStatement.setInt(1, id);
+			try(ResultSet resultSet = preparedStatement.executeQuery();){
 			
-			ResultSet resultSet = preparedStatement.executeQuery();
 			if(resultSet.first()) {
 				Company company = new Company(id,resultSet.getString("name"));
 				return company;
@@ -142,6 +147,7 @@ public class CompanyDao extends Dao<Company>{
 		} catch (SQLException e) {
 			logger.error("",new FailedSQLQueryException(this.SQL_SELECT));
 			throw new FailedSQLQueryException(this.SQL_SELECT);
+			}
 		}
 	}
 	
@@ -151,7 +157,7 @@ public class CompanyDao extends Dao<Company>{
 			Connection connection = dataBase.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_LISTALL);
 		) {
-			ResultSet resultSet = preparedStatement.executeQuery();
+			try(ResultSet resultSet = preparedStatement.executeQuery();){
 			List<Company> companyList = new ArrayList<Company>();
 			while(resultSet.next()) {
 				companyList.add(new Company(resultSet.getInt("id"),resultSet.getString("name")));
@@ -161,6 +167,7 @@ public class CompanyDao extends Dao<Company>{
 		} catch (SQLException e) {
 			logger.error("",new FailedSQLQueryException(this.SQL_LISTALL));
 			throw new FailedSQLQueryException(this.SQL_LISTALL);
+			}
 		}
 	}
 	
@@ -183,7 +190,7 @@ public class CompanyDao extends Dao<Company>{
 			preparedStatement.setInt(1, offset);
 			preparedStatement.setInt(2, page.getNbElem());
 			
-			ResultSet r = preparedStatement.executeQuery();
+			try(ResultSet r = preparedStatement.executeQuery();){
 			List<Company> lst = new ArrayList<Company>();
 			while(r.next()) {
 				lst.add(new Company(r.getInt("id"),r.getString("name")));
@@ -193,8 +200,10 @@ public class CompanyDao extends Dao<Company>{
 		} catch (SQLException e) {
 			logger.error("",new FailedSQLQueryException(this.SQL_LIST));
 			throw new FailedSQLQueryException(this.SQL_LIST);
+		
 		}
-	}
 	
+	}
+	}
 
 }
