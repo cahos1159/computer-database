@@ -16,9 +16,9 @@ import com.excilys.cdb.service.CompanyService;
 @Component
 public class ComputerMapper extends Mapper<ComputerDto, Computer>{
 	
-	@Autowired
+	
 	final private CompanyMapper compMap;
-	@Autowired
+	
 	final private CompanyService compServ;
 	
 	private ComputerMapper(CompanyMapper cMap,CompanyService cServ) {

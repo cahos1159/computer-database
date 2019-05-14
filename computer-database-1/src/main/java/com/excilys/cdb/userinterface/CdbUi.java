@@ -13,7 +13,7 @@ public class CdbUi {
 	private PrintStream err;
 	private Scanner scanner;
 	private String cmd;
-	@Autowired
+
 	final CdbController cController;
 	
 	public CdbUi (InputStream inStream, PrintStream outStream,CdbController cController) {
