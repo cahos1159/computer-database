@@ -25,12 +25,12 @@ public class Pagination {
 			return elem ;
 		}
 		if (size <= page.getNbElem())
-			return elem.subList(0, size - 1);
+			return elem.subList(0, size );
 		int nbPage = (size % page.getNbElem() == 0) ? Integer.valueOf(size / page.getNbElem()) : Integer.valueOf(size / page.getNbElem()) + 1;
 		if (page.getNumero() == nbPage) {
-			return elem.subList((page.getNumero() - 1) * page.getNbElem(), size - 1);
+			return elem.subList((page.getNumero() - 1) * page.getNbElem(), size );
 		} else
-			return elem.subList((page.getNumero() - 1) * page.getNbElem(), (page.getNumero() * page.getNbElem()) - 1);
+			return elem.subList((page.getNumero() - 1) * page.getNbElem(), (page.getNumero() * page.getNbElem()) );
 
 	}
 	

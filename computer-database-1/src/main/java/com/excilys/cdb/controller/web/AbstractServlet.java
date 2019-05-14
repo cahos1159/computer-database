@@ -19,20 +19,20 @@ import com.excilys.cdb.validateur.Validateur;
 public abstract class AbstractServlet extends HttpServlet {
 
 
-	protected ComputerMapper c_uterMap;
+	static protected ComputerMapper c_uterMap;
 
-	protected CompanyMapper c_anyMap;
+	static protected CompanyMapper c_anyMap;
 
-	protected ComputerService c_uterServ;
+	static protected ComputerService c_uterServ;
 
-	protected CompanyService c_anyServ;
+	static protected CompanyService c_anyServ;
 	
 	final protected Validateur val;
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	protected AutowireCapableBeanFactory ctx;
+	static protected AutowireCapableBeanFactory ctx;
 
 	public AbstractServlet() throws ServletException {
 			ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
