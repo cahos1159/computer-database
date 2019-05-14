@@ -37,7 +37,7 @@ public class Validateur {
 		else {
 			ComputerDto comp = (ComputerDto) elem;
 			if(!valideName(comp.getName())) {
-				logger.error("",new InvalidComputerOptionException(comp.getIntroduction()));
+				logger.error("",new InvalidComputerOptionException(comp.getName()));
 				throw new InvalidDateValueException(comp.getIntroduction());
 			}
 			if(valideDate(comp.getIntroduction(),comp.getDiscontinued())) return comp;
@@ -54,7 +54,7 @@ public class Validateur {
 	private boolean valideName(String name) throws InvalidComputerOptionException{
 		if(name.isEmpty() || name.isBlank() || name.length()>100) {
 			logger.error("",new InvalidComputerOptionException("name"));
-			throw new InvalidComputerOptionException("name");
+			return false;
 		}
 		return true;
 		
