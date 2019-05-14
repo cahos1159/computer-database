@@ -1,0 +1,55 @@
+package com.excilys.cdb.controller.web;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+
+import com.excilys.cdb.config.spring.AppConfig;
+import com.excilys.cdb.mapper.CompanyMapper;
+import com.excilys.cdb.mapper.ComputerMapper;
+import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.validateur.Validateur;
+
+public abstract class AbstractServlet extends HttpServlet {
+
+
+	protected ComputerMapper c_uterMap;
+
+	protected CompanyMapper c_anyMap;
+
+	protected ComputerService c_uterServ;
+
+	protected CompanyService c_anyServ;
+	
+	final protected Validateur val;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected AutowireCapableBeanFactory ctx;
+
+	public AbstractServlet() throws ServletException {
+			ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+			this.c_uterServ = ctx.getBean(ComputerService.class);
+			this.c_uterMap = ctx.getBean(ComputerMapper.class);
+			this.c_anyServ = ctx.getBean(CompanyService.class);
+			this.c_anyMap = ctx.getBean(CompanyMapper.class);
+			this.val = ctx.getBean(Validateur.class);
+		        
+		  
+	}
+		
+    @Override
+    public void init() throws ServletException {
+        
+        
+       
+
+    }
+}

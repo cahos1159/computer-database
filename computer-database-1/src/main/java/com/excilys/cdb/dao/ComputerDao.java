@@ -64,11 +64,11 @@ public class ComputerDao extends Dao<Computer>{
 			preparedStatement.setNull(4, java.sql.Types.INTEGER);
 			
 			nbRow = preparedStatement.executeUpdate();
-			System.out.println("----"+obj.getId());
+		
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
 					obj.setId((int)generatedKeys.getLong(1));
-					System.out.println("----"+obj.getId());
+					
 					}
 				else
 					throw new FailedSQLQueryException("id non conforme");
@@ -306,7 +306,7 @@ public class ComputerDao extends Dao<Computer>{
 			while(resultSet.next()) {
 				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
 			}
-			System.out.println(computerList.toString());
+			
 			return computerList;
 		} catch (SQLException e) {
 			logger.error("",e);
@@ -370,10 +370,10 @@ public class ComputerDao extends Dao<Computer>{
 			) {
 				if(mode==1) preparedStatement.setString(1, "%" + keyWord + "%");
 				ResultSet resultSet = preparedStatement.executeQuery();
-				System.out.println("pass");
+			
 				resultSet.next();
 				res = resultSet.getInt(1);
-				System.out.println(res);
+				
 			} catch (SQLException e) {
 				logger.error("",new FailedSQLQueryException(stat));
 				throw new FailedSQLQueryException(stat);

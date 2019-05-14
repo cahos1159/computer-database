@@ -25,13 +25,13 @@ public class CdbController {
 	private String[] splitStr;
 	private static final String dateFormat = "yyyy-MM-dd/HH:mm:ss";
 	
-	@Autowired
+	
 	final ComputerMapper c_uterMap;
-	@Autowired
+	
 	final CompanyMapper c_anyMap;
-	@Autowired
+	
 	final CompanyService c_anyServ;
-	@Autowired
+	
 	final ComputerService c_uterServ;
 	
 	

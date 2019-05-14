@@ -2,9 +2,12 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.cdb.config.spring.AppConfig;
 import com.excilys.cdb.dao.CompanyDao;
 import com.excilys.cdb.exception.FailedSQLQueryException;
 import com.excilys.cdb.exception.InvalidIdException;
@@ -12,12 +15,23 @@ import com.excilys.cdb.exception.PrimaryKeyViolationException;
 import com.excilys.cdb.model.Company;
 
 
-class CompanyDaoTest {
 
+
+class CompanyDaoTest {
+	
+	 private static AnnotationConfigApplicationContext ctx;
+
+	@BeforeAll
+	static void context() {
+		ctx = new AnnotationConfigApplicationContext();
+		ctx.register(AppConfig.class);
+		ctx.refresh();
+	}
+	
 	@BeforeEach
 	 void prepTest() {
 		try {
-		CompanyDao dao = CompanyDao.getInstance();
+		CompanyDao dao = ctx.getBean(CompanyDao.class);
 		dao.read(1000).getClass();
 		dao.deleteById(1000);
 		}
@@ -27,7 +41,7 @@ class CompanyDaoTest {
 	
 	@Test
 	void testCreateCompany() throws Exception {
-		CompanyDao dao = CompanyDao.getInstance();
+		CompanyDao dao = ctx.getBean(CompanyDao.class);
 		Company compare = new Company(1000,"Création test");
 		Company res = dao.create(compare);
 		dao.delete(compare);
@@ -37,7 +51,7 @@ class CompanyDaoTest {
 	@Test
 	void testCreateIdNegatifCompany() throws Exception {
 		try {
-		CompanyDao dao = CompanyDao.getInstance();
+		CompanyDao dao = ctx.getBean(CompanyDao.class);
 		Company compare = new Company(-12,"Création test");
 		Company res = dao.create(compare);
 		dao.delete(compare);
@@ -50,7 +64,7 @@ class CompanyDaoTest {
 	@Test
 	void testCreateInvalidKeyfCompany() throws Exception {
 		try {
-		CompanyDao dao = CompanyDao.getInstance();
+		CompanyDao dao = ctx.getBean(CompanyDao.class);
 		Company compare = new Company(1000,"Création test");
 		Company tmp = dao.create(compare);
 		Company res = dao.create(compare);
@@ -63,7 +77,7 @@ class CompanyDaoTest {
 
 	@Test
 	void testUpdateClassicNameCompany() throws Exception {
-		CompanyDao dao = CompanyDao.getInstance();
+		CompanyDao dao = ctx.getBean(CompanyDao.class);
 		Company compare = new Company(1000,"Création test");
 		Company tmp = new Company(1000,"Création");
 		dao.create(compare);
@@ -75,7 +89,7 @@ class CompanyDaoTest {
 	
 	@Test
 	void testUpdateClassicIdCompany() throws Exception {
-		CompanyDao dao = CompanyDao.getInstance();
+		CompanyDao dao = ctx.getBean(CompanyDao.class);
 		Company compare = new Company(1000,"Création test");
 		Company tmp = new Company(1001,"Création test");
 		dao.create(compare);
@@ -88,7 +102,7 @@ class CompanyDaoTest {
 	@Test
 	void testDeleteCompany() throws Exception {
 		try {
-		CompanyDao dao = CompanyDao.getInstance();
+			CompanyDao dao = ctx.getBean(CompanyDao.class);
 		Company tmp = new Company(1000,"Création test");
 		dao.create(tmp);
 		dao.delete(tmp);
@@ -101,7 +115,7 @@ class CompanyDaoTest {
 	@Test
 	void testDeleteExceptionCompany() throws Exception {
 		try {
-		CompanyDao dao = CompanyDao.getInstance();
+		CompanyDao dao = ctx.getBean(CompanyDao.class);
 		Company tmp = new Company(1000,"Création test");
 		dao.create(tmp);
 		dao.delete(tmp);
@@ -114,7 +128,7 @@ class CompanyDaoTest {
 	
 	@Test
 	void testReadClassique() throws Exception {
-		CompanyDao dao = CompanyDao.getInstance();
+		CompanyDao dao = ctx.getBean(CompanyDao.class);
 		Company tmp = new Company(1000,"Création test");
 		dao.create(tmp);
 		Company res = dao.read(1000);
@@ -124,7 +138,7 @@ class CompanyDaoTest {
 	@Test
 	void testReadInvalidIdException(){
 		try {
-		CompanyDao dao = CompanyDao.getInstance();
+		CompanyDao dao = ctx.getBean(CompanyDao.class);
 		Company res = dao.read(2000);
 		}
 		catch(Exception e) {
