@@ -27,9 +27,8 @@ public class Validateur {
 	public Dto valide(Dto elem) throws InvalidComputerOptionException {
 		boolean verif;
 		if(elem.getClass().equals(CompanyDto.class)) {
-			CompanyDto comp = (CompanyDto) elem;
-			verif = valideName(comp.getName());
-			if(verif) return comp;
+			CompanyDto comp = (CompanyDto) elem; 
+			if(valideName(comp.getName())) return comp;
 			else {
 				logger.error("",new InvalidComputerOptionException("name"));
 				throw new InvalidComputerOptionException("name");
@@ -37,12 +36,11 @@ public class Validateur {
 		}
 		else {
 			ComputerDto comp = (ComputerDto) elem;
-			verif = valideName(comp.getName())== true ? verif = valideDate(comp.getIntroduction(),comp.getDiscontinued()) : false;
-			if(!verif) {
+			if(!valideName(comp.getName())) {
 				logger.error("",new InvalidComputerOptionException(comp.getIntroduction()));
 				throw new InvalidDateValueException(comp.getIntroduction());
 			}
-			if(verif) return comp;
+			if(valideDate(comp.getIntroduction(),comp.getDiscontinued())) return comp;
 			else {
 				logger.error("",new InvalidComputerOptionException("date"));
 				throw new InvalidComputerOptionException("date");
@@ -89,8 +87,8 @@ public class Validateur {
 		if(s.matches("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]")){
 			try {
 				LocalDateTime dateTime = LocalDateTime.parse(s, formatter);
-				System.out.println(dateTime.toString());
-				return (s == null) ? null : dateTime;
+				
+				return dateTime;
 			} catch (Exception e) {
 				logger.error("", new InvalidDateValueException(s));
 				throw new InvalidDateValueException(s);
@@ -100,8 +98,8 @@ public class Validateur {
 			try {
 				String tmp = s.concat(" 12:00:00");
 				LocalDateTime dateTime = LocalDateTime.parse(tmp, formatter);
-				System.out.println(dateTime.toString());
-				return (s == null) ? null : dateTime;
+				
+				return  dateTime;
 			} catch (Exception e) {
 				logger.error("",e);
 				throw e;
