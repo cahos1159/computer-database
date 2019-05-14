@@ -1,17 +1,17 @@
 package com.excilys.cdb.mapper;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.cdb.dto.CompanyDto;
 import com.excilys.cdb.model.Company;
 
+@Scope(value="singleton")
+@Component
 public class CompanyMapper extends Mapper<CompanyDto, Company>{
-	private static CompanyMapper instance = new CompanyMapper();
 	
 	private CompanyMapper() {}
-	
-	public static CompanyMapper getInstance() {
-		return instance;
-	}
-	
+		
 	@Override
 	public Company dtoToModel(CompanyDto dtoObject) {
 		if (dtoObject == null) {

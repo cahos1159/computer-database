@@ -5,17 +5,19 @@ import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.controller.web.Page;
+import com.excilys.cdb.database.DataBaseAccess;
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
 
-// TODO: Throw les exceptions jusqu'au controller
-
+@Scope(value="singleton")
+@Repository
 public class ComputerDao extends Dao<Computer>{
 	private final String SQL_SELECT_UPDATE_COMPANY = "UPDATE computer SET company_id=? WHERE id=?;";
 	private static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
-	private static ComputerDao instance = new ComputerDao();
 	
 	private final String order1 ="SELECT * FROM computer ORDER BY ";
 	private final String order2 =" LIMIT ?,?;";
@@ -43,11 +45,10 @@ public class ComputerDao extends Dao<Computer>{
 	}
 	
 	
-	public static ComputerDao getInstance() {
-		return instance;
-	}
-
+	
+	
 	@Override
+	
 	public Computer create(Computer obj) throws Exception {
 		int nbRow = 0;
 		
@@ -63,11 +64,11 @@ public class ComputerDao extends Dao<Computer>{
 			preparedStatement.setNull(4, java.sql.Types.INTEGER);
 			
 			nbRow = preparedStatement.executeUpdate();
-			System.out.println("----"+obj.getId());
+		
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
 					obj.setId((int)generatedKeys.getLong(1));
-					System.out.println("----"+obj.getId());
+					
 					}
 				else
 					throw new FailedSQLQueryException("id non conforme");
@@ -288,7 +289,7 @@ public class ComputerDao extends Dao<Computer>{
 		String mode = chx == 0 ? "ASC":"DESC";
 		
 		
-		if(colonne =="name" || colonne =="introduced"||colonne =="discontinued"||colonne =="company") return listAll();
+		if(!att.containsKey(colonne)) return listAll();
 		String requete = order1+colonne+" "+mode+order2;
 		if(colonne == null || colonne == "") {
 			return listAll();
@@ -305,7 +306,7 @@ public class ComputerDao extends Dao<Computer>{
 			while(resultSet.next()) {
 				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
 			}
-			System.out.println(computerList.toString());
+			
 			return computerList;
 		} catch (SQLException e) {
 			logger.error("",e);
@@ -338,7 +339,7 @@ public class ComputerDao extends Dao<Computer>{
 			
 			preparedStatement.setString(1, "%" + keyWord + "%");
 			preparedStatement.setInt(2, offset);
-			preparedStatement.setInt(3, page.getNbElem());
+			preparedStatement.setInt(3, offset+page.getNbElem());
 			ResultSet resultSet = preparedStatement.executeQuery();
 			List<Computer> computerList = new ArrayList<Computer>();
 			while(resultSet.next()) {
@@ -369,10 +370,10 @@ public class ComputerDao extends Dao<Computer>{
 			) {
 				if(mode==1) preparedStatement.setString(1, "%" + keyWord + "%");
 				ResultSet resultSet = preparedStatement.executeQuery();
-				System.out.println("pass");
+			
 				resultSet.next();
 				res = resultSet.getInt(1);
-				System.out.println(res);
+				
 			} catch (SQLException e) {
 				logger.error("",new FailedSQLQueryException(stat));
 				throw new FailedSQLQueryException(stat);

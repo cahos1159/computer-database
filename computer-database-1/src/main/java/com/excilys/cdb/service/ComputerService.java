@@ -3,22 +3,25 @@ package com.excilys.cdb.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.dao.*;
 import com.excilys.cdb.dto.*;
 import com.excilys.cdb.mapper.*;
 import com.excilys.cdb.model.Computer;
 
+@Scope(value="singleton")
+@Component
 public class ComputerService extends Service<Computer> {
-	private static ComputerService instance = new ComputerService();
 
-	private ComputerService() {
-		super(ComputerDao.getInstance());
+
+	private ComputerService(ComputerDao compDao) {
+		super(compDao);
 	}
 
-	public static ComputerService getInstance() {
-		return instance;
-	}
+
 
 	public List<Computer> computerSearch(Page page ,String keyWord) throws Exception {
 

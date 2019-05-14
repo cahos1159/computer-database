@@ -1,18 +1,24 @@
 package com.excilys.cdb.dao;
 
 import java.sql.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.controller.web.Page;
+import com.excilys.cdb.database.DataBaseAccess;
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
 
+@Scope(value="singleton")
+@Repository
 public class CompanyDao extends Dao<Company>{
-	private static CompanyDao instance = new CompanyDao();
+
 	private static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
 	private CompanyDao() {
 		super(
@@ -23,14 +29,12 @@ public class CompanyDao extends Dao<Company>{
 			"SELECT * FROM company;",
 			"SELECT * FROM company LIMIT ?,?;",
 			"SELECT * FROM computer WHERE name LIKE(?)"
+			
 		);
 	}
 	
 	
-	
-	public static CompanyDao getInstance() {
-		return instance;
-	}
+
 
 	@Override
 	public Company create(Company obj) throws Exception{

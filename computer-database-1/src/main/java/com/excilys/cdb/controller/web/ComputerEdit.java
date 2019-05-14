@@ -8,13 +8,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
 import com.excilys.cdb.dto.CompanyDto;
 import com.excilys.cdb.dto.ComputerDto;
+import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.validateur.Validateur;
 
 
 
@@ -22,17 +27,24 @@ import com.excilys.cdb.service.ComputerService;
  * Servlet implementation class ComputerAdd
  */
 
-public class ComputerEdit extends HttpServlet {
+
+public class ComputerEdit extends AbstractServlet {
 	private static final long serialVersionUID = 1L;  
 	
     /**
+     * @throws ServletException 
      * @see HttpServlet#HttpServlet()
      */
-    public ComputerEdit() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	
+	
+	
 
+	
+	public ComputerEdit() throws ServletException 
+	{
+		super();
+	}
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -40,16 +52,16 @@ public class ComputerEdit extends HttpServlet {
 		
 			List<Company> company;
 			final int id = Integer.valueOf(request.getParameter("id"));
-			Computer computer = ComputerService.getInstance().read(id);
+			Computer computer = c_uterServ.read(id);
 			
 			
 
 			try {
 
-				company = CompanyService.getInstance().listAllElements();
+				company = c_anyServ.listAllElements();
 				setListCompany(request,company);
 				setIdComputer(request,id);
-				setComputer(request,ComputerMapper.getInstance().modelToDto(computer));
+				setComputer(request,c_uterMap.modelToDto(computer));
 				
 			} catch (Exception e) {
 				
@@ -80,13 +92,13 @@ public class ComputerEdit extends HttpServlet {
 	
 	private void updateOrdi(HttpServletRequest request) throws Exception {
 		CompanyDto comp = new CompanyDto(request.getParameter("companyId"));
-		System.out.println(comp.toString());
+		
 		String intro = formatDate(request.getParameter("introduced"));
 		String disc = formatDate(request.getParameter("discontinued"));
-		System.out.println(disc.toString());
+		
 		ComputerDto elem = new ComputerDto(request.getParameter("id"),request.getParameter("name"), intro, disc, comp);
-		System.out.println(elem.toString());
-		ComputerService.getInstance().update(ComputerMapper.getInstance().dtoToModel(elem));
+		
+		c_uterServ.update(c_uterMap.dtoToModel(elem));
 		
 	
 }
