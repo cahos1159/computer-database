@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.cdb.DataBase.DataBaseAccess;
 import com.excilys.cdb.controller.web.Page;
+import com.excilys.cdb.database.DataBaseAccess;
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
 

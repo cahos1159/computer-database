@@ -1,4 +1,4 @@
-package com.excilys.cdb.DataBase;
+package com.excilys.cdb.database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,7 +15,6 @@ public class DataBaseAccess {
 	private HikariDataSource hikariDataSource;
 	String configFile = "/db.properties";
 	
-	public DataBaseAccess() {}
 	
 	private void setUpHikari() {
 
