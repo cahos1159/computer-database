@@ -12,13 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.cdb.dto.ComputerDto;
-import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.ComputerService;
 
 
-
-public class DashBoard extends HttpServlet {
+public class DashBoard extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
 	private static int nbOrdiPage = 10;
     //private final ComputerService computerSer = ComputerService.getInstance();
@@ -26,12 +23,19 @@ public class DashBoard extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
- 
+
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     
+	
+	public DashBoard() throws ServletException 
+	{
+		super();
+	}
+	
+
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
@@ -42,24 +46,23 @@ public class DashBoard extends HttpServlet {
 			int mode = (request.getParameter("mode") == null ||(request.getParameter("mode") == "")) ? 0 : Integer.valueOf(request.getParameter("mode"));
 			
 			if(request.getParameter("search") == "" || request.getParameter("search") == null) {
-				System.out.println(page.getNumero());
 				
-				List<Computer> ordi = ComputerService.getInstance().computerOrder(page,request.getParameter("colonne"),mode);
+				
+				List<Computer> ordi = c_uterServ.computerOrder(page,request.getParameter("colonne"),mode);
 				int nbComputer = ordi == null ? 0 : ordi.size();
 				ordi = Pagination.getInstance().MiseEnPage(ordi,page);
 				setListComputer(request,ordi);
-				setPage(request,page.getNumero(),ComputerService.getInstance().count(request.getParameter("search"),1),page.getNbElem());
-				setNumberOfComputer(request,ComputerService.getInstance().count(request.getParameter("search"),0));
+				setPage(request,page.getNumero(),c_uterServ.count(request.getParameter("search"),1),page.getNbElem());
+				setNumberOfComputer(request,c_uterServ.count(request.getParameter("search"),0));
 				
 			}
 			else {
-				System.out.println(page.getNumero());
-				List<Computer> ordi = ComputerService.getInstance().computerOrderSearch(page,request.getParameter("colonne"),mode,request.getParameter("search"));
+				List<Computer> ordi = c_uterServ.computerOrderSearch(page,request.getParameter("colonne"),mode,request.getParameter("search"));
 	
 				ordi = Pagination.getInstance().MiseEnPage(ordi,page);
 				setListComputer(request,ordi);
-				setPage(request,page.getNumero(),ComputerService.getInstance().count(request.getParameter("search"),1),page.getNbElem());
-				setNumberOfComputer(request,ComputerService.getInstance().count(request.getParameter("search"),1));
+				setPage(request,page.getNumero(),c_uterServ.count(request.getParameter("search"),1),page.getNbElem());
+				setNumberOfComputer(request,c_uterServ.count(request.getParameter("search"),1));
 				
 				
 			}
@@ -74,12 +77,14 @@ public class DashBoard extends HttpServlet {
 		
 	}
 
+
+
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			System.out.print("Post");
 			deleteComputer(request);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -92,7 +97,7 @@ public class DashBoard extends HttpServlet {
 		else {
 		List<ComputerDto> res = new ArrayList<ComputerDto>();
 		for(Iterator<Computer> i=ordi.iterator();i.hasNext();) {
-			res.add(ComputerMapper.getInstance().modelToDto(i.next()));
+			res.add(c_uterMap.modelToDto(i.next()));
 		}
 		request.setAttribute("ordi", res);
 		}
@@ -133,10 +138,9 @@ public class DashBoard extends HttpServlet {
 	}
 	private void deleteComputer(HttpServletRequest request) throws RuntimeException, Exception {
 		String idaggreg = (String) request.getParameter("selection");
-		System.out.println(idaggreg);
 		List<String> ids = Arrays.asList(idaggreg.split(","));
 		for(String id : ids) {
-			ComputerService.getInstance().delete(ComputerService.getInstance().read(Integer.parseInt(id)));
+			c_uterServ.delete(c_uterServ.read(Integer.parseInt(id)));
 		}
 	}
 

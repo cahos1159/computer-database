@@ -3,6 +3,8 @@ package com.excilys.cdb.userinterface;
 import java.io.*;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.cdb.controller.CdbController;
 
 public class CdbUi {
@@ -11,17 +13,20 @@ public class CdbUi {
 	private PrintStream err;
 	private Scanner scanner;
 	private String cmd;
+
+	final CdbController cController;
 	
-	public CdbUi (InputStream inStream, PrintStream outStream) {
-		this(inStream,outStream,outStream);
+	public CdbUi (InputStream inStream, PrintStream outStream,CdbController cController) {
+		this(inStream,outStream,outStream, cController);
 	}
 	
-	public CdbUi(InputStream inStream, PrintStream outStream, PrintStream errStream) {
+	public CdbUi(InputStream inStream, PrintStream outStream, PrintStream errStream,CdbController cController) {
 		this.in = inStream;
 		this.out = outStream;
 		this.err = errStream;
 		this.scanner = new Scanner(this.in);
 		this.cmd = "";
+		this.cController = cController;
 	}
 	
 	public void run() {
@@ -36,7 +41,7 @@ public class CdbUi {
 					return;
 				default:
 					try {
-						this.println(this.out,CdbController.getInstance().treatMessage(cmd));
+						this.println(this.out,cController.treatMessage(cmd));
 					} catch (Exception e) {
 						this.println(this.err,e.getMessage());
 					}

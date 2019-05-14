@@ -5,9 +5,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.cdb.config.spring.AppConfig;
 import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.dao.CompanyDao;
 import com.excilys.cdb.dao.ComputerDao;
@@ -15,11 +18,22 @@ import com.excilys.cdb.exception.InvalidIdException;
 import com.excilys.cdb.model.Computer;
 
 class ComputerDaoTest {
+	
+	private static AnnotationConfigApplicationContext ctx;
 
+	
+	@BeforeAll
+	static void context() {
+		ctx = new AnnotationConfigApplicationContext();
+		ctx.register(AppConfig.class);
+		ctx.refresh();
+	}
+	
+	
 	@BeforeEach
 	 void prepTest() {
 		try {
-		ComputerDao dao = ComputerDao.getInstance();
+		ComputerDao dao = ctx.getBean(ComputerDao.class);
 		dao.read(1000).getClass();
 		dao.deleteById(1000);
 		dao.read(1001).getClass();
@@ -31,7 +45,7 @@ class ComputerDaoTest {
 		
 	@Test
 	void testClassicCreateComputer() throws Exception {
-		ComputerDao dao = ComputerDao.getInstance();
+		ComputerDao dao = ctx.getBean(ComputerDao.class);
 		Computer compare = new Computer(1000,"Création test",null,null,1);
 		Computer res = dao.create(compare);
 		dao.delete(compare);
@@ -41,7 +55,7 @@ class ComputerDaoTest {
 	@Test
 	void testIdNegatifCreateComputer() {
 		try {
-		ComputerDao dao = ComputerDao.getInstance();
+		ComputerDao dao = ctx.getBean(ComputerDao.class);
 		Computer compare = new Computer(-1,"Création test",null,null,1);
 		Computer res = dao.create(compare);
 		dao.delete(compare);
@@ -54,7 +68,7 @@ class ComputerDaoTest {
 	
 	@Test
 	void testManufacturer0CreateComputer() throws Exception {
-		ComputerDao dao = ComputerDao.getInstance();
+		ComputerDao dao = ctx.getBean(ComputerDao.class);
 		Computer compare = new Computer(1000,"Création test",null,null,0);
 		Computer res = dao.create(compare);
 		dao.delete(compare);
@@ -64,7 +78,7 @@ class ComputerDaoTest {
 
 	@Test
 	void testUpdateComputer() throws Exception {
-		ComputerDao dao = ComputerDao.getInstance();
+		ComputerDao dao = ctx.getBean(ComputerDao.class);
 		Computer tmp = new Computer(-1,"Création test",null,null,1);
 		tmp = dao.create(tmp);
 		tmp.setManufacturer(2);
@@ -77,7 +91,7 @@ class ComputerDaoTest {
 	
 	@Test
 	void testClassicComputerSearchComputer() throws Exception {
-		ComputerDao dao = ComputerDao.getInstance();
+		ComputerDao dao = ctx.getBean(ComputerDao.class);
 		Computer tmp1 = new Computer(1000,"Création test1",null,null,1);
 		Computer tmp2 = new Computer(1001,"Création test2",null,null,1);
 		dao.create(tmp1);
@@ -93,7 +107,7 @@ class ComputerDaoTest {
 	
 	@Test
 	void testSupposeToBeEmptyComputerSearchComputer() throws Exception {
-		ComputerDao dao = ComputerDao.getInstance();
+		ComputerDao dao = ctx.getBean(ComputerDao.class);
 		Computer tmp1 = new Computer(1000,"Création test1",null,null,1);
 		Computer tmp2 = new Computer(1001,"Création test2",null,null,1);
 		dao.create(tmp1);
@@ -109,7 +123,7 @@ class ComputerDaoTest {
 	
 	@Test
 	void testClassicComputerOrderSearchComputer() throws Exception {
-		ComputerDao dao = ComputerDao.getInstance();
+		ComputerDao dao = ctx.getBean(ComputerDao.class);
 		Computer tmp1 = new Computer(1000,"Création test1",null,null,1);
 		Computer tmp2 = new Computer(1001,"Création test2",null,null,1);
 		dao.create(tmp1);

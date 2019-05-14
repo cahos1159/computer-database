@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
 import com.excilys.cdb.dto.CompanyDto;
 import com.excilys.cdb.dto.ComputerDto;
 import com.excilys.cdb.mapper.CompanyMapper;
@@ -21,20 +24,24 @@ import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validateur.Validateur;
 
 
-/**
- * Servlet implementation class ComputerAdd
- */
 
-public class ComputerAdd extends HttpServlet {
+
+public class ComputerAdd extends AbstractServlet {
 	private static final long serialVersionUID = 1L;  
 	
     /**
+     * @throws ServletException 
      * @see HttpServlet#HttpServlet()
      */
-    public ComputerAdd() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	
+	
+
+	
+	public ComputerAdd() throws ServletException 
+	{
+		super();
+
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,7 +49,7 @@ public class ComputerAdd extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
-			final List<Company> company = CompanyService.getInstance().listAllElements();
+			final List<Company> company = c_anyServ.listAllElements();
 			setListCompany(request,company);
 			
 		} catch (Exception e) {
@@ -70,7 +77,7 @@ public class ComputerAdd extends HttpServlet {
 	private void setListCompany(HttpServletRequest request, List<Company> company) {
 		List<CompanyDto> res = new ArrayList<CompanyDto>();
 		for(Iterator<Company> i=company.iterator();i.hasNext();) {
-			res.add(CompanyMapper.getInstance().modelToDto(i.next()));
+			res.add(c_anyMap.modelToDto(i.next()));
 		}
 		request.setAttribute("company", res);
 	}
@@ -81,7 +88,7 @@ public class ComputerAdd extends HttpServlet {
 			String intro = formatDate(request.getParameter("introduced"));
 			String disc = formatDate(request.getParameter("discontinued"));
 			ComputerDto elem = new ComputerDto("-10",request.getParameter("computerName"), intro, disc, comp);
-			ComputerService.getInstance().create(ComputerMapper.getInstance().dtoToModel((ComputerDto) Validateur.getInstance().valide(elem)));
+			c_uterServ.create(c_uterMap.dtoToModel((ComputerDto) val.valide(elem)));
 			request.setAttribute("titre", elem.toString());
 			
 		

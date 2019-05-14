@@ -18,7 +18,7 @@ public class Pagination {
 	
 	public List<Computer> MiseEnPage(List<Computer> elem,Page page) throws Exception {
 		int size = elem.size();
-		System.out.println(size + "<>" + page.getNbElem());
+		
 		if (size == 0)
 			return null;
 		if (size == 1) {
