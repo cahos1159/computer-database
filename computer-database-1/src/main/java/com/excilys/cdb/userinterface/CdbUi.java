@@ -1,9 +1,8 @@
 package com.excilys.cdb.userinterface;
 
-import java.io.*;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.cdb.controller.CdbController;
 

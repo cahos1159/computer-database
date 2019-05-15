@@ -12,7 +12,7 @@ import com.excilys.cdb.userinterface.CdbUi;
 
 public class CdbApplication {
 
-	public static void main(String args[]){  
+	public static void main(String[] args){  
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(AppConfig.class);
 		ctx.refresh();

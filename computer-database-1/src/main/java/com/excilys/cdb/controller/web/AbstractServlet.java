@@ -3,12 +3,8 @@ package com.excilys.cdb.controller.web;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-
 import com.excilys.cdb.config.spring.AppConfig;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
@@ -18,28 +14,36 @@ import com.excilys.cdb.validateur.Validateur;
 
 public abstract class AbstractServlet extends HttpServlet {
 
-
-	static protected ComputerMapper c_uterMap;
-
-	static protected CompanyMapper c_anyMap;
-
-	static protected ComputerService c_uterServ;
-
-	static protected CompanyService c_anyServ;
+	private static final long serialVersionUID = 1L;
 	
-	final protected Validateur val;
+	protected static  ComputerMapper cuterMap;
+
+	protected static CompanyMapper canyMap;
+
+	protected static ComputerService cuterServ;
+
+	protected static CompanyService canyServ;
+	
+	protected static ApplicationContext ctx;
+	
+	protected final Validateur val;
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	static protected AutowireCapableBeanFactory ctx;
+	
+	
+	
+	static {
+		ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+		cuterServ = ctx.getBean(ComputerService.class);
+		cuterMap = ctx.getBean(ComputerMapper.class);
+		canyServ = ctx.getBean(CompanyService.class);
+		canyMap = ctx.getBean(CompanyMapper.class);
+	}
 
 	public AbstractServlet() throws ServletException {
-			ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-			this.c_uterServ = ctx.getBean(ComputerService.class);
-			this.c_uterMap = ctx.getBean(ComputerMapper.class);
-			this.c_anyServ = ctx.getBean(CompanyService.class);
-			this.c_anyMap = ctx.getBean(CompanyMapper.class);
+			
+			
 			this.val = ctx.getBean(Validateur.class);
 		        
 		  

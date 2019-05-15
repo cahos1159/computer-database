@@ -1,8 +1,7 @@
 package com.excilys.cdb.mapper;
 
-import java.sql.*;
+import java.sql.Timestamp;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -14,46 +13,47 @@ import com.excilys.cdb.service.CompanyService;
 
 @Scope(value="singleton")
 @Component
-public class ComputerMapper extends Mapper<ComputerDto, Computer>{
+public class ComputerMapper implements Mapper<ComputerDto, Computer>{
 	
 	
-	final private CompanyMapper compMap;
+	private final CompanyMapper compMap;
 	
-	final private CompanyService compServ;
+	private final CompanyService compServ;
 	
-	private ComputerMapper(CompanyMapper cMap,CompanyService cServ) {
+	public ComputerMapper(CompanyMapper cMap,CompanyService cServ) {
 		this.compMap = cMap;
 		this.compServ = cServ;
 	}	
 	
 	@Override
-	public Computer dtoToModel(ComputerDto dtoObject) throws RuntimeException {
+	public Computer dtoToModel(ComputerDto dtoObject){
 		if (dtoObject == null) {
 			return null;
 		} else {
 			int id = Integer.parseInt(dtoObject.getId());
 			String name = dtoObject.getName();
-			Timestamp t1, t2;
+			Timestamp t1;
+			Timestamp  t2;
 			t1 = this.castTimestamp(dtoObject.getIntroduction());
 			t2 = this.castTimestamp(dtoObject.getDiscontinued());
 			int cid = Integer.parseInt(dtoObject.getCompany().getId());
 			
-			Computer c = new Computer(id,name,t1,t2,cid);
 			
-			return c;
+			
+			return new Computer(id,name,t1,t2,cid);
 		}
 	}
 	
-	private Timestamp castTimestamp(String s) throws RuntimeException {
+	private Timestamp castTimestamp(String s) {
 		try {
 			return (s == null) ? null : Timestamp.valueOf(s);
 		} catch (Exception e) {
 			throw new InvalidDateValueException(s);
 		}
 	}
-
+ 
 	@Override
-	public ComputerDto modelToDto(Computer modelObject) throws RuntimeException {
+	public ComputerDto modelToDto(Computer modelObject) throws Exception {
 		if (modelObject == null) {
 			return null;
 		} else {

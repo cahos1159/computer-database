@@ -8,18 +8,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.dto.CompanyDto;
 import com.excilys.cdb.dto.ComputerDto;
-import com.excilys.cdb.mapper.CompanyMapper;
-import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyService;
-import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.validateur.Validateur;
 
 
 
@@ -30,7 +25,7 @@ import com.excilys.cdb.validateur.Validateur;
 
 public class ComputerEdit extends AbstractServlet {
 	private static final long serialVersionUID = 1L;  
-	
+	private static Logger logger = LoggerFactory.getLogger(ComputerEdit.class);
     /**
      * @throws ServletException 
      * @see HttpServlet#HttpServlet()
@@ -48,38 +43,48 @@ public class ComputerEdit extends AbstractServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-			List<Company> company;
-			final int id = Integer.valueOf(request.getParameter("id"));
-			Computer computer = c_uterServ.read(id);
+				
+			
 			
 			
 
 			try {
-
-				company = c_anyServ.listAllElements();
+				List<Company> company;
+				final int id = Integer.parseInt(request.getParameter("id"));
+				Computer computer = null;
+				computer = cuterServ.read(id);
+			
+				company = canyServ.listAllElements();
 				setListCompany(request,company);
 				setIdComputer(request,id);
-				setComputer(request,c_uterMap.modelToDto(computer));
-				
+				setComputer(request,cuterMap.modelToDto(computer));
+				this.getServletContext().getRequestDispatcher( "/WEB-INF/editComputer.jsp" ).forward( request, response );
 			} catch (Exception e) {
-				
+				logger.error("",e);
 			}
+				
+			
 
-		this.getServletContext().getRequestDispatcher( "/WEB-INF/editComputer.jsp" ).forward( request, response );
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			updateOrdi(request);
+			doGet(request, response);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("",e);
 		}
-		doGet(request, response);
+		
 	}
 	
 	private void setListCompany(HttpServletRequest request, List<Company> company) {
@@ -98,7 +103,7 @@ public class ComputerEdit extends AbstractServlet {
 		
 		ComputerDto elem = new ComputerDto(request.getParameter("id"),request.getParameter("name"), intro, disc, comp);
 		
-		c_uterServ.update(c_uterMap.dtoToModel(elem));
+		cuterServ.update(cuterMap.dtoToModel(elem));
 		
 	
 }
@@ -112,8 +117,7 @@ public class ComputerEdit extends AbstractServlet {
 	
 	private String formatDate(String date) {
 		if(date == null) return null;
-		date.replace("/", "-");
-		String res = (date.length() <= 10 ) ? date.concat(" 12:00:00") : date;
-		return res;
+		date = date.replace("/", "-");
+		return (date.length() <= 10 ) ? date.concat(" 12:00:00") : date;
 	}
 }

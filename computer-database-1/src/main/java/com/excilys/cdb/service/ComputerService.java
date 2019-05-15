@@ -1,15 +1,12 @@
 package com.excilys.cdb.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.controller.web.Page;
-import com.excilys.cdb.dao.*;
-import com.excilys.cdb.dto.*;
-import com.excilys.cdb.mapper.*;
+import com.excilys.cdb.dao.ComputerDao;
 import com.excilys.cdb.model.Computer;
 
 @Scope(value="singleton")
@@ -17,35 +14,26 @@ import com.excilys.cdb.model.Computer;
 public class ComputerService extends Service<Computer> {
 
 
-	private ComputerService(ComputerDao compDao) {
+	public ComputerService(ComputerDao compDao) {
 		super(compDao);
 	}
 
 
 
 	public List<Computer> computerSearch(Page page ,String keyWord) throws Exception {
-
-		List<Computer> res = ((ComputerDao) this.dao).computerSearch(page,keyWord);
-
-		return res;
+		return  ((ComputerDao) this.dao).computerSearch(page,keyWord);
 	}
 
 	public List<Computer> computerOrder(Page page ,String colonne,int mode) throws Exception {
-
-		List<Computer> res = ((ComputerDao) this.dao).computerOrder(page,colonne,mode);
-
-		return res;
+		return ((ComputerDao) this.dao).computerOrder(page,colonne,mode);
 	}
 	
 	public List<Computer> computerOrderSearch(Page page ,String colonne,int mode,String keyWord ) throws Exception {
-
-		List<Computer> res = ((ComputerDao) this.dao).computerOrderSearch(page,colonne,mode,keyWord);
-
-		return res;
+		return ((ComputerDao) this.dao).computerOrderSearch(page,colonne,mode,keyWord);
 	}
 	
 	public int count(String keyWord, int mode) {
-		return (int)((ComputerDao) this.dao).count(keyWord,mode);
+		return ((ComputerDao) this.dao).count(keyWord,mode);
 	}
 	
 	

@@ -2,21 +2,20 @@ package com.excilys.cdb.mapper;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.dto.Dto;
 import com.excilys.cdb.model.Model;
 
 @Scope(value="singleton")
 @Component
-public abstract class Mapper<T extends Dto, U extends Model> {
+public abstract interface Mapper<T extends Dto, U extends Model> {
 
-	protected Mapper() {}
+
 	
-	public abstract U dtoToModel (T dtoObject) throws RuntimeException;
-	public abstract T modelToDto (U modelObject) throws RuntimeException;
+	public abstract U dtoToModel (T dtoObject);
+	public abstract T modelToDto (U modelObject) throws Exception;
 	
-	public int idToInt(String id) {
+	public static int idToInt(String id) {
 		return Integer.parseInt(id);
 	}
 }

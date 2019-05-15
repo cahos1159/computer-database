@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.dto.ComputerDto;
 import com.excilys.cdb.model.Computer;
 
@@ -18,7 +21,11 @@ import com.excilys.cdb.model.Computer;
 public class DashBoard extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
 	private static int nbOrdiPage = 10;
-    //private final ComputerService computerSer = ComputerService.getInstance();
+	private static final String SEARCH = "search";
+	private static Logger logger = LoggerFactory.getLogger(DashBoard.class);
+	private static final String COLONNE = "colonne";
+	private static final String NBORDIPARPAGE = "nbOrdiPage";
+    
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -43,26 +50,25 @@ public class DashBoard extends AbstractServlet {
 			
 
 			Page page = new Page(getPage(request),getNbOrdiPage(request));
-			int mode = (request.getParameter("mode") == null ||(request.getParameter("mode") == "")) ? 0 : Integer.valueOf(request.getParameter("mode"));
+			int mode = (request.getParameter("mode") == null ||"".equals((request.getParameter("mode")))) ? 0 : Integer.valueOf(request.getParameter("mode"));
 			
-			if(request.getParameter("search") == "" || request.getParameter("search") == null) {
+		 	if("".equals(request.getParameter(SEARCH)) || null == (request.getParameter(SEARCH))) {
 				
 				
-				List<Computer> ordi = c_uterServ.computerOrder(page,request.getParameter("colonne"),mode);
-				int nbComputer = ordi == null ? 0 : ordi.size();
-				ordi = Pagination.getInstance().MiseEnPage(ordi,page);
+				List<Computer> ordi = cuterServ.computerOrder(page,request.getParameter(COLONNE),mode);
+				ordi = Pagination.getInstance().miseEnPage(ordi,page);
 				setListComputer(request,ordi);
-				setPage(request,page.getNumero(),c_uterServ.count(request.getParameter("search"),1),page.getNbElem());
-				setNumberOfComputer(request,c_uterServ.count(request.getParameter("search"),0));
+				setPage(request,page.getNumero(),cuterServ.count(request.getParameter(SEARCH),1),page.getNbElem());
+				setNumberOfComputer(request,cuterServ.count(request.getParameter(SEARCH),0));
 				
 			}
 			else {
-				List<Computer> ordi = c_uterServ.computerOrderSearch(page,request.getParameter("colonne"),mode,request.getParameter("search"));
+				List<Computer> ordi = cuterServ.computerOrderSearch(page,request.getParameter(COLONNE),mode,request.getParameter(SEARCH));
 	
-				ordi = Pagination.getInstance().MiseEnPage(ordi,page);
+				ordi = Pagination.getInstance().miseEnPage(ordi,page);
 				setListComputer(request,ordi);
-				setPage(request,page.getNumero(),c_uterServ.count(request.getParameter("search"),1),page.getNbElem());
-				setNumberOfComputer(request,c_uterServ.count(request.getParameter("search"),1));
+				setPage(request,page.getNumero(),cuterServ.count(request.getParameter(SEARCH),1),page.getNbElem());
+				setNumberOfComputer(request,cuterServ.count(request.getParameter(SEARCH),1));
 				
 				
 			}
@@ -72,7 +78,7 @@ public class DashBoard extends AbstractServlet {
 			this.getServletContext().getRequestDispatcher( "/WEB-INF/dashboard.jsp" ).forward( request, response );
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("",e);
 		}
 		
 	}
@@ -83,21 +89,23 @@ public class DashBoard extends AbstractServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			deleteComputer(request);
+			doGet(request, response);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("",e);
 		}
-		doGet(request, response);
+		
 	}
 	
-	private void setListComputer(HttpServletRequest request, List<Computer> ordi) {
+	private void setListComputer(HttpServletRequest request, List<Computer> ordi) throws Exception {
 		if(ordi==null)request.setAttribute("ordi", null);
 		else {
-		List<ComputerDto> res = new ArrayList<ComputerDto>();
+		List<ComputerDto> res = new ArrayList<>();
 		for(Iterator<Computer> i=ordi.iterator();i.hasNext();) {
-			res.add(c_uterMap.modelToDto(i.next()));
+			res.add(cuterMap.modelToDto(i.next()));
 		}
 		request.setAttribute("ordi", res);
 		}
@@ -107,40 +115,42 @@ public class DashBoard extends AbstractServlet {
 		request.setAttribute("numberOfComputer", nbComputer);
 	}
 	private void setField(HttpServletRequest request) {
-		request.setAttribute("search", request.getParameter("search"));
+		request.setAttribute(SEARCH, request.getParameter(SEARCH));
 		request.setAttribute("mode", request.getParameter("mode"));
-		request.setAttribute("colonne", request.getParameter("colonne"));
+		request.setAttribute(COLONNE, request.getParameter(COLONNE));
 	}
 	
 	private void setNbOrdiPage(HttpServletRequest request, int nbOrdiPage) {
-		request.setAttribute("nbOrdiPage", nbOrdiPage);
+		request.setAttribute(NBORDIPARPAGE, nbOrdiPage);
 	}
 	
-	private void setPage(HttpServletRequest request, int Page,int nbOrdi,int nbOrdiPage) {
-		request.setAttribute("page", Page);
-		int prev = Page==1?1:Page-1;
-		int nbPage =Integer.valueOf(nbOrdi/nbOrdiPage);
+	private void setPage(HttpServletRequest request, int page,int nbOrdi,int nbOrdiPage) {
+		request.setAttribute("page", page);
+		int prev = page==1?1:page-1;
+		int nbPage =nbOrdi/nbOrdiPage;
 		if((nbOrdi%nbOrdiPage)!=0) nbPage++;
-		int next = Page==nbPage?nbPage:Page+1;
+		int next = page==nbPage?nbPage:page+1;
 		request.setAttribute("previous", prev);
 		request.setAttribute("next", next);
 	}
 	
 	private int getPage(HttpServletRequest request) {
-		
-		int pageActuel = Integer.valueOf((request.getParameter("page") == null) ? "1" : request.getParameter("page"));
-		return pageActuel;
+		return Integer.parseInt((request.getParameter("page") == null) ? "1" : request.getParameter("page"));
 	}
 	
-	private int getNbOrdiPage(HttpServletRequest request) {
-		DashBoard.nbOrdiPage =(request.getParameter("nbOrdiPage") == null) ? DashBoard.nbOrdiPage : Integer.valueOf(request.getParameter("nbOrdiPage"));
+	private static int getNbOrdiPage(HttpServletRequest request) {
+		DashBoard.nbOrdiPage =(request.getParameter(NBORDIPARPAGE) == null) ? DashBoard.nbOrdiPage : Integer.valueOf(request.getParameter(NBORDIPARPAGE));
 		return DashBoard.nbOrdiPage;
 	}
-	private void deleteComputer(HttpServletRequest request) throws RuntimeException, Exception {
-		String idaggreg = (String) request.getParameter("selection");
+	private void deleteComputer(HttpServletRequest request){
+		String idaggreg = request.getParameter("selection");
 		List<String> ids = Arrays.asList(idaggreg.split(","));
 		for(String id : ids) {
-			c_uterServ.delete(c_uterServ.read(Integer.parseInt(id)));
+			try {
+				cuterServ.delete(cuterServ.read(Integer.parseInt(id)));
+			} catch (Exception e) {
+				logger.error("",e);
+			}
 		}
 	}
 
