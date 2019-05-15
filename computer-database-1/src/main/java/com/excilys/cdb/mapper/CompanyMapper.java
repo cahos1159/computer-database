@@ -8,7 +8,7 @@ import com.excilys.cdb.model.Company;
 
 @Scope(value="singleton")
 @Component
-public class CompanyMapper extends Mapper<CompanyDto, Company>{
+public class CompanyMapper implements Mapper<CompanyDto, Company>{
 	
 	private CompanyMapper() {}
 		

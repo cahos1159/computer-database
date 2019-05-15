@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Timestamp;
 
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -12,7 +12,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.excilys.cdb.config.spring.AppConfig;
 import com.excilys.cdb.dto.CompanyDto;
 import com.excilys.cdb.dto.ComputerDto;
-import com.excilys.cdb.exception.InvalidDateFormatException;
 import com.excilys.cdb.exception.InvalidDateValueException;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
@@ -116,7 +115,7 @@ class ComputerMapperTest {
 	
 	
 	@Test
-	void testNullModelToDtoComputer() {
+	void testNullModelToDtoComputer() throws Exception {
 		ComputerMapper mappTest = ctx.getBean(ComputerMapper.class);
 		CompanyDto cmp = new CompanyDto("2","Thinking Machines");
 		Computer objTest = new Computer(3,"CM-200",null,null,2);
@@ -124,7 +123,7 @@ class ComputerMapperTest {
 		ComputerDto compare = new ComputerDto("3","CM-200","_","_",cmp);
 		assertEquals(compare,res);
 	}
-	void testTimestampModelToDtoComputer() {
+	void testTimestampModelToDtoComputer() throws Exception {
 		ComputerMapper mappTest = ctx.getBean(ComputerMapper.class);
 		CompanyDto cmp = new CompanyDto("2");
 		int myYear = 1990;

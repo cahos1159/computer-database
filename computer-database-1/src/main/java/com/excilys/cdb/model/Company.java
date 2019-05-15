@@ -1,8 +1,5 @@
 package com.excilys.cdb.model;
 
-import org.springframework.stereotype.Component;
-
-
 public class Company extends Model{
 	private String name;
 	
@@ -32,8 +29,6 @@ public class Company extends Model{
 	
 	@Override
 	public int hashCode() {
-		int result = 31*17 + this.getId();
-		
-		return result;
+		return  31*17 + this.getId();
 	}
 }

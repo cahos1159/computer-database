@@ -1,16 +1,13 @@
 package com.excilys.cdb.service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.dao.Dao;
-import com.excilys.cdb.dto.Dto;
 import com.excilys.cdb.exception.InvalidIntegerException;
-import com.excilys.cdb.mapper.Mapper;
 import com.excilys.cdb.model.Model;
 
 @Scope(value="singleton")
@@ -24,26 +21,27 @@ public abstract class Service<U extends Model> {
 	
 	public U create(U modelObject) throws Exception {
 		return this.dao.create(modelObject);
-	};
+	}
 	
 	public U update(U modelObject) throws Exception {
 		return this.dao.update(modelObject);
-	};
+	}
 	
 	public U delete(U modelObject) throws Exception {
 		return this.dao.delete(modelObject);
-	};
+	}
 	
-	public U read(int id) throws RuntimeException {
+	public U read(int id) throws Exception {
 		return this.dao.read(id);
-	};
+	}
 	
 	public List<U> listAllElements() throws Exception {
 		return (List<U>) this.dao.listAll();
-	};
+	}
 	
 	public List<U> list(String pageStr, String sizeStr) throws Exception {
-		int numero,size;
+		int numero;
+		int size;
 		
 		try {
 			numero = Integer.parseInt(pageStr);
@@ -57,6 +55,6 @@ public abstract class Service<U extends Model> {
 		}
 		Page page = new Page(numero,size);
 		
-		return (List<U>) this.dao.list(page);
+		return this.dao.list(page);
 	}
 }
