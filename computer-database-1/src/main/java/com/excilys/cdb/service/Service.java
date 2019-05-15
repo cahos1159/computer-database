@@ -21,26 +21,27 @@ public abstract class Service<U extends Model> {
 	
 	public U create(U modelObject) throws Exception {
 		return this.dao.create(modelObject);
-	};
+	}
 	
 	public U update(U modelObject) throws Exception {
 		return this.dao.update(modelObject);
-	};
+	}
 	
 	public U delete(U modelObject) throws Exception {
 		return this.dao.delete(modelObject);
-	};
+	}
 	
 	public U read(int id) throws Exception {
 		return this.dao.read(id);
-	};
+	}
 	
 	public List<U> listAllElements() throws Exception {
 		return (List<U>) this.dao.listAll();
-	};
+	}
 	
 	public List<U> list(String pageStr, String sizeStr) throws Exception {
-		int numero,size;
+		int numero;
+		int size;
 		
 		try {
 			numero = Integer.parseInt(pageStr);
@@ -54,6 +55,6 @@ public abstract class Service<U extends Model> {
 		}
 		Page page = new Page(numero,size);
 		
-		return (List<U>) this.dao.list(page);
+		return this.dao.list(page);
 	}
 }

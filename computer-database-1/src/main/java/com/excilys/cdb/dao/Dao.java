@@ -18,23 +18,22 @@ public abstract class Dao<T extends Model> {
 
 	protected DataBaseAccess dataBase;
 	
-	protected final String SQL_CREATE;
-	protected final String SQL_UPDATE;
-	protected final String SQL_DELETE;
-	protected final String SQL_SELECT;
-	protected final String SQL_LISTALL;
-	protected final String SQL_LIST;
-	protected final String SQL_SEARCH;
+	protected final String sqlCreate;
+	protected final String sqlUpdate;
+	protected final String sqlDelete;
+	protected final String sqlSelect;
+	protected final String sqlListAll;
+	protected final String sqlList;
+	protected final String sqlSearch;
 
 	protected Dao(String sqlCreate, String sqlUpdate, String sqlDelete, String sqlSelect, String sqlListall, String sqlList, String sqlSearch) {
-		this.SQL_CREATE = sqlCreate;
-		this.SQL_UPDATE = sqlUpdate;
-		this.SQL_DELETE = sqlDelete;
-		this.SQL_SELECT = sqlSelect;
-		this.SQL_LISTALL = sqlListall;
-		this.SQL_LIST = sqlList;
-		this.SQL_SEARCH = sqlSearch;
-		//this.credentials = new DataBaseCredentials(this.DBACCESS,this.DBUSER,this.DBPASS);
+		this.sqlCreate = sqlCreate;
+		this.sqlUpdate = sqlUpdate;
+		this.sqlDelete = sqlDelete;
+		this.sqlSelect = sqlSelect;
+		this.sqlListAll = sqlListall;
+		this.sqlList = sqlList;
+		this.sqlSearch = sqlSearch;
 		this.dataBase = new DataBaseAccess();
 		
 		
@@ -44,7 +43,7 @@ public abstract class Dao<T extends Model> {
 	public abstract T update(T obj) throws Exception;
 	public abstract T delete(T obj) throws Exception;
 	public abstract T deleteById(int i) throws Exception;
-	public abstract T read(int id) throws RuntimeException, Exception;
+	public abstract T read(int id) throws  Exception;
 	public abstract List<T> listAll() throws Exception;
 	public abstract List<T> list(Page page) throws Exception;
 	

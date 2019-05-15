@@ -43,6 +43,8 @@ public class ComputerEdit extends AbstractServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 				
@@ -52,14 +54,14 @@ public class ComputerEdit extends AbstractServlet {
 
 			try {
 				List<Company> company;
-				final int id = Integer.valueOf(request.getParameter("id"));
+				final int id = Integer.parseInt(request.getParameter("id"));
 				Computer computer = null;
-				computer = c_uterServ.read(id);
+				computer = cuterServ.read(id);
 			
-				company = c_anyServ.listAllElements();
+				company = canyServ.listAllElements();
 				setListCompany(request,company);
 				setIdComputer(request,id);
-				setComputer(request,c_uterMap.modelToDto(computer));
+				setComputer(request,cuterMap.modelToDto(computer));
 				this.getServletContext().getRequestDispatcher( "/WEB-INF/editComputer.jsp" ).forward( request, response );
 			} catch (Exception e) {
 				logger.error("",e);
@@ -73,6 +75,8 @@ public class ComputerEdit extends AbstractServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			updateOrdi(request);
@@ -99,7 +103,7 @@ public class ComputerEdit extends AbstractServlet {
 		
 		ComputerDto elem = new ComputerDto(request.getParameter("id"),request.getParameter("name"), intro, disc, comp);
 		
-		c_uterServ.update(c_uterMap.dtoToModel(elem));
+		cuterServ.update(cuterMap.dtoToModel(elem));
 		
 	
 }
@@ -114,7 +118,6 @@ public class ComputerEdit extends AbstractServlet {
 	private String formatDate(String date) {
 		if(date == null) return null;
 		date = date.replace("/", "-");
-		String res = (date.length() <= 10 ) ? date.concat(" 12:00:00") : date;
-		return res;
+		return (date.length() <= 10 ) ? date.concat(" 12:00:00") : date;
 	}
 }

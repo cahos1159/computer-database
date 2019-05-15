@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -20,12 +21,9 @@ import com.excilys.cdb.exception.InvalidDateValueException;
 public class Validateur {
 	private static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
 	
-		
-		private Validateur() {}	
 
 		
 	public Dto valide(Dto elem) throws InvalidComputerOptionException {
-		boolean verif;
 		if(elem.getClass().equals(CompanyDto.class)) {
 			CompanyDto comp = (CompanyDto) elem; 
 			if(valideName(comp.getName())) return comp;
@@ -66,7 +64,7 @@ public class Validateur {
 		try {
 			LocalDateTime introF = castLocalDateTime(intro);
 			LocalDateTime discF = castLocalDateTime(disc);
-			verifIntro = introF.isBefore(discF) == true ? introF.isBefore(LocalDateTime.now()) : false;
+			verifIntro = introF.isBefore(discF) ? introF.isBefore(LocalDateTime.now()) : introF.isBefore(discF);
 			verifDisc = discF.isBefore(LocalDateTime.now());
 			
 		}
@@ -75,20 +73,18 @@ public class Validateur {
 			throw new InvalidDateValueException(intro);
 		}
 		if(verifIntro && verifDisc) return true;
-		else return false;
+		return false;
 		
 		
 	}
 	
-	private LocalDateTime castLocalDateTime(String s) throws RuntimeException {
+	private LocalDateTime castLocalDateTime(String s) {
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		
 		if(s.matches("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]")){
 			try {
-				LocalDateTime dateTime = LocalDateTime.parse(s, formatter);
-				
-				return dateTime;
+				return LocalDateTime.parse(s, formatter);
 			} catch (Exception e) {
 				logger.error("", new InvalidDateValueException(s));
 				throw new InvalidDateValueException(s);
@@ -97,12 +93,10 @@ public class Validateur {
 		else {
 			try {
 				String tmp = s.concat(" 12:00:00");
-				LocalDateTime dateTime = LocalDateTime.parse(tmp, formatter);
-				
-				return  dateTime;
+				return  LocalDateTime.parse(tmp, formatter);
 			} catch (Exception e) {
 				logger.error("",e);
-				throw e;
+				throw new InvalidDateValueException(s) ;
 				
 			}
 		}

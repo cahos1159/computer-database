@@ -11,7 +11,7 @@ import com.excilys.cdb.model.Company;
 @Component
 public class CompanyService extends Service<Company>{
 	
-	private CompanyService(CompanyDao compDao) {
+	public CompanyService(CompanyDao compDao) {
 		super(compDao);
 	}
 	

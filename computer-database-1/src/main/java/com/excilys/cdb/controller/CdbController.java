@@ -21,27 +21,29 @@ import com.excilys.cdb.service.*;
 @Controller
 public class CdbController {
 	private String[] splitStr;
-	private static final String dateFormat = "yyyy-MM-dd/HH:mm:ss";
+	private static final String DATEFORMAT = "yyyy-MM-dd/HH:mm:ss";
+	private static final String COMPUTER = "computer";
+	private static final String COMPANY = "company";
 	
 	
-	final ComputerMapper c_uterMap;
+	final ComputerMapper cuterMap;
 	
-	final CompanyMapper c_anyMap;
+	final CompanyMapper canyMap;
 	
-	final CompanyService c_anyServ;
+	final CompanyService canyServ;
 	
-	final ComputerService c_uterServ;
-	
-	
+	final ComputerService cuterServ;
 	
 	
 	
-	private CdbController(ComputerMapper c_uterMap,CompanyMapper c_anyMap,CompanyService c_anyServ,ComputerService c_uterServ)
+	
+	
+	public CdbController(ComputerMapper cuterMap,CompanyMapper canyMap,CompanyService canyServ,ComputerService cuterServ)
 	{
-		this.c_anyMap = c_anyMap;
-		this.c_anyServ = c_anyServ;
-		this.c_uterMap = c_uterMap;
-		this.c_uterServ = c_uterServ; 
+		this.canyMap = canyMap;
+		this.canyServ = canyServ;
+		this.cuterMap = cuterMap;
+		this.cuterServ = cuterServ; 
 	}
 	
 
@@ -60,7 +62,7 @@ public class CdbController {
 			case Delete:
 				return this.delete();
 			case Help:
-				return this.help();
+				return help();
 			case ListAll:
 				return this.listAll();
 			case List:
@@ -73,8 +75,8 @@ public class CdbController {
 		}
 	}
 	
-	private String help() {
-		return "Please use custom format for dates: "+this.dateFormat+"\n"
+	private static String help() {
+		return "Please use custom format for dates: "+DATEFORMAT+"\n"
 			+ "create|update company <id> <new_name>\n"
 			+ "create computer <id> <name> <intro | _> <disc | _> <company_id | _>\n"
 			+ "update computer <id> <[-n:new_name] [-i:new_intro] [-d:new_disc] [-c:new_cid]>\n"
@@ -84,18 +86,18 @@ public class CdbController {
 			+ "help";
 	}
 	
-	private String castDate(String s) throws InvalidDateFormatException {
+	private static String castDate(String s) throws InvalidDateFormatException {
 		if (s.length() == 19) {
 			// Check Date Format
 			if (s.charAt(4) == '-' && s.charAt(7) == '-' && s.charAt(10) == '/' && s.charAt(13) == ':' && s.charAt(16) == ':') {
 				return s.replace("/", " ");
 			} else {
-				throw new InvalidDateFormatException(this.dateFormat,s);
+				throw new InvalidDateFormatException(DATEFORMAT,s);
 			}
 		} else if (s.contentEquals("_")) {
 			return null;
 		} else {
-			throw new InvalidDateFormatException(this.dateFormat,s);
+			throw new InvalidDateFormatException(DATEFORMAT,s);
 		}
 	}
 	
@@ -109,54 +111,54 @@ public class CdbController {
 				throw new MissingArgumentException(2,splitStr.length);
 			case 2:
 			case 3:
-				if (splitStr[1].toLowerCase().equals("computer")) {
+				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
 					throw new MissingArgumentException(sizeComputerExpected,splitStr.length);
-				} else if (splitStr[1].toLowerCase().equals("company")) {
+				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
 					throw new MissingArgumentException(sizeCompanyExpected,splitStr.length);
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
 			case 4:
-				if (splitStr[1].toLowerCase().equals("computer")) {
+				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
 					throw new MissingArgumentException(sizeComputerExpected,splitStr.length);
-				} else if (splitStr[1].toLowerCase().equals("company")) {
+				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
 					CompanyDto c = new CompanyDto(splitStr[2],splitStr[3]);
-					Company ret = c_anyServ.create(c_anyMap.dtoToModel(c));
+					Company ret = canyServ.create(canyMap.dtoToModel(c));
 					return (ret == null) ? "No company has been created" : "Create "+ret.toString();
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
 			case 5:
-				if (splitStr[1].toLowerCase().equals("computer")) {
+				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
 					throw new MissingArgumentException(sizeComputerExpected,splitStr.length);
-				} else if (splitStr[1].toLowerCase().equals("company")) {
+				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
 					throw new TooManyArgumentsException(splitStr[4]);
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
 			case 6:
-				if (splitStr[1].toLowerCase().equals("computer")) {
+				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
 					throw new MissingArgumentException(sizeComputerExpected,splitStr.length);
-				} else if (splitStr[1].toLowerCase().equals("company")) {
+				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
 					throw new TooManyArgumentsException(splitStr[4]);
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
 			case 7:
-				if (splitStr[1].toLowerCase().equals("computer")) {
-					ComputerDto c = new ComputerDto(splitStr[2],splitStr[3],this.castDate(splitStr[4]),this.castDate(splitStr[5]),new CompanyDto((splitStr[6].contentEquals("_")) ? "0" : splitStr[6]));
-					Computer ret = c_uterServ.create(c_uterMap.dtoToModel(c));
+				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
+					ComputerDto c = new ComputerDto(splitStr[2],splitStr[3],castDate(splitStr[4]),castDate(splitStr[5]),new CompanyDto((splitStr[6].contentEquals("_")) ? "0" : splitStr[6]));
+					Computer ret = cuterServ.create(cuterMap.dtoToModel(c));
 					return (ret == null) ? "No computer has been created" : "Create "+ret.toString();
-				} else if (splitStr[1].toLowerCase().equals("company")) {
+				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
 					throw new TooManyArgumentsException(splitStr[5]);
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
 			default:
 			case 8:
-				if (splitStr[1].toLowerCase().equals("computer")) {
+				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
 					throw new TooManyArgumentsException(splitStr[7]);
-				} else if (splitStr[1].toLowerCase().equals("company")) {
+				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
 					throw new TooManyArgumentsException(splitStr[5]);
 				} else {
 					throw new InvalidTableException(splitStr[1]);
@@ -175,10 +177,10 @@ public class CdbController {
 				throw new MissingArgumentException(sizeExpected,splitStr.length);
 			case 3:
 				// Load dto by id
-				if (splitStr[1].toLowerCase().equals("computer")) {
-					c = c_uterMap.modelToDto(c_uterServ.read(Integer.parseInt(splitStr[2])));
-				} else if (splitStr[1].toLowerCase().equals("company")) {
-					c = c_anyMap.modelToDto(c_anyServ.read(Integer.parseInt(splitStr[2])));
+				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
+					c = cuterMap.modelToDto(cuterServ.read(Integer.parseInt(splitStr[2])));
+				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
+					c = canyMap.modelToDto(canyServ.read(Integer.parseInt(splitStr[2])));
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
@@ -198,10 +200,10 @@ public class CdbController {
 				throw new MissingArgumentException(sizeExpected,splitStr.length);
 			case 3:
 				Dto ret;
-				if (splitStr[1].toLowerCase().equals("computer")) {
-					ret = c_uterMap.modelToDto(c_uterServ.delete(c_uterMap.dtoToModel(new ComputerDto(splitStr[2]))));
-				} else if (splitStr[1].toLowerCase().equals("company")) {
-					ret = c_anyMap.modelToDto(c_anyServ.delete(c_anyMap.dtoToModel(new CompanyDto(splitStr[2]))));
+				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
+					ret = cuterMap.modelToDto(cuterServ.delete(cuterMap.dtoToModel(new ComputerDto(splitStr[2]))));
+				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
+					ret = canyMap.modelToDto(canyServ.delete(canyMap.dtoToModel(new CompanyDto(splitStr[2]))));
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
@@ -211,7 +213,7 @@ public class CdbController {
 		}
 	}
 	
-	private void updateTreatOption(ComputerDto c, String s) throws Exception {
+	private void updateTreatOption(ComputerDto c, String s) throws InvalidComputerOptionException, InvalidDateFormatException {
 		if (s.charAt(0) != '-' || s.charAt(2) != ':' || s.length() == 3) {
 			throw new InvalidComputerOptionException(s);
 		} else {
@@ -221,10 +223,10 @@ public class CdbController {
 					c.setName(s.substring(3));
 					break;
 				case Introduction:
-					c.setIntroduction(this.castDate(s.substring(3)));
+					c.setIntroduction(CdbController.castDate(s.substring(3)));
 					break;
 				case Discontinued:
-					c.setDiscontinued(this.castDate(s.substring(3)));
+					c.setDiscontinued(CdbController.castDate(s.substring(3)));
 					break;
 				case Company:
 					c.setCompany(new CompanyDto (s.substring(3).contentEquals("_") ? "-1" : s.substring(3)));
@@ -246,16 +248,16 @@ public class CdbController {
 			throw new MissingArgumentException(sizeExpected,splitStr.length);
 		default:
 			Dto ret;
-			if (splitStr[1].toLowerCase().equals("computer")) {
+			if (splitStr[1].toLowerCase().equals(COMPUTER)) {
 				ComputerDto c = new ComputerDto(splitStr[2]);
 				for (String s : Arrays.copyOfRange(splitStr, 3, splitStr.length)) {
 					this.updateTreatOption(c,s);
 				}
-				ret = c_uterMap.modelToDto(c_uterServ.update(c_uterMap.dtoToModel(c)));
-			} else if (splitStr[1].toLowerCase().equals("company")) {
+				ret = cuterMap.modelToDto(cuterServ.update(cuterMap.dtoToModel(c)));
+			} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
 				if(splitStr.length == 4) {
 					CompanyDto c = new CompanyDto(splitStr[2],splitStr[3]);
-					ret = c_anyMap.modelToDto(c_anyServ.update(c_anyMap.dtoToModel(c)));
+					ret = canyMap.modelToDto(canyServ.update(canyMap.dtoToModel(c)));
 				} else {
 					throw new TooManyArgumentsException(splitStr[4]);
 				}
@@ -271,17 +273,17 @@ public class CdbController {
 			case 1:
 				throw new MissingArgumentException(2, splitStr.length);
 			case 2:
-				List<? extends Model> MList;
-				if (splitStr[1].toLowerCase().equals("computer")) {
-					MList = c_uterServ.listAllElements();
-				} else if (splitStr[1].toLowerCase().equals("company")) {
-					MList = (List<? extends Model>) c_anyServ.listAllElements();
+				List<? extends Model> mList;
+				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
+					mList = cuterServ.listAllElements();
+				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
+					mList = (List<? extends Model>) canyServ.listAllElements();
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
 				
 				String ret = "";
-				for (Model d : MList) {
+				for (Model d : mList) {
 					ret += d.toString() + "\n";
 				}
 				return ret;
@@ -299,17 +301,17 @@ public class CdbController {
 			case 3:
 				throw new MissingArgumentException(sizeExpected, splitStr.length);
 			case 4:
-				List<? extends Model> MList;
-				if (splitStr[1].toLowerCase().equals("computer")) {
-					MList = c_uterServ.list(splitStr[2], splitStr[3]);
-				} else if (splitStr[1].toLowerCase().equals("company")) {
-					MList = c_anyServ.list(splitStr[2], splitStr[3]);
+				List<? extends Model> mList;
+				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
+					mList = cuterServ.list(splitStr[2], splitStr[3]);
+				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
+					mList = canyServ.list(splitStr[2], splitStr[3]);
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
 				
 				String ret = "";
-				for (Model d : MList) {
+				for (Model d : mList) {
 					ret += d.toString() + "\n";
 				}
 				return ret;

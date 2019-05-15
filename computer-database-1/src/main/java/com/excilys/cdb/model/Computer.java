@@ -10,7 +10,7 @@ public class Computer extends Model {
 	private Timestamp dateDisc;
 	private int manufacturer;
 	
-	public Computer(int id, String name, Timestamp dateIntro, Timestamp dateDisc, int manufacturer) throws RuntimeException {
+	public Computer(int id, String name, Timestamp dateIntro, Timestamp dateDisc, int manufacturer) {
 		super(id);
 		this.setName(name);
 		this.setDateIntro(dateIntro);
@@ -69,9 +69,7 @@ public class Computer extends Model {
 	
 	@Override
 	public int hashCode() {
-		int result = 31*17 + this.getId();
-		
-		return result;
+		return 31*17 + this.getId();
 	}
 	
 	

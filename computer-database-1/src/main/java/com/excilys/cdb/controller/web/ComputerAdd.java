@@ -39,10 +39,11 @@ public class ComputerAdd extends AbstractServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
-			final List<Company> company = c_anyServ.listAllElements();
+			final List<Company> company = canyServ.listAllElements();
 			setListCompany(request,company);
 			
 		} catch (Exception e) {
@@ -61,6 +62,7 @@ public class ComputerAdd extends AbstractServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			createOrdi(request);
@@ -73,9 +75,9 @@ public class ComputerAdd extends AbstractServlet {
 	}
 	
 	private void setListCompany(HttpServletRequest request, List<Company> company) {
-		List<CompanyDto> res = new ArrayList<CompanyDto>();
+		List<CompanyDto> res = new ArrayList<>();
 		for(Iterator<Company> i=company.iterator();i.hasNext();) {
-			res.add(c_anyMap.modelToDto(i.next()));
+			res.add(canyMap.modelToDto(i.next()));
 		}
 		request.setAttribute("company", res);
 	}
@@ -86,7 +88,7 @@ public class ComputerAdd extends AbstractServlet {
 			String intro = formatDate(request.getParameter("introduced"));
 			String disc = formatDate(request.getParameter("discontinued"));
 			ComputerDto elem = new ComputerDto("-10",request.getParameter("computerName"), intro, disc, comp);
-			c_uterServ.create(c_uterMap.dtoToModel((ComputerDto) val.valide(elem)));
+			cuterServ.create(cuterMap.dtoToModel((ComputerDto) val.valide(elem)));
 			request.setAttribute("titre", elem.toString());
 			
 		
@@ -95,7 +97,6 @@ public class ComputerAdd extends AbstractServlet {
 	private String formatDate(String date) {
 		if(date == null) return null;
 		date = date.replace("/", "-");
-	 	String res = (date.length() <= 10 ) ? date.concat(" 12:00:00") : date;
-		return res;
+		return  (date.length() <= 10 ) ? date.concat(" 12:00:00") : date;
 	}
 }

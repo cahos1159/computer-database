@@ -15,14 +15,19 @@ import com.excilys.cdb.model.*;
 @Scope(value="singleton")
 @Repository
 public class ComputerDao extends Dao<Computer>{
-	private final static  String SQL_SELECT_UPDATE_COMPANY = "UPDATE computer SET company_id=? WHERE id=?;";
-	private final static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
+	private static final String SQL_SELECT_UPDATE_COMPANY = "UPDATE computer SET company_id=? WHERE id=?;";
+	private static final Logger logger = LoggerFactory.getLogger(ComputerDao.class);
 	
-	private final static String order1 ="SELECT * FROM computer ORDER BY ";
-	private final static String order2 =" LIMIT ?,?;";
-	private final static String orderSearch1 ="SELECT * FROM computer WHERE name LIKE ? ORDER BY ";
-	private final static String orderSearch2 =" LIMIT ?,?;";
-	private final static String intro = "introduced";
+	private static final String ORDER1 ="SELECT * FROM computer ORDER BY ";
+	private static final String ORDER2 =" LIMIT ?,?;";
+	private static final String ORDERSEARCH1 ="SELECT * FROM computer WHERE name LIKE ? ORDER BY ";
+	private static final String ORDERSEARCH2 =" LIMIT ?,?;";
+	private static final String INTRO = "introduced";
+	private static final String DISC = "discontinued";
+	private static final String COMPANY = "company";
+	private static final String COMPANYID = "company_id";
+	
+	
 	private ComputerDao() {
 		super(
 			"INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?);",
@@ -38,9 +43,9 @@ public class ComputerDao extends Dao<Computer>{
 	static Map<String,String>  att = new HashMap<>();
 	static {		
 		att.put("name", "name");
-		att.put("introduced", "introduced");
-		att.put("discontinued", "discontinued");
-		att.put("company", "company");
+		att.put(INTRO, INTRO);
+		att.put(DISC, DISC);
+		att.put(COMPANY, COMPANY);
 	}
 	
 	
@@ -54,9 +59,9 @@ public class ComputerDao extends Dao<Computer>{
 		
 		try (
 			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_CREATE,Statement.RETURN_GENERATED_KEYS)
+			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlCreate,Statement.RETURN_GENERATED_KEYS)
 		) {
-			//preparedStatement.setInt(1,obj.getId());
+			
 			preparedStatement.setString(1, obj.getName());
 			preparedStatement.setTimestamp(2, obj.getDateIntro());
 			preparedStatement.setTimestamp(3, obj.getDateDisc());
@@ -81,13 +86,13 @@ public class ComputerDao extends Dao<Computer>{
 			if (nbRow == 1) {
 				return obj;
 			} else {
-				 logger.error("",new FailedSQLQueryException(this.SQL_CREATE));
-				 throw new FailedSQLQueryException(this.SQL_CREATE);
+				 logger.error("",new FailedSQLQueryException(this.sqlCreate));
+				 throw new FailedSQLQueryException(this.sqlCreate);
 			}
 		} else {
 			try (
 					Connection connection = dataBase.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_SELECT_UPDATE_COMPANY);
+				PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_UPDATE_COMPANY);
 			) {
 				preparedStatement.setInt(1, obj.getManufacturer());
 				preparedStatement.setInt(2, obj.getId());
@@ -96,12 +101,12 @@ public class ComputerDao extends Dao<Computer>{
 				if (nbRow == 2) {
 					return obj;
 				} else {
-					 logger.error("",new FailedSQLQueryException(this.SQL_SELECT_UPDATE_COMPANY));
-					 throw new FailedSQLQueryException(this.SQL_SELECT_UPDATE_COMPANY);
+					 logger.error("",new FailedSQLQueryException(SQL_SELECT_UPDATE_COMPANY));
+					 throw new FailedSQLQueryException(SQL_SELECT_UPDATE_COMPANY);
 				}
 			} catch (SQLException e) {
-				 logger.error("", new ForeignKeyViolationException(obj.getManufacturer(), "company"));
-				 throw new ForeignKeyViolationException(obj.getManufacturer(), "company");
+				 logger.error("", new ForeignKeyViolationException(obj.getManufacturer(), COMPANY));
+				 throw new ForeignKeyViolationException(obj.getManufacturer(), COMPANY);
 			}
 		}
 	}
@@ -114,7 +119,7 @@ public class ComputerDao extends Dao<Computer>{
 		
 		try (
 			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_UPDATE);
+			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlUpdate);
 		) {
 			preparedStatement.setString(1, returnComputer.getName());
 			preparedStatement.setTimestamp(2, returnComputer.getDateIntro());
@@ -129,12 +134,12 @@ public class ComputerDao extends Dao<Computer>{
 			if (preparedStatement.executeUpdate() == 1) {
 				return returnComputer;
 			} else {
-				 logger.error("",new FailedSQLQueryException(this.SQL_UPDATE));
-				 throw new FailedSQLQueryException(this.SQL_UPDATE);
+				 logger.error("",new FailedSQLQueryException(this.sqlUpdate));
+				 throw new FailedSQLQueryException(this.sqlUpdate);
 			}		
 		} catch (SQLException e) {
-			 logger.error("",new ForeignKeyViolationException(returnComputer.getManufacturer(), "company"));
-			 throw new ForeignKeyViolationException(returnComputer.getManufacturer(), "company");
+			 logger.error("",new ForeignKeyViolationException(returnComputer.getManufacturer(), COMPANY));
+			 throw new ForeignKeyViolationException(returnComputer.getManufacturer(), COMPANY);
 		}
 	}
 
@@ -143,11 +148,11 @@ public class ComputerDao extends Dao<Computer>{
 		return this.deleteById(obj.getId());
 	}
 	
-	public Computer deleteById(int id) throws Exception {
+	public Computer deleteById(int id) throws SQLException {
 		Computer returnComputer = this.read(id);
 		try (
 			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_DELETE);
+			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlDelete);
 		) {
 			preparedStatement.setInt(1, id);
 			
@@ -155,17 +160,17 @@ public class ComputerDao extends Dao<Computer>{
 				return returnComputer;
 			} else {
 				
-				 logger.error("",new FailedSQLQueryException(this.SQL_DELETE));
-				 throw new FailedSQLQueryException(this.SQL_DELETE);
+				 logger.error("",new FailedSQLQueryException(this.sqlDelete));
+				 throw new FailedSQLQueryException(this.sqlDelete);
 			}
 		} catch (SQLException e) {
 			 logger.error("",e);
-			 throw e;
+			 throw new SQLException();
 		}
 	}
 
 	@Override
-	public Computer read(int id) throws RuntimeException, SQLException {
+	public Computer read(int id) throws SQLException {
 		if(id <= 0) {
 			 logger.error("",new InvalidIdException(id));
 			 throw new InvalidIdException(id);
@@ -173,19 +178,19 @@ public class ComputerDao extends Dao<Computer>{
 		
 		try (
 			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_SELECT);
+			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlSelect);
 		) {
 			preparedStatement.setInt(1, id);
 			
 			try(ResultSet resultSet = preparedStatement.executeQuery();){
 			if(resultSet.first()) {
-				return new Computer(id,resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id"));
+				return new Computer(id,resultSet.getString("name"),resultSet.getTimestamp(INTRO),resultSet.getTimestamp(DISC), resultSet.getInt(COMPANYID));
 			} else {
 				throw new InvalidIdException(id);
 			}
 		} catch (SQLException e) {
-			 logger.error("",new FailedSQLQueryException(this.SQL_SELECT));
-			 throw new FailedSQLQueryException(this.SQL_SELECT);
+			 logger.error("",new FailedSQLQueryException(this.sqlSelect));
+			 throw new FailedSQLQueryException(this.sqlSelect);
 		}
 		}
 	}
@@ -194,19 +199,19 @@ public class ComputerDao extends Dao<Computer>{
 	public List<Computer> listAll() throws Exception {
 		try (
 			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_LISTALL);
+			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlListAll);
 		) {
 			
 			try(ResultSet resultSet = preparedStatement.executeQuery();){
-			List<Computer> computerList = new ArrayList<Computer>();
+			List<Computer> computerList = new ArrayList<>();
 			while(resultSet.next()) {
-				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
+				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp(INTRO),resultSet.getTimestamp(DISC), resultSet.getInt(COMPANYID)));
 			}
 			return computerList;
 			
 		} catch (SQLException e) {
-			 logger.error("",new FailedSQLQueryException(this.SQL_LISTALL));
-			 throw new FailedSQLQueryException(this.SQL_LISTALL);
+			 logger.error("",new FailedSQLQueryException(this.sqlListAll));
+			 throw new FailedSQLQueryException(this.sqlListAll);
 			 
 		}
 		}
@@ -228,21 +233,21 @@ public class ComputerDao extends Dao<Computer>{
 		
 		try (
 			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_LIST);
+			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlList);
 		) {
 			preparedStatement.setInt(1, offset);
 			preparedStatement.setInt(2, page.getNbElem());
 			
 			try(ResultSet resultSet = preparedStatement.executeQuery();){
-			List<Computer> computerList = new ArrayList<Computer>();
+			List<Computer> computerList = new ArrayList<>();
 			while(resultSet.next()) {
-				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
+				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp(INTRO),resultSet.getTimestamp(DISC), resultSet.getInt(COMPANYID)));
 			}
 			return computerList;
 			
 		} catch (SQLException e) {
-			logger.error("",new FailedSQLQueryException(this.SQL_LIST));
-			throw new FailedSQLQueryException(this.SQL_LIST);
+			logger.error("",new FailedSQLQueryException(this.sqlList));
+			throw new FailedSQLQueryException(this.sqlList);
 		}
 		}
 	}
@@ -261,21 +266,21 @@ public class ComputerDao extends Dao<Computer>{
 		int offset = (page.getNumero()-1)*page.getNbElem();
 		try (
 			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.SQL_SEARCH);
+			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlSearch);
 		) {
 			preparedStatement.setString(1, "%" + keyWord + "%");
 			preparedStatement.setInt(2, offset);
 			preparedStatement.setInt(3, page.getNbElem());
 			
 			try(ResultSet resultSet = preparedStatement.executeQuery();){
-			List<Computer> computerList = new ArrayList<Computer>();
+			List<Computer> computerList = new ArrayList<>();
 			while(resultSet.next()) {
-				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
+				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp(INTRO),resultSet.getTimestamp(DISC), resultSet.getInt(COMPANYID)));
 			}
 			return computerList;
 		} catch (SQLException e) {
-			logger.error("",new FailedSQLQueryException(this.SQL_SEARCH));
-			throw new FailedSQLQueryException(this.SQL_SEARCH);
+			logger.error("",new FailedSQLQueryException(this.sqlSearch));
+			throw new FailedSQLQueryException(this.sqlSearch);
 		}
 		}
 	}
@@ -294,7 +299,7 @@ public class ComputerDao extends Dao<Computer>{
 		
 		
 		if(!att.containsKey(colonne)) return listAll();
-		String requete = order1+att.get(colonne)+" "+mode+order2;
+		String requete = ORDER1+att.get(colonne)+" "+mode+ORDER2;
 		if(colonne == null ||  "".equals(colonne)) {
 			return listAll();
 		}
@@ -306,9 +311,9 @@ public class ComputerDao extends Dao<Computer>{
 			preparedStatement.setInt(1, offset);
 			preparedStatement.setInt(2, page.getNbElem());
 			try(ResultSet resultSet = preparedStatement.executeQuery();){
-			List<Computer> computerList = new ArrayList<Computer>();
+			List<Computer> computerList = new ArrayList<>();
 			while(resultSet.next()) {
-				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
+				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp(INTRO),resultSet.getTimestamp(DISC), resultSet.getInt(COMPANYID)));
 			}
 			
 			return computerList;
@@ -332,7 +337,7 @@ public class ComputerDao extends Dao<Computer>{
 		int offset = (page.getNumero()-1)*page.getNbElem();
 		String mode = chx == 0 ? "ASC":"DESC";
 		if(!att.containsKey(colonne))return computerSearch(page,keyWord);
-		String requete = orderSearch1+att.get(colonne)+" "+mode+orderSearch2;
+		String requete = ORDERSEARCH1+att.get(colonne)+" "+mode+ORDERSEARCH2;
 		if(colonne == null || "".equals(colonne)) {
 			return computerSearch(page,keyWord);
 		}
@@ -346,9 +351,9 @@ public class ComputerDao extends Dao<Computer>{
 			preparedStatement.setInt(2, offset);
 			preparedStatement.setInt(3, offset+page.getNbElem());
 			try(ResultSet resultSet = preparedStatement.executeQuery();){
-			List<Computer> computerList = new ArrayList<Computer>();
+			List<Computer> computerList = new ArrayList<>();
 			while(resultSet.next()) {
-				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp("introduced"),resultSet.getTimestamp("discontinued"), resultSet.getInt("company_id")));
+				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp(INTRO),resultSet.getTimestamp(DISC), resultSet.getInt(COMPANYID)));
 			}
 			return computerList;
 		} catch (SQLException e) {
@@ -361,15 +366,11 @@ public class ComputerDao extends Dao<Computer>{
 	public int count(String keyWord, int mode) {
 		int res;
 		String stat;
-		switch(mode) {
-		
-		case 1:
+		if(mode == 1) 
 			stat = "SELECT COUNT(*) FROM computer WHERE name LIKE ?;";
-			break;
-	
-		default:
+		else
 			stat = "SELECT COUNT(*) FROM computer;";
-		}
+		
 		try (
 				Connection connection = dataBase.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(stat);

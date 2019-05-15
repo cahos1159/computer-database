@@ -14,35 +14,26 @@ import com.excilys.cdb.model.Computer;
 public class ComputerService extends Service<Computer> {
 
 
-	private ComputerService(ComputerDao compDao) {
+	public ComputerService(ComputerDao compDao) {
 		super(compDao);
 	}
 
 
 
 	public List<Computer> computerSearch(Page page ,String keyWord) throws Exception {
-
-		List<Computer> res = ((ComputerDao) this.dao).computerSearch(page,keyWord);
-
-		return res;
+		return  ((ComputerDao) this.dao).computerSearch(page,keyWord);
 	}
 
 	public List<Computer> computerOrder(Page page ,String colonne,int mode) throws Exception {
-
-		List<Computer> res = ((ComputerDao) this.dao).computerOrder(page,colonne,mode);
-
-		return res;
+		return ((ComputerDao) this.dao).computerOrder(page,colonne,mode);
 	}
 	
 	public List<Computer> computerOrderSearch(Page page ,String colonne,int mode,String keyWord ) throws Exception {
-
-		List<Computer> res = ((ComputerDao) this.dao).computerOrderSearch(page,colonne,mode,keyWord);
-
-		return res;
+		return ((ComputerDao) this.dao).computerOrderSearch(page,colonne,mode,keyWord);
 	}
 	
 	public int count(String keyWord, int mode) {
-		return (int)((ComputerDao) this.dao).count(keyWord,mode);
+		return ((ComputerDao) this.dao).count(keyWord,mode);
 	}
 	
 	

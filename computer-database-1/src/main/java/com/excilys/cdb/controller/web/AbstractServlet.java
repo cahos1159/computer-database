@@ -3,7 +3,6 @@ package com.excilys.cdb.controller.web;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import com.excilys.cdb.config.spring.AppConfig;
@@ -15,29 +14,36 @@ import com.excilys.cdb.validateur.Validateur;
 
 public abstract class AbstractServlet extends HttpServlet {
 
-
+	private static final long serialVersionUID = 1L;
 	
-	static protected ComputerMapper c_uterMap;
+	protected static  ComputerMapper cuterMap;
 
-	static protected CompanyMapper c_anyMap;
+	protected static CompanyMapper canyMap;
 
-	static protected ComputerService c_uterServ;
+	protected static ComputerService cuterServ;
 
-	static protected CompanyService c_anyServ;
+	protected static CompanyService canyServ;
 	
-	final protected Validateur val;
+	protected static ApplicationContext ctx;
+	
+	protected final Validateur val;
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	static protected AutowireCapableBeanFactory ctx;
+	
+	
+	
+	static {
+		ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+		cuterServ = ctx.getBean(ComputerService.class);
+		cuterMap = ctx.getBean(ComputerMapper.class);
+		canyServ = ctx.getBean(CompanyService.class);
+		canyMap = ctx.getBean(CompanyMapper.class);
+	}
 
 	public AbstractServlet() throws ServletException {
-			ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-			this.c_uterServ = ctx.getBean(ComputerService.class);
-			this.c_uterMap = ctx.getBean(ComputerMapper.class);
-			this.c_anyServ = ctx.getBean(CompanyService.class);
-			this.c_anyMap = ctx.getBean(CompanyMapper.class);
+			
+			
 			this.val = ctx.getBean(Validateur.class);
 		        
 		  
