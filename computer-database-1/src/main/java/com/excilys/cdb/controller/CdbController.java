@@ -123,8 +123,8 @@ public class CdbController {
 					throw new MissingArgumentException(sizeComputerExpected,splitStr.length);
 				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
 					CompanyDto c = new CompanyDto(splitStr[2],splitStr[3]);
-					Company ret = canyServ.create(canyMap.dtoToModel(c));
-					return (ret == null) ? "No company has been created" : "Create "+ret.toString();
+					int ret = canyServ.create(canyMap.dtoToModel(c));
+					return (ret <= 0) ? "No company has been created" : "Create "+ret;
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
@@ -147,8 +147,8 @@ public class CdbController {
 			case 7:
 				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
 					ComputerDto c = new ComputerDto(splitStr[2],splitStr[3],castDate(splitStr[4]),castDate(splitStr[5]),new CompanyDto((splitStr[6].contentEquals("_")) ? "0" : splitStr[6]));
-					Computer ret = cuterServ.create(cuterMap.dtoToModel(c));
-					return (ret == null) ? "No computer has been created" : "Create "+ret.toString();
+					int ret = cuterServ.create(cuterMap.dtoToModel(c));
+					return (ret <= 0) ? "No computer has been created" : "Create "+ret;
 				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
 					throw new TooManyArgumentsException(splitStr[5]);
 				} else {

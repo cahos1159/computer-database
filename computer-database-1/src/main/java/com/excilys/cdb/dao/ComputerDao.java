@@ -6,17 +6,16 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.controller.web.Page;
-import com.excilys.cdb.database.DataBaseAccess;
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
 
 @Scope(value="singleton")
 @Repository
 public class ComputerDao extends Dao<Computer>{
-	private static final String SQL_SELECT_UPDATE_COMPANY = "UPDATE computer SET company_id=? WHERE id=?;";
 	private static final Logger logger = LoggerFactory.getLogger(ComputerDao.class);
 	
 	private static final String ORDER1 ="SELECT * FROM computer ORDER BY ";
@@ -27,9 +26,10 @@ public class ComputerDao extends Dao<Computer>{
 	private static final String DISC = "discontinued";
 	private static final String COMPANY = "company";
 	private static final String COMPANYID = "company_id";
-	
-	
-	public ComputerDao() {
+	private JdbcTemplate jdbcTemplate;
+
+	private String sqlOrder; 
+	public ComputerDao() throws SQLException {
 		super(
 			"INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?);",
 			"UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;",
@@ -40,6 +40,7 @@ public class ComputerDao extends Dao<Computer>{
 			"SELECT id,name,introduced,discontinued,company_id FROM computer WHERE name LIKE ? LIMIT ?,?;"
 			
 		);
+		this.jdbcTemplate = new JdbcTemplate(dataBase.getDataSource());
 	}
 	static Map<String,String>  att = new HashMap<>();
 	static {		
@@ -50,178 +51,47 @@ public class ComputerDao extends Dao<Computer>{
 	}
 	
 	
-	
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {  
+	    this.jdbcTemplate = jdbcTemplate;  
+	}  
 	
 	@Override
 	
-	public Computer create(Computer obj) throws Exception {
-		int nbRow = 0;
-		
-		
-		try (
-			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlCreate,Statement.RETURN_GENERATED_KEYS)
-		) {
-			
-			preparedStatement.setString(1, obj.getName());
-			preparedStatement.setTimestamp(2, obj.getDateIntro());
-			preparedStatement.setTimestamp(3, obj.getDateDisc());
-			preparedStatement.setNull(4, java.sql.Types.INTEGER);
-			
-			nbRow = preparedStatement.executeUpdate();
-		
-			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					obj.setId((int)generatedKeys.getLong(1));
-					
-					}
-				else
-					throw new FailedSQLQueryException("id non conforme");
-}
-		} catch (SQLException e) {
-			 logger.error("",new PrimaryKeyViolationException(obj.getId()));
-			 throw new PrimaryKeyViolationException(obj.getId());
-		}
-		
-		if (obj.getManufacturer() == 0) {
-			if (nbRow == 1) {
-				return obj;
-			} else {
-				 logger.error("",new FailedSQLQueryException(this.sqlCreate));
-				 throw new FailedSQLQueryException(this.sqlCreate);
-			}
-		} else {
-			try (
-					Connection connection = dataBase.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_UPDATE_COMPANY);
-			) {
-				preparedStatement.setInt(1, obj.getManufacturer());
-				preparedStatement.setInt(2, obj.getId());
-				
-				nbRow += preparedStatement.executeUpdate();
-				if (nbRow == 2) {
-					return obj;
-				} else {
-					 logger.error("",new FailedSQLQueryException(SQL_SELECT_UPDATE_COMPANY));
-					 throw new FailedSQLQueryException(SQL_SELECT_UPDATE_COMPANY);
-				}
-			} catch (SQLException e) {
-				 logger.error("", new ForeignKeyViolationException(obj.getManufacturer(), COMPANY));
-				 throw new ForeignKeyViolationException(obj.getManufacturer(), COMPANY);
-			}
-		}
+	public int create(Computer elem) throws Exception {
+		return jdbcTemplate.update( this.sqlCreate, elem.getName(), elem.getDateIntro(),elem.getDateDisc(),elem.getManufacturer());
 	}
 
 	@Override
-	public Computer update(Computer obj) throws Exception {
-		Computer returnComputer = this.read(obj.getId());
-
+	public int update(Computer elem) throws Exception {
 		
-		
-		try (
-			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlUpdate);
-		) {
-			preparedStatement.setString(1, returnComputer.getName());
-			preparedStatement.setTimestamp(2, returnComputer.getDateIntro());
-			preparedStatement.setTimestamp(3, obj.getDateDisc());
-			if (returnComputer.getManufacturer() == 0) {
-				preparedStatement.setNull(4, java.sql.Types.INTEGER);
-			} else {
-				preparedStatement.setInt(4, returnComputer.getManufacturer());
-			}
-			preparedStatement.setInt(5, obj.getId());
-
-			if (preparedStatement.executeUpdate() == 1) {
-				return returnComputer;
-			} else {
-				 logger.error("",new FailedSQLQueryException(this.sqlUpdate));
-				 throw new FailedSQLQueryException(this.sqlUpdate);
-			}		
-		} catch (SQLException e) {
-			 logger.error("",new ForeignKeyViolationException(returnComputer.getManufacturer(), COMPANY));
-			 throw new ForeignKeyViolationException(returnComputer.getManufacturer(), COMPANY);
-		}
+		return jdbcTemplate.update( this.sqlUpdate, elem.getName(), elem.getDateIntro(),elem.getDateDisc(),elem.getManufacturer(),elem.getId());
 	}
-
+	
 	@Override
-	public Computer delete(Computer obj) throws Exception {
+	public int delete(Computer obj) throws Exception {
 		return this.deleteById(obj.getId());
 	}
 	
-	public Computer deleteById(int id) throws SQLException {
-		Computer returnComputer = this.read(id);
-		try (
-			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlDelete);
-		) {
-			preparedStatement.setInt(1, id);
-			
-			if (preparedStatement.executeUpdate() == 1) {
-				return returnComputer;
-			} else {
-				
-				 logger.error("",new FailedSQLQueryException(this.sqlDelete));
-				 throw new FailedSQLQueryException(this.sqlDelete);
-			}
-		} catch (SQLException e) {
-			 logger.error("",e);
-			 throw new SQLException();
-		}
+	public int deleteById(int id) throws SQLException {
+		return jdbcTemplate.update( this.sqlDelete, id);
 	}
+
 
 	@Override
 	public Computer read(int id) throws SQLException {
-		if(id <= 0) {
-			 logger.error("",new InvalidIdException(id));
-			 throw new InvalidIdException(id);
-		}
-		
-		try (
-			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlSelect);
-		) {
-			preparedStatement.setInt(1, id);
-			
-			try(ResultSet resultSet = preparedStatement.executeQuery();){
-			if(resultSet.first()) {
-				return new Computer(id,resultSet.getString("name"),resultSet.getTimestamp(INTRO),resultSet.getTimestamp(DISC), resultSet.getInt(COMPANYID));
-			} else {
-				throw new InvalidIdException(id);
-			}
-		} catch (SQLException e) {
-			 logger.error("",new FailedSQLQueryException(this.sqlSelect));
-			 throw new FailedSQLQueryException(this.sqlSelect);
-		}
-		}
+		return (Computer) jdbcTemplate.query( this.sqlDelete, cuterRM);
 	}
 	
 	@Override
 	public List<Computer> listAll() throws Exception {
-		try (
-			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlListAll);
-		) {
-			
-			try(ResultSet resultSet = preparedStatement.executeQuery();){
-			List<Computer> computerList = new ArrayList<>();
-			while(resultSet.next()) {
-				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp(INTRO),resultSet.getTimestamp(DISC), resultSet.getInt(COMPANYID)));
-			}
-			return computerList;
-			
-		} catch (SQLException e) {
-			 logger.error("",new FailedSQLQueryException(this.sqlListAll));
-			 throw new FailedSQLQueryException(this.sqlListAll);
-			 
-		}
-		}
+		return (List<Computer>) jdbcTemplate.query( this.sqlListAll, cuterRM);
 	}
 	
 	
 	
 	@Override
 	public List<Computer> list(Page page) throws Exception {
+		
 		if (page.getNbElem() <= 0) {
 			 logger.error("",new InvalidPageSizeException(page.getNbElem()));
 			 throw new InvalidPageSizeException(page.getNbElem());
@@ -231,26 +101,7 @@ public class ComputerDao extends Dao<Computer>{
 			throw new InvalidPageValueException(page.getNumero());
 		}
 		int offset = (page.getNumero()-1)*page.getNbElem();
-		
-		try (
-			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlList);
-		) {
-			preparedStatement.setInt(1, offset);
-			preparedStatement.setInt(2, page.getNbElem());
-			
-			try(ResultSet resultSet = preparedStatement.executeQuery();){
-			List<Computer> computerList = new ArrayList<>();
-			while(resultSet.next()) {
-				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp(INTRO),resultSet.getTimestamp(DISC), resultSet.getInt(COMPANYID)));
-			}
-			return computerList;
-			
-		} catch (SQLException e) {
-			logger.error("",new FailedSQLQueryException(this.sqlList));
-			throw new FailedSQLQueryException(this.sqlList);
-		}
-		}
+		return  jdbcTemplate.query( this.sqlList,new Object[] { offset,page.getNbElem()+offset }, cuterRM);
 	}
 	
 	
@@ -265,25 +116,9 @@ public class ComputerDao extends Dao<Computer>{
 			return listAll();
 		}
 		int offset = (page.getNumero()-1)*page.getNbElem();
-		try (
-			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(this.sqlSearch);
-		) {
-			preparedStatement.setString(1, "%" + keyWord + "%");
-			preparedStatement.setInt(2, offset);
-			preparedStatement.setInt(3, page.getNbElem());
-			
-			try(ResultSet resultSet = preparedStatement.executeQuery();){
-			List<Computer> computerList = new ArrayList<>();
-			while(resultSet.next()) {
-				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp(INTRO),resultSet.getTimestamp(DISC), resultSet.getInt(COMPANYID)));
-			}
-			return computerList;
-		} catch (SQLException e) {
-			logger.error("",new FailedSQLQueryException(this.sqlSearch));
-			throw new FailedSQLQueryException(this.sqlSearch);
-		}
-		}
+		
+		return jdbcTemplate.query( this.sqlSearch,new Object[] { "%"+keyWord+"%",offset,page.getNbElem()+offset }, cuterRM);
+
 	}
 	
 	public List<Computer> computerOrder(Page page ,String colonne, int chx) throws Exception {
@@ -299,30 +134,13 @@ public class ComputerDao extends Dao<Computer>{
 		String mode = chx == 0 ? "ASC":"DESC";
 		
 		
-		if(!att.containsKey(colonne)) return listAll();
+		if(!att.containsKey(colonne)) return list(page);
 		String requete = ORDER1+att.get(colonne)+" "+mode+ORDER2;
 		if(colonne == null ||  "".equals(colonne)) {
-			return listAll();
+			return list(page);
 		}
-		
-		try (
-			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(requete);
-		) {
-			preparedStatement.setInt(1, offset);
-			preparedStatement.setInt(2, page.getNbElem());
-			try(ResultSet resultSet = preparedStatement.executeQuery();){
-			List<Computer> computerList = new ArrayList<>();
-			while(resultSet.next()) {
-				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp(INTRO),resultSet.getTimestamp(DISC), resultSet.getInt(COMPANYID)));
-			}
-			
-			return computerList;
-		} catch (SQLException e) {
-			logger.error("",e);
-			throw new FailedSQLQueryException(requete);
-		}
-		}
+	
+		return jdbcTemplate.query( requete,new Object[] { offset,page.getNbElem()+offset }, cuterRM);
 	}
 	
 	
@@ -342,51 +160,39 @@ public class ComputerDao extends Dao<Computer>{
 		if(colonne == null || "".equals(colonne)) {
 			return computerSearch(page,keyWord);
 		}
-		
-		try (
-			Connection connection = dataBase.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(requete);
-		) {
-			keyWord = "%" + keyWord + "%";
-			preparedStatement.setString(1, keyWord);
-			preparedStatement.setInt(2, offset);
-			preparedStatement.setInt(3, offset+page.getNbElem());
-			try(ResultSet resultSet = preparedStatement.executeQuery();){
-			List<Computer> computerList = new ArrayList<>();
-			while(resultSet.next()) {
-				computerList.add(new Computer(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getTimestamp(INTRO),resultSet.getTimestamp(DISC), resultSet.getInt(COMPANYID)));
-			}
-			return computerList;
-		} catch (SQLException e) {
-			logger.error("",new FailedSQLQueryException(requete));
-			throw new FailedSQLQueryException(requete);
-		}
-		}
+		keyWord = "%" + keyWord + "%";
+		return jdbcTemplate.query( requete,new Object[] { keyWord,offset,page.getNbElem()+offset }, cuterRM);
+
 	}
 	
 	public int count(String keyWord, int mode) {
-		int res;
 		String stat;
-		if(mode == 1) 
+		keyWord = "%"+keyWord+"%";
+		if(mode == 1) {
 			stat = "SELECT COUNT(*) FROM computer WHERE name LIKE ?;";
-		else
+			return jdbcTemplate.queryForObject(stat,new Object[] {keyWord}, Integer.class);
+		}
+		else {
 			stat = "SELECT COUNT(*) FROM computer;";
+			return jdbcTemplate.queryForObject(stat, Integer.class);
+		}
 		
-		try (
-				Connection connection = dataBase.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(stat);
-			) {
-				if(mode==1) preparedStatement.setString(1, "%" + keyWord + "%");
-				try(ResultSet resultSet = preparedStatement.executeQuery();){
-			
-				resultSet.next();
-				res = resultSet.getInt(1);
-				}
-			} catch (SQLException e) {
-				logger.error("",new FailedSQLQueryException(stat));
-				throw new FailedSQLQueryException(stat);
-			}	
-		return res;
 	}
+//		try (
+//				Connection connection = dataBase.getConnection();
+//				PreparedStatement preparedStatement = connection.prepareStatement(stat);
+//			) {
+//				if(mode==1) preparedStatement.setString(1, "%" + keyWord + "%");
+//				try(ResultSet resultSet = preparedStatement.executeQuery();){
+//			
+//				resultSet.next();
+//				res = resultSet.getInt(1);
+//				}
+//			} catch (SQLException e) {
+//				logger.error("",new FailedSQLQueryException(stat));
+//				throw new FailedSQLQueryException(stat);
+//			}	
+//		return res;
+//	}
 
 }

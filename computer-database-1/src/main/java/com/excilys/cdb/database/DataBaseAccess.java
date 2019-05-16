@@ -53,8 +53,13 @@ public class DataBaseAccess {
 	public void closePool() {
 		this.hikariDataSource.close();
 	}
+
+	public HikariDataSource getDataSource() throws SQLException {
+		return this.hikariDataSource;
+	}
 	
 	public Connection getConnection() throws SQLException {
 		return this.hikariDataSource.getConnection();
 	}
+	
 }
