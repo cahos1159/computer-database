@@ -36,7 +36,7 @@ public abstract class Service<U extends Model> {
 	}
 	
 	public List<U> listAllElements() throws Exception {
-		return (List<U>) this.dao.listAll();
+		return  this.dao.listAll();
 	}
 	
 	public List<U> list(String pageStr, String sizeStr) throws Exception {

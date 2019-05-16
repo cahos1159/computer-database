@@ -22,7 +22,7 @@ public class Validateur {
 	private static Logger logger = LoggerFactory.getLogger(ComputerDao.class);
 	
 
-		
+		 
 	public Dto valide(Dto elem) throws InvalidComputerOptionException {
 		if(elem.getClass().equals(CompanyDto.class)) {
 			CompanyDto comp = (CompanyDto) elem; 
@@ -49,7 +49,7 @@ public class Validateur {
 		
 	}
 	
-	private boolean valideName(String name) throws InvalidComputerOptionException{
+	private boolean valideName(String name){
 		if(name.isEmpty() || name.isBlank() || name.length()>100) {
 			logger.error("",new InvalidComputerOptionException("name"));
 			return false;
@@ -58,7 +58,7 @@ public class Validateur {
 		
 	}
 	
-	private boolean valideDate(String intro, String disc) throws InvalidComputerOptionException{
+	private boolean valideDate(String intro, String disc){
 		boolean verifIntro;
 		boolean verifDisc;
 		try {

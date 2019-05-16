@@ -53,23 +53,23 @@ public class CdbController {
 		
 		CommandEnum cmd = CommandEnum.getCommandEnum(splitStr[0].toLowerCase());
 		switch(cmd) {
-			case Create:
+			case CREATE:
 				return this.create();
-			case Read:
+			case READ:
 				return this.read();
-			case Update:
+			case UPDATE:
 				return this.update();
-			case Delete:
+			case DELETE:
 				return this.delete();
-			case Help:
+			case HELP:
 				return help();
-			case ListAll:
+			case LISTALL:
 				return this.listAll();
-			case List:
+			case LIST:
 				return this.list();
-			case Empty:
+			case EMPTY:
 				return "";
-			case Unknown:
+			case UNKNOWN:
 			default:
 				throw new UnknownCommandException(splitStr[0]);
 		}
@@ -219,19 +219,19 @@ public class CdbController {
 		} else {
 			CreateOptionEnum opt = CreateOptionEnum.getCommandEnum(Character.toLowerCase(s.charAt(1)));
 			switch(opt) {
-				case Name:
+				case NAME:
 					c.setName(s.substring(3));
 					break;
-				case Introduction:
+				case INTRODUCTION:
 					c.setIntroduction(CdbController.castDate(s.substring(3)));
 					break;
-				case Discontinued:
+				case DISCONTINUED:
 					c.setDiscontinued(CdbController.castDate(s.substring(3)));
 					break;
-				case Company:
+				case COMPANY:
 					c.setCompany(new CompanyDto (s.substring(3).contentEquals("_") ? "-1" : s.substring(3)));
 					break;
-				case Unknown:
+				case UNKNOWN:
 				default:
 					throw new InvalidComputerOptionException(s);
 			}

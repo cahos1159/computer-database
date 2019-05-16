@@ -2,6 +2,15 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import org.h2.tools.RunScript;
+import org.h2.tools.Script;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +18,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.excilys.cdb.config.spring.AppConfig;
 import com.excilys.cdb.dao.CompanyDao;
+import com.excilys.cdb.database.DataBaseAccess;
 import com.excilys.cdb.exception.FailedSQLQueryException;
 import com.excilys.cdb.exception.InvalidIdException;
 import com.excilys.cdb.exception.PrimaryKeyViolationException;
@@ -19,13 +29,19 @@ import com.excilys.cdb.model.Company;
 
 class CompanyDaoTest {
 	
+	 private static DataBaseAccess dataBase;
 	 private static AnnotationConfigApplicationContext ctx;
 
 	@BeforeAll
-	static void context() {
+	static void context() throws SQLException, FileNotFoundException {
 		ctx = new AnnotationConfigApplicationContext();
 		ctx.register(AppConfig.class);
 		ctx.refresh();
+		dataBase = new DataBaseAccess("test");
+		Connection connection = dataBase.getConnection();
+		RunScript.execute(connection, new FileReader("src/db/1.sql"));
+		RunScript.execute(connection, new FileReader("src/db/3.sql"));
+
 	}
 	
 	@BeforeEach

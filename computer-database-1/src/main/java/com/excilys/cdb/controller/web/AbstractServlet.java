@@ -49,11 +49,5 @@ public abstract class AbstractServlet extends HttpServlet {
 		  
 	}
 		
-    @Override
-    public void init() throws ServletException {
-        
-        
-       
-
-    }
+  
 }
