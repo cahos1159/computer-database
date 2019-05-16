@@ -79,7 +79,7 @@ public class ComputerDao extends Dao<Computer>{
 
 	@Override
 	public Computer read(int id) throws SQLException {
-		return (Computer) jdbcTemplate.query( this.sqlDelete, cuterRM);
+		return (Computer) jdbcTemplate.query( this.sqlSelect,new Object[] {id}, cuterRM);
 	}
 	
 	@Override
@@ -178,21 +178,4 @@ public class ComputerDao extends Dao<Computer>{
 		}
 		
 	}
-//		try (
-//				Connection connection = dataBase.getConnection();
-//				PreparedStatement preparedStatement = connection.prepareStatement(stat);
-//			) {
-//				if(mode==1) preparedStatement.setString(1, "%" + keyWord + "%");
-//				try(ResultSet resultSet = preparedStatement.executeQuery();){
-//			
-//				resultSet.next();
-//				res = resultSet.getInt(1);
-//				}
-//			} catch (SQLException e) {
-//				logger.error("",new FailedSQLQueryException(stat));
-//				throw new FailedSQLQueryException(stat);
-//			}	
-//		return res;
-//	}
-
 }
