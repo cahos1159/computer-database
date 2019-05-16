@@ -1,3 +1,4 @@
+drop all objects;
 drop schema if exists `computer-database-db`;
   create schema if not exists `computer-database-db`;
   use `computer-database-db`;

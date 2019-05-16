@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.controller.web.Page;
+import com.excilys.cdb.database.DataBaseAccess;
 import com.excilys.cdb.exception.*;
 import com.excilys.cdb.model.*;
 
@@ -28,7 +29,7 @@ public class ComputerDao extends Dao<Computer>{
 	private static final String COMPANYID = "company_id";
 	
 	
-	private ComputerDao() {
+	public ComputerDao() {
 		super(
 			"INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?);",
 			"UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;",
