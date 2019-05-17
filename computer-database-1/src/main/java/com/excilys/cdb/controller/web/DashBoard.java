@@ -56,7 +56,7 @@ public class DashBoard extends AbstractServlet {
 				
 				
 				List<Computer> ordi = cuterServ.computerOrder(page,request.getParameter(COLONNE),mode);
-				ordi = Pagination.getInstance().miseEnPage(ordi,page);
+				//ordi = Pagination.getInstance().miseEnPage(ordi,page);
 				setListComputer(request,ordi);
 				setPage(request,page.getNumero(),cuterServ.count(request.getParameter(SEARCH),1),page.getNbElem());
 				setNumberOfComputer(request,cuterServ.count(request.getParameter(SEARCH),0));
@@ -65,7 +65,7 @@ public class DashBoard extends AbstractServlet {
 			else {
 				List<Computer> ordi = cuterServ.computerOrderSearch(page,request.getParameter(COLONNE),mode,request.getParameter(SEARCH));
 	
-				ordi = Pagination.getInstance().miseEnPage(ordi,page);
+				//ordi = Pagination.getInstance().miseEnPage(ordi,page);
 				setListComputer(request,ordi);
 				setPage(request,page.getNumero(),cuterServ.count(request.getParameter(SEARCH),1),page.getNbElem());
 				setNumberOfComputer(request,cuterServ.count(request.getParameter(SEARCH),1));

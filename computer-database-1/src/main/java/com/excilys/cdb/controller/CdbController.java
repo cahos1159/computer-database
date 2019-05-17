@@ -199,15 +199,15 @@ public class CdbController {
 			case 2:
 				throw new MissingArgumentException(sizeExpected,splitStr.length);
 			case 3:
-				Dto ret;
+				int ret;
 				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
-					ret = cuterMap.modelToDto(cuterServ.delete(cuterMap.dtoToModel(new ComputerDto(splitStr[2]))));
+					ret = cuterServ.delete(cuterMap.dtoToModel(new ComputerDto(splitStr[2])));
 				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
-					ret = canyMap.modelToDto(canyServ.delete(canyMap.dtoToModel(new CompanyDto(splitStr[2]))));
+					ret = canyServ.delete(canyMap.dtoToModel(new CompanyDto(splitStr[2])));
 				} else {
 					throw new InvalidTableException(splitStr[1]);
 				}
-				return (ret == null) ? "[" +splitStr[2]+"] Not Found" : "Delete "+ret.toString();
+				return (ret <= 0) ? "[" +splitStr[2]+"] Not Found" : "Delete "+ret;
 			default:
 				throw new TooManyArgumentsException(splitStr[3]);
 		}
@@ -247,24 +247,24 @@ public class CdbController {
 		case 3:
 			throw new MissingArgumentException(sizeExpected,splitStr.length);
 		default:
-			Dto ret;
+			int ret;
 			if (splitStr[1].toLowerCase().equals(COMPUTER)) {
 				ComputerDto c = new ComputerDto(splitStr[2]);
 				for (String s : Arrays.copyOfRange(splitStr, 3, splitStr.length)) {
 					this.updateTreatOption(c,s);
 				}
-				ret = cuterMap.modelToDto(cuterServ.update(cuterMap.dtoToModel(c)));
+				ret = cuterServ.update(cuterMap.dtoToModel(c));
 			} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
 				if(splitStr.length == 4) {
 					CompanyDto c = new CompanyDto(splitStr[2],splitStr[3]);
-					ret = canyMap.modelToDto(canyServ.update(canyMap.dtoToModel(c)));
+					ret = canyServ.update(canyMap.dtoToModel(c));
 				} else {
 					throw new TooManyArgumentsException(splitStr[4]);
 				}
 			} else {
 				throw new InvalidTableException(splitStr[1]);
 			}
-			return "Update "+ret.toString();
+			return "Update "+ret;
 		}
 	}
 	

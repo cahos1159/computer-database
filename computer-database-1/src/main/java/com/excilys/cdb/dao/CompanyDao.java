@@ -48,12 +48,12 @@ public class CompanyDao extends Dao<Company>{
 
 	@Override
 	public int create(Company elem) throws Exception{
-		return jdbcTemplate.update( this.sqlCreate, elem.getName());
+		return jdbcTemplate.update( this.sqlCreate,new Object[] { elem.getId(), elem.getName()});
 	}
 
 	@Override
 	public int update(Company elem) throws Exception {
-		return jdbcTemplate.update( this.sqlUpdate, elem.getName());
+		return jdbcTemplate.update( this.sqlUpdate, new Object[] {elem.getName(),elem.getId()});
 	}
 	
 	@Override

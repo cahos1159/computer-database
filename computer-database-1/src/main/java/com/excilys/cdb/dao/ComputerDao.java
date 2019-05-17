@@ -31,7 +31,7 @@ public class ComputerDao extends Dao<Computer>{
 	private String sqlOrder; 
 	public ComputerDao() throws SQLException {
 		super(
-			"INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?);",
+			"INSERT INTO computer(id,name,introduced,discontinued,company_id) VALUES (?,?,?,?,?);",
 			"UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?;",
 			"DELETE FROM computer WHERE id=?;",
 			"SELECT id,name,introduced,discontinued,company_id FROM computer WHERE id=?;",
@@ -58,7 +58,7 @@ public class ComputerDao extends Dao<Computer>{
 	@Override
 	
 	public int create(Computer elem) throws Exception {
-		return jdbcTemplate.update( this.sqlCreate, elem.getName(), elem.getDateIntro(),elem.getDateDisc(),elem.getManufacturer());
+		return jdbcTemplate.update( this.sqlCreate,elem.getId(), elem.getName(), elem.getDateIntro(),elem.getDateDisc(),elem.getManufacturer());
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class ComputerDao extends Dao<Computer>{
 
 	@Override
 	public Computer read(int id) throws SQLException {
-		return (Computer) jdbcTemplate.query( this.sqlSelect,new Object[] {id}, cuterRM);
+		return (Computer) jdbcTemplate.queryForObject( this.sqlSelect,new Object[] {id}, cuterRM);
 	}
 	
 	@Override
