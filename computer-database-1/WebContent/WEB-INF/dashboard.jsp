@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <form id="deleteForm" action="." method="POST">
+        <form id="deleteForm" action="http://localhost:8080/cdb/" method="POST">
             <input type="hidden" name="selection" value="">
         </form>
 
@@ -93,7 +93,7 @@
                         </td>
                         
                         <td>
-                            <a href="http://localhost:8080/cdb/computer-edit?id=${computer.id}" onclick="" value="${computer.id}">${computer.name}</a>
+                            <a href="http://localhost:8080/cdb/computer-edit?id=${computer.id}" onclick="" >${computer.name}</a>
                         </td>
                         
     						
@@ -130,7 +130,7 @@
             <a class="btn btn-default"  href="?nbOrdiPage=50&search=${search}&mode=${mode}&colonne=${colonne}" >50</a>
             <a class="btn btn-default" href="?nbOrdiPage=100&search=${search}&mode=${mode}&colonne=${colonne}" >100</a>
         </div>
-
+		</div>
     </footer>
 <script src="AppCdb/js/jquery.min.js"></script>
 <script src="AppCdb/js/bootstrap.min.js"></script>

@@ -2,6 +2,7 @@ package com.excilys.cdb.dao;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.computerrowmapper.CompanyRowMapper;
 import com.excilys.cdb.computerrowmapper.ComputerRowMapper;
-import com.excilys.cdb.config.spring.AppConfig;
+import com.excilys.cdb.config.spring.WebMvcConfig;
 import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.database.DataBaseAccess;
 import com.excilys.cdb.model.Company;
@@ -34,17 +35,14 @@ public abstract class Dao<T extends Model> {
 	protected final String sqlList;
 	protected final String sqlSearch;
 	protected static ApplicationContext ctx;
-	protected static  RowMapper<Computer> cuterRM;
-	protected static RowMapper<Company> canyRM;
+	@Autowired
+	protected static  RowMapper<Computer> cuterRM = new ComputerRowMapper();
+	@Autowired
+	protected static RowMapper<Company> canyRM = new CompanyRowMapper();
 	
 	protected JdbcTemplate jdbcTemplate;  
 	
-	static {
-		ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-		cuterRM = ctx.getBean(ComputerRowMapper.class);
-		canyRM = ctx.getBean(CompanyRowMapper.class);
-		
-	}
+	
 	
 	public Dao(String sqlCreate, String sqlUpdate, String sqlDelete, String sqlSelect, String sqlListall, String sqlList, String sqlSearch) {
 		this.sqlCreate = sqlCreate;

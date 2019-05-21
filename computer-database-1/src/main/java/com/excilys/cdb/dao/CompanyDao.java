@@ -1,11 +1,6 @@
 package com.excilys.cdb.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,15 +10,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.controller.web.Page;
-import com.excilys.cdb.exception.FailedSQLQueryException;
-import com.excilys.cdb.exception.InvalidIdException;
 import com.excilys.cdb.exception.InvalidPageSizeException;
 import com.excilys.cdb.exception.InvalidPageValueException;
-import com.excilys.cdb.exception.PrimaryKeyViolationException;
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
 
-@Scope(value="singleton")
+@Scope
 @Repository
 public class CompanyDao extends Dao<Company>{
 

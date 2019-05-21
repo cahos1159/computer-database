@@ -11,7 +11,7 @@ import com.excilys.cdb.model.Computer;
 
 
 @Scope(value="singleton")
-@Component
+@Component("CuterRow")
 public class ComputerRowMapper implements RowMapper<Computer> {
 	 public Computer mapRow(ResultSet result, int num) throws SQLException {
 		 return new Computer(result.getInt("id"),result.getString("name"),result.getTimestamp("introduced"),result.getTimestamp("discontinued"),result.getInt("company_id"));

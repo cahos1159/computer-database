@@ -25,10 +25,8 @@ public class ComputerDao extends Dao<Computer>{
 	private static final String INTRO = "introduced";
 	private static final String DISC = "discontinued";
 	private static final String COMPANY = "company";
-	private static final String COMPANYID = "company_id";
 	private JdbcTemplate jdbcTemplate;
 
-	private String sqlOrder; 
 	public ComputerDao() throws SQLException {
 		super(
 			"INSERT INTO computer(id,name,introduced,discontinued,company_id) VALUES (?,?,?,?,?);",
