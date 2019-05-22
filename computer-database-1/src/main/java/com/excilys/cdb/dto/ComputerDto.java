@@ -4,18 +4,20 @@ public class ComputerDto extends Dto {
 	private String name;
 	private String introduction;
 	private String discontinued;
-	private CompanyDto company;
+	private String companyId;
+	private String companyName;
 	
 	public ComputerDto(String id) {
-		this(id,"",null,null,null);
+		this(id,"",null,null,null,null);
 	}
 	
-	public ComputerDto(String id, String name, String i, String d, CompanyDto c) {
+	public ComputerDto(String id, String name, String i, String d, String idc,String namec) {
 		super(id);
 		this.setName(name);
 		this.setIntroduction(i);
 		this.setDiscontinued(d);
-		this.setCompany(c);
+		this.setCompanyId(idc);
+		this.setCompanyName(namec);
 	}
 
 	public String getName() {
@@ -42,19 +44,27 @@ public class ComputerDto extends Dto {
 		this.discontinued = discontinued;
 	}
 
-	public CompanyDto getCompany() {
-		return company;
+	public String getCompanyId() {
+		return companyId;
+	}
+	
+	public void setCompanyId(String compId) {
+		this.companyId = compId;
+	}
+	
+	public String getCompanyName() {
+		return companyName;
 	}
 
-	public void setCompany(CompanyDto companyName) {
-		this.company = companyName;
+	public void setCompanyName(String compName) {
+		this.companyName = compName;
 	}
 	
 	
 	
 	@Override
 	public String toString() {
-		return "Computer ["+this.getId()+"] " + this.getName() + " (" + this.getIntroduction() + ") (" + this.getDiscontinued() + ") " + this.getCompany();
+		return "Computer ["+this.getId()+"] " + this.getName() + " (" + this.getIntroduction() + ") (" + this.getDiscontinued() + ") " + this.getCompanyId()+ this.getCompanyName();
 	}
 	
 
@@ -63,7 +73,7 @@ public class ComputerDto extends Dto {
 		result = 31*result + ((this.getName() == null) ? 0 : this.getName().hashCode());
 		result = 31*result + ((this.getIntroduction() == null) ? 0 : this.getIntroduction().hashCode());
 		result = 31*result + ((this.getDiscontinued()== null) ? 0 : this.getDiscontinued().hashCode());
-		result = 31*result + this.getCompany().hashCode();
+		result = 31*result + this.getName().hashCode();
 		
 		
 		return result;

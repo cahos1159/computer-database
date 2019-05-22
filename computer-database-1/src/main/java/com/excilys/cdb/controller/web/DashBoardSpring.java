@@ -11,9 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -47,7 +45,7 @@ public class DashBoardSpring {
 	
     @GetMapping("/")
     public String dashGet(@RequestParam Map<String,String> params, ModelMap model) {
-//    	if(!value.isEmpty()) throw new ResourceNotFound();
+
     	try {
 
 			Page page = new Page(getPage(model,params),getNbOrdiPage(model,params));
@@ -84,7 +82,7 @@ public class DashBoardSpring {
     @PostMapping("/")
     public String dashPost(@RequestParam Map<String,String> params, ModelMap model) {
     	try {
-			deleteComputer(model,params);
+    		deleteComputer(model,params);
 			dashGet(params, model);
 		} catch (Exception e) {
 			logger.error("",e);

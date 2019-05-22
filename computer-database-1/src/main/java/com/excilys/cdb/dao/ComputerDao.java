@@ -56,7 +56,7 @@ public class ComputerDao extends Dao<Computer>{
 	@Override
 	
 	public int create(Computer elem) throws Exception {
-		return jdbcTemplate.update( this.sqlCreate,elem.getId(), elem.getName(), elem.getDateIntro(),elem.getDateDisc(),elem.getManufacturer());
+		return jdbcTemplate.update( this.sqlCreate,null, elem.getName(), elem.getDateIntro(),elem.getDateDisc(),elem.getManufacturer());
 	}
 
 	@Override

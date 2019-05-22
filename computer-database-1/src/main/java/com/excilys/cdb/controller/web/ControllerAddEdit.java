@@ -117,10 +117,9 @@ public class ControllerAddEdit {
 	
 	private void createOrdi(ModelMap model,Map<String, String> params) throws Exception {
 			
-			CompanyDto comp = new CompanyDto(params.get("companyId"));
 			String intro = formatDate(params.get("introduced"));
 			String disc = formatDate(params.get("discontinued"));
-			ComputerDto elem = new ComputerDto("-10",params.get("computerName"), intro, disc, comp);
+			ComputerDto elem = new ComputerDto("-10",params.get("computerName"), intro, disc, params.get("companyId"),null);
 			cuterServ.create(cuterMap.dtoToModel((ComputerDto) val.valide(elem)));
 			model.addAttribute("titre", elem.toString());
 			
@@ -138,12 +137,10 @@ public class ControllerAddEdit {
 	}
 	
 	private void updateOrdi(ModelMap model, Map<String, String> params) throws Exception {
-		CompanyDto comp = new CompanyDto(params.get("companyId"));
 		
 		String intro = formatDate(params.get("introduced"));
 		String disc = formatDate(params.get("discontinued"));
-		
-		ComputerDto elem = new ComputerDto(params.get("id"),params.get("name"), intro, disc, comp);
+		ComputerDto elem = new ComputerDto(params.get("id"),params.get("name"), intro, disc,  params.get("companyId"),null);
 		
 		cuterServ.update(cuterMap.dtoToModel(elem));
 		
@@ -153,7 +150,7 @@ public class ControllerAddEdit {
 		model.addAttribute("name", computer.getName());
 		model.addAttribute("intro", computer.getIntroduction());
 		model.addAttribute("disc", computer.getDiscontinued());
-		model.addAttribute("compName", computer.getCompany().getName());
+		model.addAttribute("compName", computer.getCompanyName());
 		
 	}
 	

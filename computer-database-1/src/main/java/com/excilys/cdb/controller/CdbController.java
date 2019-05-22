@@ -146,7 +146,7 @@ public class CdbController {
 				}
 			case 7:
 				if (splitStr[1].toLowerCase().equals(COMPUTER)) {
-					ComputerDto c = new ComputerDto(splitStr[2],splitStr[3],castDate(splitStr[4]),castDate(splitStr[5]),new CompanyDto((splitStr[6].contentEquals("_")) ? "0" : splitStr[6]));
+					ComputerDto c = new ComputerDto(splitStr[2],splitStr[3],castDate(splitStr[4]),castDate(splitStr[5]),(splitStr[6].contentEquals("_") ? "0" : splitStr[6]),null);
 					int ret = cuterServ.create(cuterMap.dtoToModel(c));
 					return (ret <= 0) ? "No computer has been created" : "Create "+ret;
 				} else if (splitStr[1].toLowerCase().equals(COMPANY)) {
@@ -229,7 +229,7 @@ public class CdbController {
 					c.setDiscontinued(CdbController.castDate(s.substring(3)));
 					break;
 				case COMPANY:
-					c.setCompany(new CompanyDto (s.substring(3).contentEquals("_") ? "-1" : s.substring(3)));
+					c.setCompanyId(s.substring(3).contentEquals("_") ? "-1" : s.substring(3));
 					break;
 				case UNKNOWN:
 				default:

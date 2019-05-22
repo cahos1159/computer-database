@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <form id="deleteForm" action="${pageContext.request.contextPath}" method="POST">
+        <form id="deleteForm" action="${pageContext.request.contextPath}/" method="POST">
             <input type="hidden" name="selection" value="">
         </form>
 
@@ -100,7 +100,7 @@
 						
                         <td> ${computer.introduction}</td>
                         <td> ${computer.discontinued}</td>	
-                        <td> ${computer.company}</td>
+                        <td> ${computer.companyName}</td>
                     </tr>
 					</c:forEach>
               
