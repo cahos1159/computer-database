@@ -15,7 +15,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="http://localhost:8080/cdb/">
+			<a class="navbar-brand" href="${pageContext.request.contextPath}">
 				Application - Computer Database </a>
 		</div>
 	</header>
@@ -26,7 +26,7 @@
 					<div class="label label-default pull-right">id: ${id}</div>
 					<h1>Edit Computer</h1>
 
-					<form action="http://localhost:8080/cdb/computer-edit?id=${id}" method="POST">
+					<form action="${pageContext.request.contextPath}/computer-edit?id=${id}" method="POST">
 						<input type="hidden" value="" id="id" />
 						<!-- TODO: Change this value with the computer id -->
 
@@ -65,7 +65,7 @@
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Edit" id="btnSubmit"class="btn btn-primary">
-							or <a href="http://localhost:8080/cdb/" class="btn btn-default">Cancel</a>
+							or <a href="${pageContext.request.contextPath}" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 				</div>

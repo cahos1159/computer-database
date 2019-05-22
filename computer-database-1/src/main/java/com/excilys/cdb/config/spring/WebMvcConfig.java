@@ -15,18 +15,20 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({"com.excilys.cdb.computerrowmapper","com.excilys.cdb.config","com.excilys.cdb.controller.web","com.excilys.cdb.dao","com.excilys.cdb.mapper","com.excilys.cdb.validateur"})
+@ComponentScan({"com.excilys.cdb.computerrowmapper","com.excilys.cdb.config","com.excilys.cdb.controller.web","com.excilys.cdb.dao","com.excilys.cdb.mapper","com.excilys.cdb.validateur","com.excilys.cdb.service"})
 public class WebMvcConfig extends WebMvcConfigurerAdapter  {
+	
+	@Override
+	   public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
+	       exceptionResolvers.add( new ExceptionHandlerEntities());
+	   }
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/AppCdb/**").addResourceLocations("/AppCdb/");
 	}
 	
-	@Override
-	   public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
-	       exceptionResolvers.add((HandlerExceptionResolver) new ExceptionHandlerEntities());
-	   }
+	
 	
 	@Bean
 	public ViewResolver viewResolver() {

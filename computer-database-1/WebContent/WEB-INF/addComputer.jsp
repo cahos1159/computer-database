@@ -14,7 +14,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="http://localhost:8080/cdb/"> Application - Computer Database </a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}"> Application - Computer Database </a>
         </div>
     </header>
 
@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1 name="titre">Add Computer</h1>
-                    <form action="http://localhost:8080/cdb/computer-add" method="POST">
+                    <form action="${pageContext.request.contextPath}/computer-add" method="POST">
                     <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
@@ -49,7 +49,7 @@
                         <div class="actions pull-right">
                             <input type="submit" value="Add" id="btnSubmit" class="btn btn-primary">
                             or
-                            <a href="http://localhost:8080/cdb/" class="btn btn-default">Cancel</a>
+                            <a href="${pageContext.request.contextPath}" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>

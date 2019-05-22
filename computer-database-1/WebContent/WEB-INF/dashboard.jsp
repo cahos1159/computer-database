@@ -14,7 +14,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="http://localhost:8080/cdb/"> Application - Computer Database </a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}"> Application - Computer Database </a>
         </div>
     </header>
 
@@ -33,13 +33,13 @@
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="http://localhost:8080/cdb/computer-add">Add Computer</a> 
+                    <a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/computer-add">Add Computer</a> 
                     <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
                 </div>
             </div>
         </div>
 
-        <form id="deleteForm" action="http://localhost:8080/cdb/" method="POST">
+        <form id="deleteForm" action="${pageContext.request.contextPath}" method="POST">
             <input type="hidden" name="selection" value="">
         </form>
 
@@ -93,7 +93,7 @@
                         </td>
                         
                         <td>
-                            <a href="http://localhost:8080/cdb/computer-edit?id=${computer.id}" onclick="" >${computer.name}</a>
+                            <a href="${pageContext.request.contextPath}/computer-edit?id=${computer.id}" onclick="" >${computer.name}</a>
                         </td>
                         
     						

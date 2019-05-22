@@ -2,20 +2,22 @@ package com.excilys.cdb.config.spring;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import com.excilys.cdb.controller.web.ResourceNotFound;
 
 @ControllerAdvice
 public class ExceptionHandlerEntities 
-  extends ResponseEntityExceptionHandler {
+  extends ExceptionHandlerExceptionResolver {
  
 	@ExceptionHandler(value 
-		      = { IllegalArgumentException.class, IllegalStateException.class })
+		      = { NoHandlerFoundException.class})
     public String handleResourceNotFoundException() {
-    	System.out.println("coucou");
     	return "404";
     }
-    
-   
-    }
+	@ExceptionHandler(value 
+		      = { RuntimeException.class})
+	public String handleErrorException() {
+		return "500";
+  }
+}
