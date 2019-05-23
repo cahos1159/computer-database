@@ -21,6 +21,7 @@ public class Page {
 		this.numero = numero;
 		this.setSearch("");
 		this.setColonne("");
+		this.mode = "";
 	}
 	public int getNbElem() {
 		return nbElem;

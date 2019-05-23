@@ -51,20 +51,23 @@ public class DashBoardSpring {
 
     	ModelAndView mv = new ModelAndView("dashboard");
     	try {
+    		setPage(page,cuterServ.count(page.getSearch(),0));
 			int mode = (page.getMode() == null ||"".equals((page.getMode()))) ? 0 : Integer.valueOf( page.getMode());
 		 	if("".equals(page.getSearch()) || null == (page.getSearch())) {
-		 		setPage(page,cuterServ.count(page.getSearch(),0));
+		 		
 				page.setNbElem(cuterServ.count(page.getSearch(),0));
 				List<Computer> ordi = cuterServ.computerOrder(page,page.getColonne(),mode);
+				
 				setListComputer(mv,ordi);
 
-				System.out.println(page.getNumero());
+				
 				mv.addObject("numberOfComputer",cuterServ.count(page.getSearch(),0));
 				
 			}
 			else {
 				setPage(page,cuterServ.count(page.getSearch(),1));
 				List<Computer> ordi = cuterServ.computerOrderSearch(page,(String)page.getColonne(),mode,(String)page.getSearch());
+				
 				setListComputer(mv,ordi);
 
 				mv.addObject("numberOfComputer",cuterServ.count(page.getSearch(),1));
@@ -78,6 +81,7 @@ public class DashBoardSpring {
 			logger.error("",e);
 			throw new  ResourceNotFound();
 		}
+    	
     	mv.addObject("page",page);
 		return mv;
     }
@@ -95,7 +99,9 @@ public class DashBoardSpring {
 		List<ComputerDto> res = new ArrayList<>();
 		for(Iterator<Computer> i=ordi.iterator();i.hasNext();) {
 			res.add(cuterMap.modelToDto(i.next()));
+
 		}
+
 		model.addObject("ordi", res);
 	}
 
@@ -103,16 +109,11 @@ public class DashBoardSpring {
 
 	
 	private void setPage(Page page,int nbOrdi) {
-		if(page.getNumero() <=0) page.setNumero(1);
+		if(page.getNumero() <1) page.setNumero(1);
 		int nbPage =nbOrdi/page.getNbOrdiPage();
-		if((page.getNbOrdiPage())>= nbPage) page.setNumero(nbPage);
+		if((page.getNumero())>= nbPage && nbPage > 0) page.setNumero(nbPage);
 	}
 	
-	private int getPage(ModelMap model, Map<String, String> params) {
-		return Integer.parseInt((params.get("page") == null) ? "1" : (String) params.get("page"));
-	}
-	
-
 	private void deleteComputer(ModelMap model,Map<String, String> params){
 		String idaggreg = params.get("selection");
 		List<String> ids = Arrays.asList(idaggreg.split(","));

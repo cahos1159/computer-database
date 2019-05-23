@@ -1,9 +1,24 @@
 package com.excilys.cdb.dto;
 
+import javax.validation.constraints.Min;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class ComputerDto extends Dto {
+	@NotEmpty(message = "Name incorrect or empty")
+	@NotBlank(message = "Name incorrect or empty")
 	private String name;
+	@NotEmpty(message = "date incorrect or empty")
+	@NotBlank(message = "date incorrect or empty")
+	@DateTimeFormat(pattern = "dd-mm-yyyy")
 	private String introduction;
+	@NotEmpty(message = "date incorrect or empty")
+	@NotBlank(message = "date incorrect or empty")
+	@DateTimeFormat(pattern = "dd-mm-yyyy")
 	private String discontinued;
+	@Min(value = 0, message = "Negative values doesn't exist")
 	private String companyId;
 	private String companyName;
 	

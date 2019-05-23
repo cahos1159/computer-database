@@ -99,7 +99,10 @@ public class ComputerDao extends Dao<Computer>{
 			throw new InvalidPageValueException(page.getNumero());
 		}
 		int offset = (page.getNumero()-1)*page.getNbOrdiPage();
-		return  jdbcTemplate.query( this.sqlList,new Object[] { offset,page.getNbOrdiPage()+offset }, cuterRM);
+		int lim = page.getNbOrdiPage();
+		List<Computer> res = jdbcTemplate.query( this.sqlList,new Object[] {offset,lim}, cuterRM);
+		System.out.println(res.size());
+		return res; 
 	}
 	
 	
@@ -115,7 +118,7 @@ public class ComputerDao extends Dao<Computer>{
 		}
 		int offset = (page.getNumero()-1)*page.getNbOrdiPage();
 		
-		return jdbcTemplate.query( this.sqlSearch,new Object[] { "%"+keyWord+"%",offset,page.getNbOrdiPage()+offset }, cuterRM);
+		return jdbcTemplate.query( this.sqlSearch,new Object[] { "%"+keyWord+"%",offset,page.getNbOrdiPage() }, cuterRM);
 
 	}
 	
@@ -138,7 +141,7 @@ public class ComputerDao extends Dao<Computer>{
 			return list(page);
 		}
 	
-		return jdbcTemplate.query( requete,new Object[] { offset,page.getNbOrdiPage()+offset }, cuterRM);
+		return jdbcTemplate.query( requete,new Object[] { offset,page.getNbOrdiPage() }, cuterRM);
 	}
 	
 	
@@ -159,7 +162,7 @@ public class ComputerDao extends Dao<Computer>{
 			return computerSearch(page,keyWord);
 		}
 		keyWord = "%" + keyWord + "%";
-		return jdbcTemplate.query( requete,new Object[] { keyWord,offset,page.getNbOrdiPage()+offset }, cuterRM);
+		return jdbcTemplate.query( requete,new Object[] { keyWord,offset,page.getNbOrdiPage()}, cuterRM);
 
 	}
 	

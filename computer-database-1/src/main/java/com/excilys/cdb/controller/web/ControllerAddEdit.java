@@ -1,24 +1,29 @@
 package com.excilys.cdb.controller.web;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.PastOrPresent;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.cdb.dto.CompanyDto;
@@ -34,6 +39,9 @@ import com.excilys.cdb.validateur.Validateur;
 
 @Controller
 public class ControllerAddEdit {
+	
+	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+	Validator validator = factory.getValidator();
 	
 	private static Logger logger = LoggerFactory.getLogger(ControllerAddEdit.class);
 	@Autowired
@@ -116,10 +124,16 @@ public class ControllerAddEdit {
 	}
 	
 	private void createOrdi(ModelMap model,Map<String, String> params) throws Exception {
-			
+
 			String intro = formatDate(params.get("introduced"));
 			String disc = formatDate(params.get("discontinued"));
-			ComputerDto elem = new ComputerDto("-10",params.get("computerName"), intro, disc, params.get("companyId"),null);
+			String name = params.get("computerName");
+			String canyId = params.get("companyId");
+			ComputerDto elem = new ComputerDto("-10",name, intro, disc, canyId,null);
+			Set<ConstraintViolation<ComputerDto>> violations = validator.validate(elem);
+			for (ConstraintViolation<ComputerDto> violation : violations) {
+			    logger.error(violation.getMessage()); 
+			}
 			cuterServ.create(cuterMap.dtoToModel((ComputerDto) val.valide(elem)));
 			model.addAttribute("titre", elem.toString());
 			
@@ -140,9 +154,14 @@ public class ControllerAddEdit {
 		
 		String intro = formatDate(params.get("introduced"));
 		String disc = formatDate(params.get("discontinued"));
-		ComputerDto elem = new ComputerDto(params.get("id"),params.get("name"), intro, disc,  params.get("companyId"),null);
-		
-		cuterServ.update(cuterMap.dtoToModel(elem));
+		String name =params.get("name");
+		String canyId = params.get("companyId");
+		ComputerDto elem = new ComputerDto(params.get("id"),name, intro, disc,canyId,null);
+		Set<ConstraintViolation<ComputerDto>> violations = validator.validate(elem);
+		for (ConstraintViolation<ComputerDto> violation : violations) {
+		    logger.error(violation.getMessage()); 
+		}
+		cuterServ.update(cuterMap.dtoToModel((ComputerDto) val.valide(elem)));
 		
 	
 }
