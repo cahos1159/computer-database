@@ -90,7 +90,7 @@ public class ComputerDao extends Dao<Computer>{
 	@Override
 	public List<Computer> list(Page page) throws Exception {
 		
-		if (page.getNbElem() <= 0) {
+		if (page.getNbOrdiPage() <= 0) {
 			 logger.error("",new InvalidPageSizeException(page.getNbElem()));
 			 throw new InvalidPageSizeException(page.getNbElem());
 		}
@@ -98,13 +98,13 @@ public class ComputerDao extends Dao<Computer>{
 			logger.error("",new InvalidPageValueException(page.getNumero()));
 			throw new InvalidPageValueException(page.getNumero());
 		}
-		int offset = (page.getNumero()-1)*page.getNbElem();
-		return  jdbcTemplate.query( this.sqlList,new Object[] { offset,page.getNbElem()+offset }, cuterRM);
+		int offset = (page.getNumero()-1)*page.getNbOrdiPage();
+		return  jdbcTemplate.query( this.sqlList,new Object[] { offset,page.getNbOrdiPage()+offset }, cuterRM);
 	}
 	
 	
 	public List<Computer> computerSearch(Page page ,String keyWord) throws Exception {
-		if (page.getNbElem() <= 0) {
+		if (page.getNbOrdiPage() <= 0) {
 			throw new InvalidPageSizeException(page.getNbElem());
 		}
 		if (page.getNumero() <= 0) {
@@ -113,14 +113,14 @@ public class ComputerDao extends Dao<Computer>{
 		if(keyWord == null) {
 			return listAll();
 		}
-		int offset = (page.getNumero()-1)*page.getNbElem();
+		int offset = (page.getNumero()-1)*page.getNbOrdiPage();
 		
-		return jdbcTemplate.query( this.sqlSearch,new Object[] { "%"+keyWord+"%",offset,page.getNbElem()+offset }, cuterRM);
+		return jdbcTemplate.query( this.sqlSearch,new Object[] { "%"+keyWord+"%",offset,page.getNbOrdiPage()+offset }, cuterRM);
 
 	}
 	
 	public List<Computer> computerOrder(Page page ,String colonne, int chx) throws Exception {
-		if (page.getNbElem() <= 0) {
+		if (page.getNbOrdiPage() <= 0) {
 			logger.error("",new InvalidPageSizeException(page.getNbElem()));
 			throw new InvalidPageSizeException(page.getNbElem());
 		}
@@ -128,7 +128,7 @@ public class ComputerDao extends Dao<Computer>{
 			logger.error("",new InvalidPageSizeException(page.getNumero()));
 			throw new InvalidPageValueException(page.getNumero());
 		}
-		int offset = (page.getNumero()-1)*page.getNbElem();
+		int offset = (page.getNumero()-1)*page.getNbOrdiPage();
 		String mode = chx == 0 ? "ASC":"DESC";
 		
 		
@@ -138,12 +138,12 @@ public class ComputerDao extends Dao<Computer>{
 			return list(page);
 		}
 	
-		return jdbcTemplate.query( requete,new Object[] { offset,page.getNbElem()+offset }, cuterRM);
+		return jdbcTemplate.query( requete,new Object[] { offset,page.getNbOrdiPage()+offset }, cuterRM);
 	}
 	
 	
 	public List<Computer> computerOrderSearch(Page page ,String colonne, int chx, String keyWord) throws Exception {
-		if (page.getNbElem() <= 0) {
+		if (page.getNbOrdiPage() <= 0) {
 			logger.error("",new InvalidPageSizeException(page.getNbElem()));
 			throw new InvalidPageSizeException(page.getNbElem());
 		}
@@ -151,7 +151,7 @@ public class ComputerDao extends Dao<Computer>{
 			logger.error("",new InvalidPageSizeException(page.getNumero()));
 			throw new InvalidPageValueException(page.getNumero());
 		}
-		int offset = (page.getNumero()-1)*page.getNbElem();
+		int offset = (page.getNumero()-1)*page.getNbOrdiPage();
 		String mode = chx == 0 ? "ASC":"DESC";
 		if(!att.containsKey(colonne))return computerSearch(page,keyWord);
 		String requete = ORDERSEARCH1+att.get(colonne)+" "+mode+ORDERSEARCH2;
@@ -159,7 +159,7 @@ public class ComputerDao extends Dao<Computer>{
 			return computerSearch(page,keyWord);
 		}
 		keyWord = "%" + keyWord + "%";
-		return jdbcTemplate.query( requete,new Object[] { keyWord,offset,page.getNbElem()+offset }, cuterRM);
+		return jdbcTemplate.query( requete,new Object[] { keyWord,offset,page.getNbOrdiPage()+offset }, cuterRM);
 
 	}
 	

@@ -60,25 +60,25 @@
                         </th>
                         <th>
                             Computer name
-                            <a  href="?mode=0&colonne=name&search=${search}" ><i class="fa fa-long-arrow-up" aria-hidden="false"></i></a>
-                           	<a  href="?mode=1&colonne=name&search=${search}" ><i class="fa fa-long-arrow-down" aria-hidden="false"></i></a>
+                            <a <c:url value="/" var="url"><c:param name="colonne" value="name"/><c:param name="mode" value="0"/></c:url> href="${url}" ><i class="fa fa-long-arrow-up" aria-hidden="false"></i></a>
+                           	<a <c:url value="/" var="url"><c:param name="colonne" value="name"/><c:param name="mode" value="1"/></c:url> href="${url}" ><i class="fa fa-long-arrow-down" aria-hidden="false"></i></a>
                         </th>
                         <th>
                             Introduced date
-                             <a  href="?mode=0&colonne=introduced&search=${search}" ><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
-                             <a  href="?mode=1&colonne=introduced&search=${search}" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
+                             <a <c:url value="/" var="url"><c:param name="colonne" value="introduced"/><c:param name="mode" value="0"/></c:url> href="${url}" ><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
+                             <a  <c:url value="/" var="url"><c:param name="colonne" value="introduced"/><c:param name="mode" value="1"/></c:url> href="${url}" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
                             Discontinued date
-                             <a  href="?mode=0&colonne=discontinued&search=${search}" ><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
-                             <a  href="?mode=1&colonne=discontinued&search=${search}" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
+                             <a<c:url value="/" var="url"><c:param name="colonne" value="discontinued"/><c:param name="mode" value="0"/></c:url> href="${url}" ><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
+                             <a <c:url value="/" var="url"><c:param name="colonne" value="discontinued"/><c:param name="mode" value="1"/></c:url> href="${url}" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
                         </th>
                         <!-- Table header for Company -->
                         <th>
                             Company
-                             <a  href="?mode=0&colonne=company_id&search=${search}" ><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
-                             <a  href="?mode=1&colonne=company_id&search=${search}" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
+                             <a <c:url value="/" var="url"><c:param name="colonne" value="company_id"/><c:param name="mode" value="0"/></c:url> href="${url}" ><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
+                             <a <c:url value="/" var="url"><c:param name="colonne" value="company_id"/><c:param name="mode" value="1"/></c:url> href="${url}" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
                         </th>
 
                     </tr>
@@ -113,22 +113,22 @@
         <div class="container text-center">
             <ul class="pagination">
                 <li>
-                    <a href="?page=${previous}&search=${search}&mode=${mode}&colonne=${colonne}" aria-label="Previous">
+                    <a <c:url value="/" var="url"><c:param name="numero" value="${page.numero - 1}"/></c:url>href="${url}" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                   </a>
               </li>
-              <li><a href="?page=${page}">${page}</a></li>
+              <li><a  <c:url value="/" var="url"><c:param name="numero" value="${page.numero}"/></c:url>href="${url}">${page.numero}</a></li>
               <li>
-                <a href="?page=${next}&search=${search}&mode=${mode}&colonne=${colonne}" aria-label="Next">
+                <a  <c:url value="/" var="url"><c:param name="numero" value="${page.numero + 1}"/></c:url>href="${url}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
         </ul>
 
         <div class="btn-group btn-group-sm pull-right" role="group" >
-            <a class="btn btn-default" href="?nbOrdiPage=10&search=${search}&mode=${mode}&colonne=${colonne}"  >10</a>
-            <a class="btn btn-default"  href="?nbOrdiPage=50&search=${search}&mode=${mode}&colonne=${colonne}" >50</a>
-            <a class="btn btn-default" href="?nbOrdiPage=100&search=${search}&mode=${mode}&colonne=${colonne}" >100</a>
+            <a class="btn btn-default"  <c:url value="/" var="url"><c:param name="nbOrdiPage" value="10"/></c:url>href="${url}"  >10</a>
+            <a class="btn btn-default"  <c:url value="/" var="url"><c:param name="nbOrdiPage" value="50"/></c:url>href="${url}" >50</a>
+            <a class="btn btn-default" <c:url value="/" var="url"><c:param name="nbOrdiPage" value="100"/></c:url>href="${url}" >100</a>
         </div>
 		</div>
     </footer>

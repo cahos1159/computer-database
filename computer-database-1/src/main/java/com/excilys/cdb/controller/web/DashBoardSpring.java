@@ -11,9 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.cdb.dto.ComputerDto;
 import com.excilys.cdb.mapper.CompanyMapper;
@@ -24,13 +28,12 @@ import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validateur.Validateur;
 
 @Controller
+@SessionAttributes("page")
+@RequestMapping("/")
 public class DashBoardSpring {
 	
-	private static int nbOrdiPage = 10;
-	private static final String SEARCH = "search";
 	private static Logger logger = LoggerFactory.getLogger(DashBoardSpring.class);
-	private static final String COLONNE = "colonne";
-	private static final String NBORDIPARPAGE = "nbOrdiPage";
+
 	
 	@Autowired
 	ComputerService cuterServ;
@@ -43,96 +46,73 @@ public class DashBoardSpring {
 	@Autowired
 	Validateur val;
 	
-    @GetMapping("/")
-    public String dashGet(@RequestParam Map<String,String> params, ModelMap model) {
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView dashGet(@ModelAttribute("page") Page page) {
 
+    	ModelAndView mv = new ModelAndView("dashboard");
     	try {
+			int mode = (page.getMode() == null ||"".equals((page.getMode()))) ? 0 : Integer.valueOf( page.getMode());
+		 	if("".equals(page.getSearch()) || null == (page.getSearch())) {
+		 		setPage(page,cuterServ.count(page.getSearch(),0));
+				page.setNbElem(cuterServ.count(page.getSearch(),0));
+				List<Computer> ordi = cuterServ.computerOrder(page,page.getColonne(),mode);
+				setListComputer(mv,ordi);
 
-			Page page = new Page(getPage(model,params),getNbOrdiPage(model,params));
-			int mode = (params.get("mode") == null ||"".equals((params.get("mode")))) ? 0 : Integer.valueOf( params.get("mode"));
-		 	if("".equals(params.get(SEARCH)) || null == (params.get(SEARCH))) {
-				
-				
-				List<Computer> ordi = cuterServ.computerOrder(page,(String)params.get(COLONNE),mode);
-				setListComputer(model,ordi);
-				setPage(model,page.getNumero(),cuterServ.count((String)params.get(SEARCH),1),page.getNbElem());
-				setNumberOfComputer(model,cuterServ.count(params.get(SEARCH),0));
+				System.out.println(page.getNumero());
+				mv.addObject("numberOfComputer",cuterServ.count(page.getSearch(),0));
 				
 			}
 			else {
-				List<Computer> ordi = cuterServ.computerOrderSearch(page,(String)params.get(COLONNE),mode,(String)params.get(SEARCH));
-				setListComputer(model,ordi);
-				setPage(model,page.getNumero(),cuterServ.count((String) params.get(SEARCH),1),page.getNbElem());
-				setNumberOfComputer(model,cuterServ.count((String) params.get(SEARCH),1));
+				setPage(page,cuterServ.count(page.getSearch(),1));
+				List<Computer> ordi = cuterServ.computerOrderSearch(page,(String)page.getColonne(),mode,(String)page.getSearch());
+				setListComputer(mv,ordi);
+
+				mv.addObject("numberOfComputer",cuterServ.count(page.getSearch(),1));
 				
 				
 			}
-			
-			setNbOrdiPage(model,nbOrdiPage);
-			setField(model, params);
+
 			
 			
 		} catch (Exception e) {
 			logger.error("",e);
 			throw new  ResourceNotFound();
 		}
-        return "dashboard";
+    	mv.addObject("page",page);
+		return mv;
     }
     
     @PostMapping("/")
-    public String dashPost(@RequestParam Map<String,String> params, ModelMap model) {
-    	try {
-    		deleteComputer(model,params);
-			dashGet(params, model);
-		} catch (Exception e) {
-			logger.error("",e);
-		}
-    	return "dashboard";
+    public ModelAndView dashPost(@ModelAttribute("page") Page page,@RequestParam Map<String,String> params, ModelMap model) {
+    	deleteComputer(model,params);
+    	return dashGet(page);
     }
     
    
-    private void setListComputer(ModelMap model, List<Computer> ordi) throws Exception {
-		if(ordi==null)model.addAttribute("ordi", null);
-		else {
+    private void setListComputer(ModelAndView model,List<Computer> ordi) throws Exception {
+		
+
 		List<ComputerDto> res = new ArrayList<>();
 		for(Iterator<Computer> i=ordi.iterator();i.hasNext();) {
 			res.add(cuterMap.modelToDto(i.next()));
 		}
-		model.addAttribute("ordi", res);
-		}
+		model.addObject("ordi", res);
 	}
+
 	
-	private void setNumberOfComputer(ModelMap model, int nbComputer) {
-		model.addAttribute("numberOfComputer", nbComputer);
-	}
-	private void setField(ModelMap model, Map<String, String> params) {
-		model.addAttribute(SEARCH, params.get(SEARCH));
-		model.addAttribute("mode", params.get("mode"));
-		model.addAttribute(COLONNE, params.get(COLONNE));
-	}
+
 	
-	private void setNbOrdiPage(ModelMap model, int nbOrdiPage) {
-		model.addAttribute(NBORDIPARPAGE, nbOrdiPage);
-	}
-	
-	private void setPage(ModelMap model, int page,int nbOrdi,int nbOrdiPage) {
-		model.addAttribute("page", page);
-		int prev = page==1?1:page-1;
-		int nbPage =nbOrdi/nbOrdiPage;
-		if((nbOrdi%nbOrdiPage)!=0) nbPage++;
-		int next = page==nbPage?nbPage:page+1;
-		model.addAttribute("previous", prev);
-		model.addAttribute("next", next);
+	private void setPage(Page page,int nbOrdi) {
+		if(page.getNumero() <=0) page.setNumero(1);
+		int nbPage =nbOrdi/page.getNbOrdiPage();
+		if((page.getNbOrdiPage())>= nbPage) page.setNumero(nbPage);
 	}
 	
 	private int getPage(ModelMap model, Map<String, String> params) {
 		return Integer.parseInt((params.get("page") == null) ? "1" : (String) params.get("page"));
 	}
 	
-	private static int getNbOrdiPage(ModelMap model ,Map<String, String> params) {
-		nbOrdiPage =(params.get(NBORDIPARPAGE) == null) ? nbOrdiPage : Integer.valueOf((String) params.get(NBORDIPARPAGE));
-		return nbOrdiPage;
-	}
+
 	private void deleteComputer(ModelMap model,Map<String, String> params){
 		String idaggreg = params.get("selection");
 		List<String> ids = Arrays.asList(idaggreg.split(","));
@@ -144,8 +124,10 @@ public class DashBoardSpring {
 			}
 		}
 	}
-	
-	
+	@ModelAttribute("page")
+	private Page getPage() {
+		return new Page();
+	}
 	
 	
  
