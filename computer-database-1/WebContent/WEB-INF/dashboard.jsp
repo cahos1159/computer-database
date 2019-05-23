@@ -1,9 +1,10 @@
 <%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-<title>Computer Database</title>
+<title><spring:message code="main.title" text="Computer Database" /></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -14,27 +15,27 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="${pageContext.request.contextPath}"> Application - Computer Database </a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}"> <spring:message code="main.header" text="Application - Computer Database" /> </a>
         </div>
     </header>
 
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                ${numberOfComputer} Computers found
+                ${numberOfComputer} <spring:message code="main.found" text="Computer found" />
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="#" method="GET" class="form-inline">
 
                         <input type="search" id="searchbox" name="search" class="form-control" placeholder="Computer name" />
-                        <input type="submit" id="searchsubmit" value="Filter by name"
+                        <input type="submit" id="searchsubmit" value="<spring:message code="main.label.filterBy" text="Filter by" />"
                         class="btn btn-primary" />
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/computer-add">Add Computer</a> 
-                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+                    <a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/computer-add"><spring:message code="main.button.add" text="Add Computer" /></a> 
+                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="main.button.edit" text="Edit" /></a>
                 </div>
             </div>
         </div>
