@@ -3,16 +3,24 @@ package com.excilys.cdb.database;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.springframework.context.annotation.Scope;
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-@Scope
+
 
 public class DataBaseAccess {
 	
 	private HikariDataSource hikariDataSource;
-	String configFile = "/db.properties";
+	String configFile ;
+	 
+	public DataBaseAccess(String test) {
+		this.configFile =  "/testdb.properties";
+		setUpHikariTest();
+	}
+	
+	public DataBaseAccess() {
+		this.configFile = "/db.properties";
+		setUpHikari();
+	}
 	
 	
 	private void setUpHikari() {
@@ -31,18 +39,27 @@ public class DataBaseAccess {
 
 		}
 	
-	public void initPool() {
-		setUpHikari();
-	}
+	private void setUpHikariTest() {
+		System.out.println("class Name");
+		HikariConfig hikariConfig = new HikariConfig(configFile);
+		hikariConfig.setDriverClassName("org.h2.Driver");
+		System.out.println("class Name"+hikariConfig.getDriverClassName());
+		this.hikariDataSource = new HikariDataSource(hikariConfig);
+
+		}
+	
+
 	
 	public void closePool() {
 		this.hikariDataSource.close();
 	}
+
+	public HikariDataSource getDataSource() throws SQLException {
+		return this.hikariDataSource;
+	}
 	
 	public Connection getConnection() throws SQLException {
-		if(this.hikariDataSource == null) {
-			setUpHikari();
-		}
 		return this.hikariDataSource.getConnection();
 	}
+	
 }

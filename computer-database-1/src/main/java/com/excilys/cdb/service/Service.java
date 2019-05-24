@@ -19,15 +19,15 @@ public abstract class Service<U extends Model> {
 		this.dao = dao;
 	}
 	
-	public U create(U modelObject) throws Exception {
+	public int create(U modelObject) throws Exception {
 		return this.dao.create(modelObject);
 	}
 	
-	public U update(U modelObject) throws Exception {
+	public int update(U modelObject) throws Exception {
 		return this.dao.update(modelObject);
 	}
 	
-	public U delete(U modelObject) throws Exception {
+	public int delete(U modelObject) throws Exception {
 		return this.dao.delete(modelObject);
 	}
 	
@@ -36,7 +36,7 @@ public abstract class Service<U extends Model> {
 	}
 	
 	public List<U> listAllElements() throws Exception {
-		return (List<U>) this.dao.listAll();
+		return  this.dao.listAll();
 	}
 	
 	public List<U> list(String pageStr, String sizeStr) throws Exception {

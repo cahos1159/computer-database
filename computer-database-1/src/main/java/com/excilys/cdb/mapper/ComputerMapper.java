@@ -36,7 +36,7 @@ public class ComputerMapper implements Mapper<ComputerDto, Computer>{
 			Timestamp  t2;
 			t1 = this.castTimestamp(dtoObject.getIntroduction());
 			t2 = this.castTimestamp(dtoObject.getDiscontinued());
-			int cid = Integer.parseInt(dtoObject.getCompany().getId());
+			int cid = Integer.parseInt(dtoObject.getCompanyId());
 			
 			
 			
@@ -62,7 +62,8 @@ public class ComputerMapper implements Mapper<ComputerDto, Computer>{
 				modelObject.getName(),
 				(modelObject.getDateIntro() == null) ? "_" : modelObject.getDateIntro().toString(),
 				(modelObject.getDateDisc() == null) ? "_" : modelObject.getDateDisc().toString(),
-				(modelObject.getManufacturer() <= 0) ? new CompanyDto("0","") : compMap.modelToDto(compServ.read(modelObject.getManufacturer())))
+				(modelObject.getManufacturer() <= 0) ? "" : compMap.modelToDto(compServ.read(modelObject.getManufacturer())).getId(),
+				(modelObject.getManufacturer() <= 0) ? "" : compMap.modelToDto(compServ.read(modelObject.getManufacturer())).getName())
 			;
 		}
 	}
