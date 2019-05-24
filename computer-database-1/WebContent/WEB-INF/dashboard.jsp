@@ -20,6 +20,10 @@
     </header>
 
     <section id="main">
+    <div class="container text-left">
+    	<a class="btn btn-default" href="${pageContext.request.contextPath}?lang=FR" >FR</a>
+    	<a class="btn btn-default" href="${pageContext.request.contextPath}?lang=EN" >EN</a>
+    	</div>
         <div class="container">
             <h1 id="homeTitle">
                 ${numberOfComputer} <spring:message code="main.found" text="Computer found" />
@@ -60,24 +64,24 @@
                             </span>
                         </th>
                         <th>
-                            Computer name
+                            <spring:message code="main.table.col1" text="Computer name" />
                             <a <c:url value="/" var="url"><c:param name="colonne" value="name"/><c:param name="mode" value="0"/></c:url> href="${url}" ><i class="fa fa-long-arrow-up" aria-hidden="false"></i></a>
                            	<a <c:url value="/" var="url"><c:param name="colonne" value="name"/><c:param name="mode" value="1"/></c:url> href="${url}" ><i class="fa fa-long-arrow-down" aria-hidden="false"></i></a>
                         </th>
                         <th>
-                            Introduced date
+                            <spring:message code="main.table.col2" text="Introduced date" />
                              <a <c:url value="/" var="url"><c:param name="colonne" value="introduced"/><c:param name="mode" value="0"/></c:url> href="${url}" ><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
                              <a  <c:url value="/" var="url"><c:param name="colonne" value="introduced"/><c:param name="mode" value="1"/></c:url> href="${url}" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            Discontinued date
+                            <spring:message code="main.table.col3" text="Discontinued date" />
                              <a<c:url value="/" var="url"><c:param name="colonne" value="discontinued"/><c:param name="mode" value="0"/></c:url> href="${url}" ><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
                              <a <c:url value="/" var="url"><c:param name="colonne" value="discontinued"/><c:param name="mode" value="1"/></c:url> href="${url}" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                            Company
+                            <spring:message code="main.table.col4" text="Company" />
                              <a <c:url value="/" var="url"><c:param name="colonne" value="company_id"/><c:param name="mode" value="0"/></c:url> href="${url}" ><i class="fa fa-long-arrow-up" aria-hidden="true"></i></a>
                              <a <c:url value="/" var="url"><c:param name="colonne" value="company_id"/><c:param name="mode" value="1"/></c:url> href="${url}" ><i class="fa fa-long-arrow-down" aria-hidden="true"></i></a>
                         </th>
@@ -111,8 +115,11 @@
     </section>
 
     <footer class="navbar-fixed-bottom">
+    	
         <div class="container text-center">
+        
             <ul class="pagination">
+            
                 <li>
                     <a <c:url value="/" var="url"><c:param name="numero" value="${page.numero - 1}"/></c:url>href="${url}" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
