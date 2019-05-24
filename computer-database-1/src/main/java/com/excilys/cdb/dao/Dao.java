@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.computerrowmapper.CompanyRowMapper;
 import com.excilys.cdb.computerrowmapper.ComputerRowMapper;
-import com.excilys.cdb.config.spring.WebMvcConfig;
 import com.excilys.cdb.controller.web.Page;
 import com.excilys.cdb.database.DataBaseAccess;
 import com.excilys.cdb.model.Company;
