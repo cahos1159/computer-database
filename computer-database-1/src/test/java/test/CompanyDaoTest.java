@@ -148,7 +148,7 @@ class CompanyDaoTest {
 	@Test
 	void testReadClassique() throws Exception {
 		CompanyDao dao = ctx.getBean(CompanyDao.class);
-		Company tmp = new Company(100,"Création test");
+		Company tmp = new Company(5666,"Création test");
 		dao.create(tmp);
 		Company res = dao.read(tmp.getId());
 		assertEquals(res,tmp);

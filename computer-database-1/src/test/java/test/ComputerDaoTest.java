@@ -110,7 +110,7 @@ class ComputerDaoTest {
 		dao.create(tmp1);
 		dao.create(tmp2);
 		List<Computer> res = Arrays.asList(tmp1,tmp2);
-		Page page = new Page(1,10);
+		Page page = new Page(1,1);
 		List<Computer> compare = dao.computerSearch(page,"Création test");
 		dao.delete(tmp1);
 		dao.delete(tmp2);
