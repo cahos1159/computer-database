@@ -38,16 +38,16 @@ class ValidateurTest {
 	
 	@Test
 	void testFonctionnementNormaleMoitierDate() throws InvalidComputerOptionException {
-		CompanyDto comp = new CompanyDto("1","coucou");
-		ComputerDto ordi = new ComputerDto("100","Cou","2018-12-10","2018-12-11",comp);
+
+		ComputerDto ordi = new ComputerDto("100","Cou","2018-12-10","2018-12-11","1","coucou");
 		ComputerDto res = (ComputerDto) ctx.getBean(Validateur.class).valide(ordi);
 		assertEquals(res,ordi);
 	}
 	
 	@Test
 	void testFonctionnementNormale() throws InvalidComputerOptionException {
-		CompanyDto comp = new CompanyDto("1","coucou");
-		ComputerDto ordi = new ComputerDto("100","Cou","2018-12-10 13:45:24","2018-12-11 13:45:24",comp);
+
+		ComputerDto ordi = new ComputerDto("100","Cou","2018-12-10 13:45:24","2018-12-11 13:45:24","1","coucou");
 		ComputerDto res = (ComputerDto) ctx.getBean(Validateur.class).valide(ordi);
 		assertEquals(res,ordi);
 	}
@@ -55,8 +55,7 @@ class ValidateurTest {
 	@Test
 	void testFonctionnementEchecValideNullName() throws InvalidComputerOptionException {
 		try {
-		CompanyDto comp = new CompanyDto("1","coucou");
-		ComputerDto ordi = new ComputerDto("100",null,"2018-12-10 13:45:24","2018-12-11 13:45:24",comp);
+		ComputerDto ordi = new ComputerDto("100",null,"2018-12-10 13:45:24","2018-12-11 13:45:24","1","coucou");
 		ComputerDto res = (ComputerDto) ctx.getBean(Validateur.class).valide(ordi);
 		
 		}

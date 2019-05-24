@@ -40,8 +40,8 @@ class ComputerMapperTest {
 	
 	@Test
 	void testNullDtoToModelComputerDto() {
-		CompanyDto cmp = new CompanyDto("2");
-		ComputerDto objTest = new ComputerDto("3","CM-200",null,null,cmp);
+
+		ComputerDto objTest = new ComputerDto("3","CM-200",null,null,"2",null);
 		ComputerMapper mappTest = ctx.getBean(ComputerMapper.class);
 		Computer res = mappTest.dtoToModel(objTest);
 		Computer compare = new Computer(3,"CM-200",null,null,2);
@@ -56,8 +56,8 @@ class ComputerMapperTest {
 	
 	@Test
 	void testTimeDtoToModelComputerDto() {
-		CompanyDto cmp = new CompanyDto("2");
-		ComputerDto objTest = new ComputerDto("3","CM-200","1990-1-1 01:00:00","1991-1-1 01:00:00",cmp);
+
+		ComputerDto objTest = new ComputerDto("3","CM-200","1990-1-1 01:00:00","1991-1-1 01:00:00","2",null);
 		ComputerMapper mappTest = ctx.getBean(ComputerMapper.class);
 		Computer res = mappTest.dtoToModel(objTest);
 		int myYear = 1990;
@@ -71,8 +71,8 @@ class ComputerMapperTest {
 	}
 	@Test
 	void testExceptionNumberFormatDtoToModelComputerDto() {
-		CompanyDto cmp = new CompanyDto("2");
-		ComputerDto objTest = new ComputerDto("coucou","CM-200",null,null,cmp);
+
+		ComputerDto objTest = new ComputerDto("coucou","CM-200",null,null,"2",null);
 		ComputerMapper mappTest = ctx.getBean(ComputerMapper.class);
 		try 
 		{
@@ -82,8 +82,8 @@ class ComputerMapperTest {
 		{
 			assertEquals(NumberFormatException.class,e.getClass());
 		}
-		CompanyDto cmp2 = new CompanyDto("coucou");
-		objTest = new ComputerDto("2","CM-200",null,null,cmp2);
+
+		objTest = new ComputerDto("2","CM-200",null,null,"coucou",null);
 		mappTest = ctx.getBean(ComputerMapper.class);
 		try 
 		{
@@ -99,8 +99,8 @@ class ComputerMapperTest {
 	
 	@Test
 	void testExceptionDateFormatDtoToModelComputerDto() {
-		CompanyDto cmp = new CompanyDto("2");
-		ComputerDto objTest = new ComputerDto("2","CM-200","coucou",null,cmp);
+
+		ComputerDto objTest = new ComputerDto("2","CM-200","coucou",null,"2",null);
 		ComputerMapper mappTest = ctx.getBean(ComputerMapper.class);
 		try 
 		{
@@ -110,7 +110,7 @@ class ComputerMapperTest {
 		{
 			assertEquals(InvalidDateValueException.class,e.getClass());
 		}
-		objTest = new ComputerDto("2","CM-200",null,"coucou",cmp);
+		objTest = new ComputerDto("2","CM-200",null,"coucou","2",null);
 		mappTest = ctx.getBean(ComputerMapper.class);
 		try 
 		{
@@ -128,15 +128,15 @@ class ComputerMapperTest {
 	@Test
 	void testNullModelToDtoComputer() throws Exception {
 		ComputerMapper mappTest = ctx.getBean(ComputerMapper.class);
-		CompanyDto cmp = new CompanyDto("2","Thinking Machines");
+
 		Computer objTest = new Computer(3,"CM-200",null,null,2);
 		ComputerDto res = mappTest.modelToDto(objTest);
-		ComputerDto compare = new ComputerDto("3","CM-200","_","_",cmp);
+		ComputerDto compare = new ComputerDto("3","CM-200","_","_","2","Thinking Machines");
 		assertEquals(compare,res);
 	}
 	void testTimestampModelToDtoComputer() throws Exception {
 		ComputerMapper mappTest = ctx.getBean(ComputerMapper.class);
-		CompanyDto cmp = new CompanyDto("2");
+
 		int myYear = 1990;
 		int myMonth = 1;
 		int myDay = 1;
@@ -145,7 +145,7 @@ class ComputerMapperTest {
 		Timestamp disc = Timestamp.valueOf(String.format("%04d-%02d-%02d 01:00:00",myYear, myMonth, myDay));
 		Computer objTest = new Computer(3,"CM-200",intro,disc,2);
 		ComputerDto res = mappTest.modelToDto(objTest);
-		ComputerDto compare = new ComputerDto("3","CM-200","1990-1-1 01:00:00","1991-1-1 01:00:00",cmp);
+		ComputerDto compare = new ComputerDto("3","CM-200","1990-1-1 01:00:00","1991-1-1 01:00:00","2",null);
 		assertEquals(compare,res);
 	}
 

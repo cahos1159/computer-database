@@ -33,9 +33,7 @@ class ComputerDaoTest {
 		ctx.register(AppConfig.class);
 		ctx.refresh();
 		dataBase = new DataBaseAccess("test");
-		Connection connection = dataBase.getConnection();
-		RunScript.execute(connection, new FileReader("src/db/1.sql"));
-		RunScript.execute(connection, new FileReader("src/db/3.sql"));
+		
 
 	}
 	
@@ -44,10 +42,9 @@ class ComputerDaoTest {
 	 void prepTest() {
 		try {
 		ComputerDao dao = ctx.getBean(ComputerDao.class);
-		dao.read(1000).getClass();
-		dao.deleteById(1000);
-		dao.read(1001).getClass();
-		dao.deleteById(1001);
+		Connection connection = dataBase.getConnection();
+		RunScript.execute(connection, new FileReader("src/db/1.sql"));
+		RunScript.execute(connection, new FileReader("src/db/3.sql"));
 		}
 		catch(Exception e) {}
 		
@@ -56,8 +53,9 @@ class ComputerDaoTest {
 	@Test
 	void testClassicCreateComputer() throws Exception {
 		ComputerDao dao = ctx.getBean(ComputerDao.class);
-		Computer compare = new Computer(1000,"Création test",null,null,1);
-		Computer res = dao.create(compare);
+		Computer compare = new Computer(10000,"Création test",null,null,1);
+		dao.create(compare);
+		Computer res = dao.read(compare.getId());
 		dao.delete(compare);
 		assertEquals(res,compare);
 		}
@@ -67,7 +65,9 @@ class ComputerDaoTest {
 		try {
 		ComputerDao dao = ctx.getBean(ComputerDao.class);
 		Computer compare = new Computer(-1,"Création test",null,null,1);
-		Computer res = dao.create(compare);
+		
+		dao.create(compare);
+		Computer res = dao.read(compare.getId());
 		dao.delete(compare);
 		}
 		catch(Exception e){
@@ -75,26 +75,29 @@ class ComputerDaoTest {
 		}
 		
 	}
-	
-	@Test
-	void testManufacturer0CreateComputer() throws Exception {
-		ComputerDao dao = ctx.getBean(ComputerDao.class);
-		Computer compare = new Computer(1000,"Création test",null,null,0);
-		Computer res = dao.create(compare);
-		dao.delete(compare);
-		assertEquals(res,compare);
-		}
+//	
+//	@Test
+//	void testManufacturer0CreateComputer() throws Exception {
+//		ComputerDao dao = ctx.getBean(ComputerDao.class);
+//		Computer compare = new Computer(1000,"Création test",null,null,0);
+//		dao.create(compare);
+//		Computer res = dao.read(compare.getId());
+//		dao.delete(compare);
+//		assertEquals(res,compare);
+//		}
 
 
 	@Test
 	void testUpdateComputer() throws Exception {
 		ComputerDao dao = ctx.getBean(ComputerDao.class);
-		Computer tmp = new Computer(-1,"Création test",null,null,1);
-		tmp = dao.create(tmp);
+		Computer tmp = new Computer(1000,"Création test",null,null,1);
+		dao.create(tmp);
+		tmp = dao.read(1000);
 		tmp.setManufacturer(2);
 		Computer res = tmp;
 		res.setManufacturer(2);
-		Computer compare = dao.update(tmp);
+		dao.update(tmp);
+		Computer compare = dao.read(tmp.getId());
 		dao.delete(tmp);
 		assertEquals(res,compare);
 	}
@@ -107,7 +110,7 @@ class ComputerDaoTest {
 		dao.create(tmp1);
 		dao.create(tmp2);
 		List<Computer> res = Arrays.asList(tmp1,tmp2);
-		Page page = new Page(1,10);
+		Page page = new Page(1,1);
 		List<Computer> compare = dao.computerSearch(page,"Création test");
 		dao.delete(tmp1);
 		dao.delete(tmp2);
