@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.cdb.dto.ComputerDto;
@@ -46,6 +47,7 @@ public class DashBoardSpring {
 	@Autowired
 	Validateur val;
 	
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView dashGet(@ModelAttribute("page") Page page) {
 
@@ -89,8 +91,9 @@ public class DashBoardSpring {
 
     
     @PostMapping("/")
-    public ModelAndView dashPost(@ModelAttribute("page") Page page,@RequestParam Map<String,String> params, ModelMap model) {
+    public ModelAndView dashPost(@ModelAttribute("page") Page page,@RequestParam Map<String,String> params, ModelMap model,SessionStatus status) {
     	deleteComputer(model,params);
+    	 status.setComplete();
     	return dashGet(page);
     }
     

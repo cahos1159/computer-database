@@ -76,7 +76,7 @@ public class ControllerAddEdit {
     	return "addComputer";
     }
     @GetMapping("/computer-edit")
-    protected String computerEditGet(@RequestParam Map<String,String> params, ModelMap model) {
+    public String computerEditGet(@RequestParam Map<String,String> params, ModelMap model) {
 
 		try {
 			List<Company> company;
@@ -95,7 +95,7 @@ public class ControllerAddEdit {
 }
 
     @PostMapping("/computer-edit")
-	protected String computerEditPost(@RequestParam Map<String,String> params, ModelMap model) {
+	public String computerEditPost(@RequestParam Map<String,String> params, ModelMap model) {
 		try {
 			updateOrdi(model,params);
 		} catch (Exception e) {
