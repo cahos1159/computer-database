@@ -11,17 +11,12 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.PastOrPresent;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,7 +51,7 @@ public class ControllerAddEdit {
 	Validateur val;
 	
 	@GetMapping("/computer-add")
-    public String ComputerAddGet(@RequestParam Map<String,String> params, ModelMap model) {
+    public String computerAddGet(@RequestParam Map<String,String> params, ModelMap model) {
     	try {
 			final List<Company> company = canyServ.listAllElements();
 			setListCompany(model,company);
@@ -70,10 +65,10 @@ public class ControllerAddEdit {
     }
     
     @PostMapping("/computer-add")
-    public String  ComputerAddPost(@RequestParam Map<String,String> params, ModelMap model) {
+    public String  computerAddPost(@RequestParam Map<String,String> params, ModelMap model) {
     	try {
 			createOrdi(model,params);
-			ComputerAddGet(params, model);
+			computerAddGet(params, model);
 		} catch (Exception e) {
 			
 			logger.error("", e);
