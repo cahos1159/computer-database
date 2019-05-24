@@ -1,20 +1,27 @@
 package com.excilys.cdb.controller;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import com.excilys.cdb.dto.*;
+import com.excilys.cdb.dto.CompanyDto;
+import com.excilys.cdb.dto.ComputerDto;
+import com.excilys.cdb.dto.Dto;
 import com.excilys.cdb.enums.CommandEnum;
 import com.excilys.cdb.enums.CreateOptionEnum;
-import com.excilys.cdb.exception.*;
+import com.excilys.cdb.exception.InvalidComputerOptionException;
+import com.excilys.cdb.exception.InvalidDateFormatException;
+import com.excilys.cdb.exception.InvalidTableException;
+import com.excilys.cdb.exception.MissingArgumentException;
+import com.excilys.cdb.exception.TooManyArgumentsException;
+import com.excilys.cdb.exception.UnknownCommandException;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
-import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Model;
-import com.excilys.cdb.service.*;
+import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 
 
 @Scope(value="singleton")

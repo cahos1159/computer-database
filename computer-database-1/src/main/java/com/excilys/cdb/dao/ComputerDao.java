@@ -1,7 +1,9 @@
 package com.excilys.cdb.dao;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +12,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.controller.web.Page;
-import com.excilys.cdb.exception.*;
-import com.excilys.cdb.model.*;
+import com.excilys.cdb.exception.InvalidPageSizeException;
+import com.excilys.cdb.exception.InvalidPageValueException;
+import com.excilys.cdb.model.Computer;
 
 @Scope(value="singleton")
 @Repository

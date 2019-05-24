@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.excilys.cdb.dto.CompanyDto;
 import com.excilys.cdb.dto.ComputerDto;
 import com.excilys.cdb.exception.InvalidDateValueException;
 import com.excilys.cdb.model.Computer;

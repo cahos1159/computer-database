@@ -11,52 +11,32 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.PastOrPresent;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.cdb.dto.CompanyDto;
 import com.excilys.cdb.dto.ComputerDto;
-import com.excilys.cdb.mapper.CompanyMapper;
-import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyService;
-import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.validateur.Validateur;
 
 
 @Controller
-public class ControllerAddEdit {
+public class ControllerAddEdit extends WebControl  {
 	
 	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	Validator validator = factory.getValidator();
 	
 	private static Logger logger = LoggerFactory.getLogger(ControllerAddEdit.class);
-	@Autowired
-	ComputerService cuterServ;
-	@Autowired
-	ComputerMapper	cuterMap;
-	@Autowired
-	CompanyService canyServ;
-	@Autowired
-	CompanyMapper canyMap;
-	@Autowired
-	Validateur val;
+
 	
 	@GetMapping("/computer-add")
-    public String ComputerAddGet(@RequestParam Map<String,String> params, ModelMap model) {
+    public String computerAddGet(@RequestParam Map<String,String> params, ModelMap model) {
     	try {
 			final List<Company> company = canyServ.listAllElements();
 			setListCompany(model,company);
@@ -70,10 +50,10 @@ public class ControllerAddEdit {
     }
     
     @PostMapping("/computer-add")
-    public String  ComputerAddPost(@RequestParam Map<String,String> params, ModelMap model) {
+    public String  computerAddPost(@RequestParam Map<String,String> params, ModelMap model) {
     	try {
 			createOrdi(model,params);
-			ComputerAddGet(params, model);
+			computerAddGet(params, model);
 		} catch (Exception e) {
 			
 			logger.error("", e);
@@ -81,7 +61,7 @@ public class ControllerAddEdit {
     	return "addComputer";
     }
     @GetMapping("/computer-edit")
-    protected String computerEditGet(@RequestParam Map<String,String> params, ModelMap model) {
+    public String computerEditGet(@RequestParam Map<String,String> params, ModelMap model) {
 
 		try {
 			List<Company> company;
@@ -100,7 +80,7 @@ public class ControllerAddEdit {
 }
 
     @PostMapping("/computer-edit")
-	protected String computerEditPost(@RequestParam Map<String,String> params, ModelMap model) {
+	public String computerEditPost(@RequestParam Map<String,String> params, ModelMap model) {
 		try {
 			updateOrdi(model,params);
 		} catch (Exception e) {
