@@ -14,7 +14,6 @@ import javax.validation.ValidatorFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,32 +22,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.cdb.dto.CompanyDto;
 import com.excilys.cdb.dto.ComputerDto;
-import com.excilys.cdb.mapper.CompanyMapper;
-import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyService;
-import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.validateur.Validateur;
 
 
 @Controller
-public class ControllerAddEdit {
+public class ControllerAddEdit extends WebControl  {
 	
 	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	Validator validator = factory.getValidator();
 	
 	private static Logger logger = LoggerFactory.getLogger(ControllerAddEdit.class);
-	@Autowired
-	ComputerService cuterServ;
-	@Autowired
-	ComputerMapper	cuterMap;
-	@Autowired
-	CompanyService canyServ;
-	@Autowired
-	CompanyMapper canyMap;
-	@Autowired
-	Validateur val;
+
 	
 	@GetMapping("/computer-add")
     public String computerAddGet(@RequestParam Map<String,String> params, ModelMap model) {

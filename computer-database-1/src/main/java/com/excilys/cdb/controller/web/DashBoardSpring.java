@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,31 +20,17 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.cdb.dto.ComputerDto;
-import com.excilys.cdb.mapper.CompanyMapper;
-import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyService;
-import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.validateur.Validateur;
 
 @Controller
 @SessionAttributes("page")
 @RequestMapping("/")
-public class DashBoardSpring {
+public class DashBoardSpring extends WebControl{
 	
 	private static Logger logger = LoggerFactory.getLogger(DashBoardSpring.class);
 
 	
-	@Autowired
-	ComputerService cuterServ;
-	@Autowired
-	ComputerMapper	cuterMap;
-	@Autowired
-	CompanyService canyServ;
-	@Autowired
-	CompanyMapper canyMap;
-	@Autowired
-	Validateur val;
+
 	
 
     @RequestMapping(method = RequestMethod.GET)

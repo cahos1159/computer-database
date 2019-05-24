@@ -29,7 +29,7 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">id: ${id}</div>
-					<h1>Edit Computer</h1>
+					<h1><spring:message code="edit.title" text="Edit Computer" /></h1>
 
 					<form action="${pageContext.request.contextPath}/computer-edit?id=${id}" method="POST">
 						<input type="hidden" value="" id="id" />
