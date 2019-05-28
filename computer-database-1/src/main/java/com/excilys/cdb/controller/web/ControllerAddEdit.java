@@ -82,7 +82,7 @@ public class ControllerAddEdit extends WebControl  {
     @PostMapping("/computer-edit")
 	public String computerEditPost(@RequestParam Map<String,String> params, ModelMap model) {
 		try {
-			updateOrdi(model,params);
+			updateOrdi(params);
 		} catch (Exception e) {
 			logger.error("",e);
 		}
@@ -126,11 +126,9 @@ public class ControllerAddEdit extends WebControl  {
 		return  (date.length() <= 10 ) ? date.concat(" 12:00:00") : date;
 	}
 	
-	private void setIdComputer(HttpServletRequest request, int id) {
-		request.setAttribute("id", id);
-	}
+
 	
-	private void updateOrdi(ModelMap model, Map<String, String> params) throws Exception {
+	private void updateOrdi( Map<String, String> params) throws Exception {
 		
 		String intro = formatDate(params.get("introduced"));
 		String disc = formatDate(params.get("discontinued"));

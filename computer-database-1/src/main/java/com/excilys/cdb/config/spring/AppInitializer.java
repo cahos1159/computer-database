@@ -1,5 +1,7 @@
 package com.excilys.cdb.config.spring;
 
+
+
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -8,7 +10,8 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
  
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return null;
+         Class<?>[] a = new Class<?>[] {};
+         return a;
     }
   
     @Override

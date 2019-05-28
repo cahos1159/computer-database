@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +45,7 @@ public class DashBoardSpring extends WebControl{
 
 	
 
-    @RequestMapping(method = RequestMethod.GET)
+	@GetMapping
     public ModelAndView dashGet(@ModelAttribute("page") Page page) {
 
     	ModelAndView mv = new ModelAndView("dashboard");
@@ -75,7 +76,7 @@ public class DashBoardSpring extends WebControl{
     
     @PostMapping("/")
     public ModelAndView dashPost(@ModelAttribute("page") Page page,@RequestParam Map<String,String> params, ModelMap model,SessionStatus status) {
-    	deleteComputer(model,params);
+    	deleteComputer(params);
     	 status.setComplete();
     	return dashGet(page);
     }
@@ -87,10 +88,10 @@ public class DashBoardSpring extends WebControl{
     		if(att.containsKey(page.getColonne())) {
 	    		if(mode == 0){
 	    			if(page.getNbOrdiPage()> page.getNbElem()-(page.getNbOrdiPage()*page.getNumero())) {tmp = PageRequest.of(page.numero-1,page.getNbOrdiPage(),Sort.by(att.get(page.getColonne())).ascending());}
-	    			tmp = PageRequest.of(page.numero-1,page.getNbOrdiPage(),Sort.by(att.get(page.getColonne())).ascending());
+	    			return PageRequest.of(page.numero-1,page.getNbOrdiPage(),Sort.by(att.get(page.getColonne())).ascending());
 	    		}
 	    		else {
-	    			tmp = PageRequest.of(page.numero-1,page.getNbOrdiPage(),Sort.by(att.get(page.getColonne())).descending());
+	    			return PageRequest.of(page.numero-1,page.getNbOrdiPage(),Sort.by(att.get(page.getColonne())).descending());
 	    		}
     		}
     	return tmp;
@@ -117,7 +118,7 @@ public class DashBoardSpring extends WebControl{
 		if((page.getNumero()-1)> nbPage && nbPage > 0) page.setNumero(nbPage);
 	}
 	
-	private void deleteComputer(ModelMap model,Map<String, String> params){
+	private void deleteComputer(Map<String, String> params){
 		String idaggreg = params.get("selection");
 		List<String> ids = Arrays.asList(idaggreg.split(","));
 		for(String id : ids) {

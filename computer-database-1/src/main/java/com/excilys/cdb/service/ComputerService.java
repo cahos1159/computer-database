@@ -20,6 +20,7 @@ public class ComputerService  {
 
 	
 	public List<Computer> listComputer(String keyWord,Pageable page) throws Exception {
+		System.out.println(keyWord);
 		org.springframework.data.domain.Page<Computer> tmp = computerJdao.findAllByNameContains(keyWord,page);
 		return  tmp.getContent();
 	}

@@ -9,7 +9,6 @@ public class ResourceNotFound extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	public ResourceNotFound() {
         super();
-       System.out.println("coucou");
     }
 	public String handleResourceNotFoundException() {
         return "404";

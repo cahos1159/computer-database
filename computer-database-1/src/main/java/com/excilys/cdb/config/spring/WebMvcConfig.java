@@ -35,11 +35,11 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableJpaRepositories(basePackages = "com.excilys.cdb")
 @PropertySource(value = { "classpath:db.properties" })
 public class WebMvcConfig implements WebMvcConfigurer  {
-	
+	@Override
 	public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
 	       exceptionResolvers.add( new ExceptionHandlerEntities());
 	   }
-	
+	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/AppCdb/**").addResourceLocations("/AppCdb/");
 	}
@@ -86,7 +86,7 @@ public class WebMvcConfig implements WebMvcConfigurer  {
 	    vendorAdapter.setGenerateDdl(true);
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource);
-		em.setPackagesToScan("com.excilys.cdb");
+		em.setPackagesToScan("com.excilys.cdb.model");
 		em.setJpaVendorAdapter(vendorAdapter);
 		return em;
 	}

@@ -23,9 +23,9 @@ public class Computer  {
 	@Column(nullable = false,name = "name")
 	private String name;
 	@Column(name = "introduced")
-	private Timestamp dateIntro;
+	private Timestamp introduced;
 	@Column(name = "discontinued")
-	private Timestamp dateDisc;
+	private Timestamp discontinued;
 	@ManyToOne(fetch = FetchType.EAGER, optional = true, targetEntity = Company.class)
 	@JoinColumn(name = "company_id",
 	referencedColumnName = "id")
@@ -50,25 +50,25 @@ public class Computer  {
 	}
 
 	public Timestamp getDateIntro() {
-		return dateIntro;
+		return introduced;
 	}
 
 	public void setDateIntro(Timestamp dateIntro) {
-		if (dateIntro != null && this.dateDisc != null && dateIntro.after(this.dateDisc)) {
-			throw new InvalidDateOrderException(dateIntro, this.dateDisc);
+		if (dateIntro != null && this.discontinued != null && dateIntro.after(this.discontinued)) {
+			throw new InvalidDateOrderException(dateIntro, this.discontinued);
 		}
-		this.dateIntro = dateIntro;
+		this.introduced = dateIntro;
 	}
 
 	public Timestamp getDateDisc() {
-		return dateDisc;
+		return discontinued;
 	}
 
 	public void setDateDisc(Timestamp dateDisc) {
-		if (dateDisc != null && this.dateIntro != null && dateDisc.before(this.dateIntro)) {
-			throw new InvalidDateOrderException(this.dateIntro, dateDisc);
+		if (dateDisc != null && this.introduced != null && dateDisc.before(this.introduced)) {
+			throw new InvalidDateOrderException(this.introduced, dateDisc);
 		}
-		this.dateDisc = dateDisc;
+		this.discontinued = dateDisc;
 	}
 
 	public Company getCompany() {
