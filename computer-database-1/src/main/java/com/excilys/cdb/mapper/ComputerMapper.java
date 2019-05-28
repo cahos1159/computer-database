@@ -7,12 +7,13 @@ import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.dto.ComputerDto;
 import com.excilys.cdb.exception.InvalidDateValueException;
+import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 
 @Scope(value="singleton")
 @Component
-public class ComputerMapper implements Mapper<ComputerDto, Computer>{
+public class ComputerMapper {
 	
 	
 	private final CompanyMapper compMap;
@@ -24,7 +25,7 @@ public class ComputerMapper implements Mapper<ComputerDto, Computer>{
 		this.compServ = cServ;
 	}	
 	
-	@Override
+	
 	public Computer dtoToModel(ComputerDto dtoObject){
 		if (dtoObject == null) {
 			return null;
@@ -39,7 +40,7 @@ public class ComputerMapper implements Mapper<ComputerDto, Computer>{
 			
 			
 			
-			return new Computer(id,name,t1,t2,cid);
+			return new Computer(id,name,t1,t2,new Company(cid,""));
 		}
 	}
 	
@@ -51,20 +52,28 @@ public class ComputerMapper implements Mapper<ComputerDto, Computer>{
 		}
 	}
  
-	@Override
+	
 	public ComputerDto modelToDto(Computer modelObject) throws Exception {
 		if (modelObject == null) {
 			return null;
-		} else {
+		} else if(modelObject.getCompany() == null){
 			return new ComputerDto(
-				Integer.toString(modelObject.getId()),
-				modelObject.getName(),
-				(modelObject.getDateIntro() == null) ? "_" : modelObject.getDateIntro().toString(),
-				(modelObject.getDateDisc() == null) ? "_" : modelObject.getDateDisc().toString(),
-				(modelObject.getManufacturer() <= 0) ? "" : compMap.modelToDto(compServ.read(modelObject.getManufacturer())).getId(),
-				(modelObject.getManufacturer() <= 0) ? "" : compMap.modelToDto(compServ.read(modelObject.getManufacturer())).getName())
-			;
+					Integer.toString(modelObject.getId()),
+					modelObject.getName(),
+					(modelObject.getDateIntro() == null) ? "_" : modelObject.getDateIntro().toString(),
+					(modelObject.getDateDisc() == null) ? "_" : modelObject.getDateDisc().toString(),
+					"",
+					"Aucune company Spécifiée");
 		}
+		else {
+			return new ComputerDto(
+						Integer.toString(modelObject.getId()),
+						modelObject.getName(),
+						(modelObject.getDateIntro() == null) ? "_" : modelObject.getDateIntro().toString(),
+						(modelObject.getDateDisc() == null) ? "_" : modelObject.getDateDisc().toString(),
+						(modelObject.getCompany().getId() <= 0) ? "" : Integer.toString(modelObject.getCompany().getId()),
+						(modelObject.getCompany().getId() <= 0) ? "" : compMap.modelToDto(compServ.read(modelObject.getCompany().getId())).getName())
+					;
 	}
-	
+	}
 }

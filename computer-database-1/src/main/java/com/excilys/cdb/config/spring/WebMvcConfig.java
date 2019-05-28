@@ -3,32 +3,43 @@ package com.excilys.cdb.config.spring;
 import java.util.List;
 import java.util.Locale;
 
+import javax.persistence.EntityManagerFactory;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.zaxxer.hikari.HikariDataSource;
+
 @Configuration
 @EnableWebMvc
-@ComponentScan({"com.excilys.cdb.computerrowmapper","com.excilys.cdb.config","com.excilys.cdb.controller.web","com.excilys.cdb.dao","com.excilys.cdb.mapper","com.excilys.cdb.validateur","com.excilys.cdb.service"})
-public class WebMvcConfig extends WebMvcConfigurerAdapter  {
+@ComponentScan({"com.excilys.cdb.computerrowmapper","com.excilys.cdb.config","com.excilys.cdb.controller.web","com.excilys.cdb.dao","com.excilys.cdb.mapper","com.excilys.cdb.validateur","com.excilys.cdb.service","com.excilys.cdb.model"})
+@EnableJpaRepositories(basePackages = "com.excilys.cdb")
+@PropertySource(value = { "classpath:db.properties" })
+public class WebMvcConfig implements WebMvcConfigurer  {
 	
-	@Override
-	   public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
+	public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
 	       exceptionResolvers.add( new ExceptionHandlerEntities());
 	   }
 	
-	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/AppCdb/**").addResourceLocations("/AppCdb/");
 	}
@@ -68,6 +79,39 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter  {
 		viewResolver.setPrefix("/WEB-INF/");
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
+	}
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(HikariDataSource dataSource) {
+		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+	    vendorAdapter.setGenerateDdl(true);
+		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+		em.setDataSource(dataSource);
+		em.setPackagesToScan("com.excilys.cdb");
+		em.setJpaVendorAdapter(vendorAdapter);
+		return em;
+	}
+	@Bean
+	public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+		JpaTransactionManager txManager = new JpaTransactionManager();
+		txManager.setEntityManagerFactory(entityManagerFactory);
+		return txManager;
+}
+	
+	@Bean
+    public HikariDataSource dataSource(Environment environement) {
+		HikariDataSource dataSource = new HikariDataSource();
+		dataSource.setMaximumPoolSize(10);
+		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+		dataSource.setJdbcUrl(environement.getRequiredProperty("jdbcUrl"));
+		dataSource.setUsername(environement.getRequiredProperty("dataSource.user"));
+		dataSource.setPassword(environement.getRequiredProperty("dataSource.password"));
+		dataSource.addDataSourceProperty("useSSL",false);
+		dataSource.addDataSourceProperty("allowPublicKeyRetrieval",true);
+		dataSource.setMaxLifetime(600_000L);
+		dataSource.setIdleTimeout(300_000L);
+		dataSource.setLeakDetectionThreshold(300_000L);
+		dataSource.setConnectionTimeout(10_000L);
+        return dataSource;
 	}
 	
 }

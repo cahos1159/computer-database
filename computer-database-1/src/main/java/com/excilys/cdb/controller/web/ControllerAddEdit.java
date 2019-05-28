@@ -38,7 +38,7 @@ public class ControllerAddEdit extends WebControl  {
 	@GetMapping("/computer-add")
     public String computerAddGet(@RequestParam Map<String,String> params, ModelMap model) {
     	try {
-			final List<Company> company = canyServ.listAllElements();
+			final List<Company> company = canyServ.listAll();
 			setListCompany(model,company);
 			
 		} catch (Exception e) {
@@ -69,7 +69,7 @@ public class ControllerAddEdit extends WebControl  {
 			Computer computer = null;
 			computer = cuterServ.read(id);
 		
-			company = canyServ.listAllElements();
+			company = canyServ.listAll();
 			setListCompany(model,company);
 			setIdComputer(model,id);
 			setComputer(model,cuterMap.modelToDto(computer));

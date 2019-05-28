@@ -15,7 +15,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="${pageContext.request.contextPath}"> <spring:message code="main.header" text="Application - Computer Database" /> </a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}?Search="> <spring:message code="main.header" text="Application - Computer Database" /> </a>
         </div>
     </header>
 

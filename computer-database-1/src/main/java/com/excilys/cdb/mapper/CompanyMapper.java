@@ -8,11 +8,11 @@ import com.excilys.cdb.model.Company;
 
 @Scope(value="singleton")
 @Component
-public class CompanyMapper implements Mapper<CompanyDto, Company>{
+public class CompanyMapper{
 	
 	private CompanyMapper() {}
 		
-	@Override
+	
 	public Company dtoToModel(CompanyDto dtoObject) {
 		if (dtoObject == null) {
 			return null;
@@ -24,7 +24,7 @@ public class CompanyMapper implements Mapper<CompanyDto, Company>{
 		}
 	}
 
-	@Override
+	
 	public CompanyDto modelToDto(Company modelObject) {
 		if (modelObject == null) {
 			return null;

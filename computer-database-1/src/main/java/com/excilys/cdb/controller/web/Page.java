@@ -1,7 +1,7 @@
 package com.excilys.cdb.controller.web;
 
 public class Page {
-	private int numero;
+	int numero;
 	private int nbElem;
 	private String search;
 	private String colonne;

@@ -3,10 +3,12 @@ package com.excilys.cdb.database;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Component;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-
+@Component
 public class DataBaseAccess {
 	
 	private HikariDataSource hikariDataSource;

@@ -2,12 +2,16 @@ package com.excilys.cdb.controller.web;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,7 +32,14 @@ import com.excilys.cdb.model.Computer;
 public class DashBoardSpring extends WebControl{
 	
 	private static Logger logger = LoggerFactory.getLogger(DashBoardSpring.class);
-
+	
+	static Map<String,String>  att = new HashMap<>();
+	static {		
+		att.put("name", "name");
+		att.put("introduced", "introduced");
+		att.put("discontinued", "discontinued");
+		att.put("company", "company");
+	}
 	
 
 	
@@ -38,31 +49,18 @@ public class DashBoardSpring extends WebControl{
 
     	ModelAndView mv = new ModelAndView("dashboard");
     	try {
-    		setPage(page,cuterServ.count(page.getSearch(),0));
-			int mode = (page.getMode() == null ||"".equals((page.getMode()))) ? 0 : Integer.valueOf( page.getMode());
-		 	if("".equals(page.getSearch()) || null == (page.getSearch())) {
+    		page.setNbElem(cuterServ.count(page.getSearch()));
+    		setPage(page);
+		 	if("".equals(page.getSearch()) || null == (page.getSearch())) page.setSearch("");
 		 		
-				page.setNbElem(cuterServ.count(page.getSearch(),0));
-				List<Computer> ordi = cuterServ.computerOrder(page,page.getColonne(),mode);
+				page.setNbElem(cuterServ.count(page.getSearch()));
+				Pageable requete = buildPageable(page);
+				List<Computer> ordi = cuterServ.listComputer(page.getSearch(),requete);
 				
 				setListComputer(mv,ordi);
 
 				
-				mv.addObject("numberOfComputer",cuterServ.count(page.getSearch(),0));
-				
-			}
-			else {
-				setPage(page,cuterServ.count(page.getSearch(),1));
-				List<Computer> ordi = cuterServ.computerOrderSearch(page,(String)page.getColonne(),mode,(String)page.getSearch());
-				
-				setListComputer(mv,ordi);
-
-				mv.addObject("numberOfComputer",cuterServ.count(page.getSearch(),1));
-				
-				
-			}
-
-			
+				mv.addObject("numberOfComputer",cuterServ.count(page.getSearch()));	
 			
 		} catch (Exception e) {
 			logger.error("",e);
@@ -82,6 +80,21 @@ public class DashBoardSpring extends WebControl{
     	return dashGet(page);
     }
     
+    private Pageable buildPageable(Page page) {
+    	int mode = (page.getMode() == null ||"".equals((page.getMode()))) ? 0 : Integer.valueOf( page.getMode());
+    	Pageable tmp = PageRequest.of(page.numero-1,page.getNbOrdiPage());
+
+    		if(att.containsKey(page.getColonne())) {
+	    		if(mode == 0){
+	    			if(page.getNbOrdiPage()> page.getNbElem()-(page.getNbOrdiPage()*page.getNumero())) {tmp = PageRequest.of(page.numero-1,page.getNbOrdiPage(),Sort.by(att.get(page.getColonne())).ascending());}
+	    			tmp = PageRequest.of(page.numero-1,page.getNbOrdiPage(),Sort.by(att.get(page.getColonne())).ascending());
+	    		}
+	    		else {
+	    			tmp = PageRequest.of(page.numero-1,page.getNbOrdiPage(),Sort.by(att.get(page.getColonne())).descending());
+	    		}
+    		}
+    	return tmp;
+    }
    
     private void setListComputer(ModelAndView model,List<Computer> ordi) throws Exception {
 		
@@ -98,10 +111,10 @@ public class DashBoardSpring extends WebControl{
 	
 
 	
-	private void setPage(Page page,int nbOrdi) {
+	private void setPage(Page page) {
 		if(page.getNumero() <1) page.setNumero(1);
-		int nbPage =nbOrdi/page.getNbOrdiPage();
-		if((page.getNumero())>= nbPage && nbPage > 0) page.setNumero(nbPage);
+		int nbPage =page.getNbElem()/page.getNbOrdiPage();
+		if((page.getNumero()-1)> nbPage && nbPage > 0) page.setNumero(nbPage);
 	}
 	
 	private void deleteComputer(ModelMap model,Map<String, String> params){
@@ -109,7 +122,7 @@ public class DashBoardSpring extends WebControl{
 		List<String> ids = Arrays.asList(idaggreg.split(","));
 		for(String id : ids) {
 			try {
-				cuterServ.delete(cuterServ.read(Integer.parseInt(id)));
+				cuterServ.delete(Integer.parseInt(id));
 			} catch (Exception e) {
 				logger.error("",e);
 			}
