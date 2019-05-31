@@ -1,0 +1,16 @@
+
+@com.excilys.cdb.dto.ComputerDto#getCompanyId()Ljava/lang/String;™
+Ž/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/dto/ComputerDto.java> >("1*Ì
+1™
+Ž/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/dto/ComputerDto.java?	 ?(ñ
+î
+™
+Ž/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/dto/ComputerDto.java?	 ?(
+%0java.lang.String"__id*2*0!
+com.excilys.cdb.dto.ComputerDto"
+	companyId"¶
+™
+Ž/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/dto/ComputerDto.java? ?(
+
+%0java.lang.StringB#!
+com.excilys.cdb.dto.ComputerDto

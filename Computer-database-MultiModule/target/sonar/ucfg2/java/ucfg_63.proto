@@ -1,0 +1,44 @@
+
+;com.excilys.cdb.dto.CompanyDto#toString()Ljava/lang/String;ò
+ç/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/dto/CompanyDto.java ("1*ˆ
+1ò
+ç/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/dto/CompanyDto.java	 (Ë
+Â
+ò
+ç/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/dto/CompanyDto.java (
+%0java.lang.String"__id***( 
+com.excilys.cdb.dto.CompanyDto"
+idÈ
+Ê
+ò
+ç/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/dto/CompanyDto.java	 (
+%1java.lang.String"__concat*
+	Company [*
+
+%0java.lang.String‚
+ﬂ
+ò
+ç/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/dto/CompanyDto.java	 (!
+%2java.lang.String"__concat*
+
+%1java.lang.String*
+] Í
+Á
+ò
+ç/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/dto/CompanyDto.java" (+
+%3java.lang.String"__id*,** 
+com.excilys.cdb.dto.CompanyDto"
+nameÙ
+Ò
+ò
+ç/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/dto/CompanyDto.java	 (+
+%4java.lang.String"__concat*
+
+%2java.lang.String*
+
+%3java.lang.String"µ
+ò
+ç/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/dto/CompanyDto.java (,
+
+%4java.lang.StringB" 
+com.excilys.cdb.dto.CompanyDto
