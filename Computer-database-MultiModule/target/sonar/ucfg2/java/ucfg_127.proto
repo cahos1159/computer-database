@@ -1,48 +1,0 @@
-
-pcom.excilys.cdb.mapper.CompanyMapper#dtoToModel(Lcom/excilys/cdb/dto/CompanyDto;)Lcom/excilys/cdb/model/Company;¡
-–/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/CompanyMapper.java ("2"1*Ö
-2¡
-–/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/CompanyMapper.java
- ("¬
-¡
-–/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/CompanyMapper.java (
-""*«
-1¡
-–/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/CompanyMapper.java (ª§
-¡
-–/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/CompanyMapper.java (&
-%0java.lang.String"1com.excilys.cdb.dto.Dto#getId()Ljava/lang/String;*-
-+
-	dtoObjectcom.excilys.cdb.dto.CompanyDto2getId()”
-‘
-¡
-–/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/CompanyMapper.java ('	
-%1int"/java.lang.Integer#parseInt(Ljava/lang/String;)I*"
-java.lang.Integer*
-
-%0java.lang.Stringµ²
-¡
-–/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/CompanyMapper.java (
-%2java.lang.String":com.excilys.cdb.dto.CompanyDto#getName()Ljava/lang/String;*-
-+
-	dtoObjectcom.excilys.cdb.dto.CompanyDto2	getName()ëè
-¡
-–/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/CompanyMapper.java (#
-%3com.excilys.cdb.model.Company"com.excilys.cdb.model.CompanyÉ
-Æ
-¡
-–/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/CompanyMapper.java
- (
-%4"Lcom.excilys.cdb.model.Company#<init>(Ljava/lang/Integer;Ljava/lang/String;)V*%
-#
-%3com.excilys.cdb.model.Company*
-	
-%1int*
-
-%2java.lang.String"Ë
-¡
-–/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/CompanyMapper.java (%
-#
-%3com.excilys.cdb.model.Company:+
-	dtoObjectcom.excilys.cdb.dto.CompanyDtoB(&
-$com.excilys.cdb.mapper.CompanyMapper

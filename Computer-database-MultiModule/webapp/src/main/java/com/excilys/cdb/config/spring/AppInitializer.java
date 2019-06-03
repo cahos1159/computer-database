@@ -7,11 +7,10 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
- 
+	
     @Override
     protected Class<?>[] getRootConfigClasses() {
-         Class<?>[] a = new Class<?>[] {};
-         return a;
+    	return new Class[] {SecurityConfig.class};
     }
   
     @Override

@@ -5,10 +5,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-	<groupId>com.excilys.cdb</groupId>
-	<artifactId>cdb</artifactId>
-	<version>1.0.0</version>
- 	</parent>
+		<groupId>com.excilys.cdb</groupId>
+		<artifactId>cdb</artifactId>
+		<version>1.0.0</version>
+	</parent>
 
 	<name>persistance</name>
 	<groupId>com.excilys.cdb.persistance</groupId>
@@ -22,12 +22,13 @@
 	</properties>
 
 	<dependencies>
+		
 		<dependency>
 			<groupId>com.excilys.cdb.binding</groupId>
 			<artifactId>binding</artifactId>
 			<version>1.0.0</version>
-		 </dependency>
-		 <dependency>
+		</dependency>
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>4.3.6.Final</version>

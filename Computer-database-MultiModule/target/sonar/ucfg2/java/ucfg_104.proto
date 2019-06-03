@@ -1,56 +1,0 @@
-
-9com.excilys.cdb.model.Company#equals(Ljava/lang/Object;)Z—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java. .("paramAnnotations*Â
-2—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java2 2("¢
-—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java2 2(
-""*Â
-4—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java0
- 0("¢
-—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java0 0(
-""*ñ
-paramAnnotations—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java. .(%å
-â
-—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java- -(
-
-%0"
-__annotate*
-java.lang.Override*
-
-objectjava.lang.ObjectÏ
-Ì
-—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java. .($
-objectjava.lang.Object"__annotation*
-
-%0*	
-2
-4
-1*ó
-1—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java4" 4((é
-æ
-—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java4 4()&
-modelcom.excilys.cdb.model.Company"__id*
-
-objectjava.lang.Object£ 
-—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java5 5(
-%1java.lang.Integer"8com.excilys.cdb.model.Company#getId()Ljava/lang/Integer;*(
-&
-modelcom.excilys.cdb.model.Company2getId()œ™
-—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java5  5(,
-%2java.lang.Integer"8com.excilys.cdb.model.Company#getId()Ljava/lang/Integer;*!
-com.excilys.cdb.model.Company2getId()"¢
-—
-Œ/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Company.java5 5(-
-"":
-objectjava.lang.ObjectB!
-com.excilys.cdb.model.Company

@@ -19,4 +19,5 @@ public class ExceptionHandlerEntities
 	public String handleErrorException() {
 		return "500";
   }
+	
 }
