@@ -14,22 +14,26 @@ public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
-	@Column(nullable = false,name = "login")
-	private String login;
-	@Column(nullable = false,name = "mdp")
-	private String mdp;
+	@Column(nullable = false,name = "username")
+	private String username;
+	@Column(nullable = false,name = "password")
+	private String password;
+	@Column(nullable = false,name = "authority")
+	private String authority;
 	
-	public User(int id, String login, String mdp) {
-		setId(id);
+	
+	public User( String login, String mdp) {
 		setLogin(login);
 		setMdp(mdp);
+		this.authority = "USER";
+		
 	}
 	
 	public String getLogin() {
-		return login;
+		return username;
 	}
 	public void setLogin(String login) {
-		this.login = login;
+		this.username = login;
 	}
 	public int getId() {
 		return id;
@@ -39,10 +43,10 @@ public class User {
 	}
 	public String getMdp() {
 		
-		return mdp;
+		return password;
 	}
 	public void setMdp(String mdp) {
 		
-		this.mdp = mdp;
+		this.password = mdp;
 	}
 }

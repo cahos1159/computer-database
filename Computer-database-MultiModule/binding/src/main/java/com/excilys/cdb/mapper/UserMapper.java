@@ -17,6 +17,6 @@ public class UserMapper {
 	}
 	
 	public User dtoToModel(UserDto elem) {
-		return new User(Integer.parseInt(elem.getId()),elem.getLogin(),elem.getMdp());
+		return new User(elem.getLogin(),elem.getMdp());
 	}
 }

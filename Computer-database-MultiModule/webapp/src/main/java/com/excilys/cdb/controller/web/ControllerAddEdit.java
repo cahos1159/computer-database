@@ -23,6 +23,7 @@ import com.excilys.cdb.dto.CompanyDto;
 import com.excilys.cdb.dto.ComputerDto;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.model.User;
 
 
 @Controller
@@ -88,8 +89,7 @@ public class ControllerAddEdit extends WebControl  {
 		return "redirect:/";
 	}
     
-   
-    
+
     private void setIdComputer(ModelMap model, int id) {
 		model.addAttribute("id", id);
 	}
@@ -102,6 +102,12 @@ public class ControllerAddEdit extends WebControl  {
 		model.addAttribute("company", res);
 	}
 	
+    @PostMapping("/logine")
+    public String  loginePost(@RequestParam Map<String,String> params, ModelMap model) {
+    	userServ.addUser(new User(params.get("username"),params.get("password")));
+    	return "login";
+    }
+    
 	private void createOrdi(ModelMap model,Map<String, String> params) throws Exception {
 
 			String intro = formatDate(params.get("introduced"));

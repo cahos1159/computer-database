@@ -1,7 +1,7 @@
 package com.excilys.cdb.config.spring;
 
 
-
+import com.excilys.cdb.config.spring.WebMvcConfig;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -10,12 +10,12 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	
     @Override
     protected Class<?>[] getRootConfigClasses() {
-    	return new Class[] {SecurityConfig.class};
+    	return new Class[] {SecurityConfig.class,WebMvcConfig.class};
     }
   
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] {WebMvcConfig.class};
+        return new Class[] {};
     }
   
     @Override
