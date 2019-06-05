@@ -22,17 +22,20 @@ public class User {
 	private String authority;
 	
 	
+	public User() {
+	}
+
 	public User( String login, String mdp) {
-		setLogin(login);
-		setMdp(mdp);
+		setUsername(login);
+		setPassword(mdp);
 		this.authority = "USER";
 		
 	}
 	
-	public String getLogin() {
+	public String getUsername() {
 		return username;
 	}
-	public void setLogin(String login) {
+	public void setUsername(String login) {
 		this.username = login;
 	}
 	public int getId() {
@@ -41,12 +44,19 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getMdp() {
+	public String getPassword() {
 		
 		return password;
 	}
-	public void setMdp(String mdp) {
+	public void setPassword(String mdp) {
 		
 		this.password = mdp;
+	}
+	public String getAuthority() {
+		return this.authority;
+	}
+	
+	public void setAuthority(String authority) {
+		this.authority=authority;
 	}
 }

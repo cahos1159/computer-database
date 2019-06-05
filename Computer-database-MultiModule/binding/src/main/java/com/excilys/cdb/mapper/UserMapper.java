@@ -13,7 +13,7 @@ public class UserMapper {
 	public UserMapper() {}
 	
 	public UserDto modelToDto(User elem){
-		return new UserDto(Integer.toString(elem.getId()),elem.getLogin(),elem.getMdp()); 
+		return new UserDto(Integer.toString(elem.getId()),elem.getUsername(),elem.getPassword()); 
 	}
 	
 	public User dtoToModel(UserDto elem) {

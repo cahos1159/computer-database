@@ -102,7 +102,7 @@ public class ControllerAddEdit extends WebControl  {
 		model.addAttribute("company", res);
 	}
 	
-    @PostMapping("/logine")
+    @PostMapping("/login/register")
     public String  loginePost(@RequestParam Map<String,String> params, ModelMap model) {
     	userServ.addUser(new User(params.get("username"),params.get("password")));
     	return "login";

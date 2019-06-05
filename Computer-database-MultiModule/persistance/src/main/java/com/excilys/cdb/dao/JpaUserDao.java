@@ -9,7 +9,7 @@ import com.excilys.cdb.model.User;
 @Repository
 public interface JpaUserDao extends CrudRepository<User, Integer>{
 	
-	User findByUsernameAndPassword(String username,String password);
+	User findByUsername(String username);
 	
 		
 }
