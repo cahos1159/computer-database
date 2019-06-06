@@ -56,9 +56,7 @@ public class Api extends WebControl {
 	@PostMapping(path="/create",consumes = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void postComputer(@RequestBody Computer computer) {
-		Computer tmp = new Computer(null,computer.getName(),computer.getDateIntro(),computer.getDateDisc(),computer.getCompany());
 		cuterServ.create(computer);
-
 	}
 	
 	@GetMapping("/computer-delete{id}")

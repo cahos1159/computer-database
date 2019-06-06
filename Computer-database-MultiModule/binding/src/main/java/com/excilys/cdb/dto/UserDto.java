@@ -18,7 +18,7 @@ public class UserDto extends Dto {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 
