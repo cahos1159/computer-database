@@ -1,0 +1,57 @@
+
+:com.excilys.cdb.dto.CompanyDto#equals(Ljava/lang/Object;)Zõ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java# #("paramAnnotations* 
+2õ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java%* %(/"¶
+õ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java%# %(0
+""* 
+4õ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java$ $("¶
+õ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java$ $(
+""*˜
+paramAnnotationsõ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java# #("Ê
+„
+õ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java" "(
+
+%0"
+__annotate*
+java.lang.Override*
+
+objjava.lang.Object–
+Õ
+õ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java# #(!
+objjava.lang.Object"__annotation*
+
+%0*	
+2
+4
+1*’
+1õ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java&" &(%Î
+Ë
+õ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java& &(&'
+othercom.excilys.cdb.dto.CompanyDto"__id*
+
+objjava.lang.ObjectàÖ
+õ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java'	 '(	
+%1int"*com.excilys.cdb.dto.CompanyDto#hashCode()I*" 
+com.excilys.cdb.dto.CompanyDto2
+hashCode()èå
+õ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java' '(,	
+%2int"*com.excilys.cdb.dto.CompanyDto#hashCode()I*)
+'
+othercom.excilys.cdb.dto.CompanyDto2
+hashCode()"¶
+õ
+ê/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/dto/CompanyDto.java' '(-
+"":
+objjava.lang.ObjectB" 
+com.excilys.cdb.dto.CompanyDto

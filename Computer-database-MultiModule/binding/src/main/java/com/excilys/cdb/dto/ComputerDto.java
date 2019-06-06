@@ -10,13 +10,11 @@ public class ComputerDto extends Dto {
 	@NotEmpty(message = "Name incorrect or empty")
 	@NotBlank(message = "Name incorrect or empty")
 	private String name;
-	@NotEmpty(message = "date incorrect or empty")
-	@NotBlank(message = "date incorrect or empty")
-	@DateTimeFormat(pattern = "dd-mm-yyyy")
+	
+
 	private String introduction;
-	@NotEmpty(message = "date incorrect or empty")
-	@NotBlank(message = "date incorrect or empty")
-	@DateTimeFormat(pattern = "dd-mm-yyyy")
+	
+
 	private String discontinued;
 	@Min(value = 0, message = "Negative values doesn't exist")
 	private String companyId;

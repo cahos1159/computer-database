@@ -1,0 +1,22 @@
+
+gcom.excilys.cdb.mapper.UserMapper#modelToDto(Lcom/excilys/cdb/model/User;)Lcom/excilys/cdb/dto/UserDto;ž
+“/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/UserMapper.java ("1*ê
+1ž
+“/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/UserMapper.java (ƒ€
+ž
+“/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/UserMapper.java& (2	
+%0int"#com.excilys.cdb.model.User#getId()I*$
+"
+elemcom.excilys.cdb.model.User2getId()‘
+Ž
+ž
+“/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/UserMapper.java (3
+%1java.lang.String"/java.lang.Integer#toString(I)Ljava/lang/String;*"
+java.lang.Integer*
+	
+%0int"©
+ž
+“/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/binding/src/main/java/com/excilys/cdb/mapper/UserMapper.java ([
+"":"
+elemcom.excilys.cdb.model.UserB%#
+!com.excilys.cdb.mapper.UserMapper

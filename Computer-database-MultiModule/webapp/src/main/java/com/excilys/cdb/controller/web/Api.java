@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.excilys.cdb.dto.ComputerDto;
 import com.excilys.cdb.model.Computer;
 
 @RestController
@@ -55,10 +56,12 @@ public class Api extends WebControl {
 	}
 	@PostMapping(path="/create",consumes = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void postComputer(@RequestBody Computer computer) {
-		Computer tmp = new Computer(null,computer.getName(),computer.getDateIntro(),computer.getDateDisc(),computer.getCompany());
-		cuterServ.create(computer);
+	public void postComputer(@RequestBody Computer computer) throws Exception {
+		ComputerDto temp = (ComputerDto) val.valide(cuterMap.modelToDto(computer));
+		System.out.println(temp.toString());
+		Computer tmp = cuterMap.dtoToModel(temp);
 
+		cuterServ.create((tmp));
 	}
 	
 	@GetMapping("/computer-delete{id}")

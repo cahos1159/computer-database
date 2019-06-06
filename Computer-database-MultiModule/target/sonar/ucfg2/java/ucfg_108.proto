@@ -1,0 +1,16 @@
+
+@com.excilys.cdb.model.Computer#getDateDisc()Ljava/sql/Timestamp;ò
+ç/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Computer.java? ?("1*œ
+1ò
+ç/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Computer.java@	 @(Ù
+Ò
+ò
+ç/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Computer.java@	 @(
+%0java.sql.Timestamp"__id*4*2 
+com.excilys.cdb.model.Computer"
+discontinued"∑
+ò
+ç/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/core/src/main/java/com/excilys/cdb/model/Computer.java@ @(
+
+%0java.sql.TimestampB" 
+com.excilys.cdb.model.Computer
