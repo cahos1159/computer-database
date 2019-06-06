@@ -93,6 +93,7 @@ public class Validateur {
 		}
 		else {
 			try {
+				if(s.equals("_"))return LocalDateTime.parse("2000-01-01 12:00:00", formatter);
 				String tmp = s.concat(" 12:00:00");
 				return  LocalDateTime.parse(tmp, formatter);
 			} catch (Exception e) {

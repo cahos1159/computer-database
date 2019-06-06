@@ -11,10 +11,10 @@ public class ComputerDto extends Dto {
 	@NotBlank(message = "Name incorrect or empty")
 	private String name;
 	
-	@DateTimeFormat(pattern = "dd-mm-yyyy")
+
 	private String introduction;
 	
-	@DateTimeFormat(pattern = "dd-mm-yyyy")
+
 	private String discontinued;
 	@Min(value = 0, message = "Negative values doesn't exist")
 	private String companyId;

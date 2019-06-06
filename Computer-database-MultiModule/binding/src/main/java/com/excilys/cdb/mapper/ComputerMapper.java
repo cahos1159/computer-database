@@ -27,14 +27,26 @@ public class ComputerMapper {
 			int id = Integer.parseInt(dtoObject.getId());
 			String name = dtoObject.getName();
 			Timestamp t1;
-			Timestamp  t2;
-			t1 = this.castTimestamp(dtoObject.getIntroduction());
-			t2 = this.castTimestamp(dtoObject.getDiscontinued());
+			Timestamp t2;
+			if(dtoObject.getIntroduction().equals("_")) {
+				
+				t1 = null;
+			}
+			else {
+				
+				t1 = this.castTimestamp(dtoObject.getIntroduction());
+			}
+			if(dtoObject.getDiscontinued().equals("_")) {
+				
+				t2 = null;
+			}
+			else {
+				
+				t2 = this.castTimestamp(dtoObject.getIntroduction());
+			}
 			int cid = Integer.parseInt(dtoObject.getCompanyId());
-			
-			
-			
-			return new Computer(id,name,t1,t2,new Company(cid,""));
+				
+			return new Computer(id,name,t1,t2,new Company(cid,dtoObject.getCompanyName()));
 		}
 	}
 	
