@@ -36,9 +36,12 @@ public class Validateur {
 				logger.error("",new InvalidComputerOptionException(comp.getName()));
 				throw new InvalidDateValueException(comp.getIntroduction());
 			}
-			if(valideDate(comp.getIntroduction(),comp.getDiscontinued())) return comp;
-			else {
-				logger.error("",new InvalidComputerOptionException("date"));
+			try{
+				valideDate(comp.getIntroduction(),comp.getDiscontinued()) ;
+				return comp;
+			}
+			catch(Exception e) {
+				logger.warn(comp.getIntroduction().toString(),e);
 				throw new InvalidComputerOptionException("date");
 			}
 			
