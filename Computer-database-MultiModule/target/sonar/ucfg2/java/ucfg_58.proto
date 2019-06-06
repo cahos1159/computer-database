@@ -1,0 +1,21 @@
+
+@com.excilys.cdb.service.CompanyService#listAll()Ljava/util/List;£
+˜/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/CompanyService.java ("1*·
+1£
+˜/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/CompanyService.java	 (•
+’
+£
+˜/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/CompanyService.java	 ('
+%0!com.excilys.cdb.dao.JpaCompanyDao"__id*;*9(
+&com.excilys.cdb.service.CompanyService"
+companyJdao²¯
+£
+˜/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/CompanyService.java	 (
+%1java.util.List";com.excilys.cdb.dao.JpaCompanyDao#findAll()Ljava/util/List;*)
+'
+%0!com.excilys.cdb.dao.JpaCompanyDao2	findAll()"¾
+£
+˜/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/CompanyService.java (
+
+%1java.util.ListB*(
+&com.excilys.cdb.service.CompanyService

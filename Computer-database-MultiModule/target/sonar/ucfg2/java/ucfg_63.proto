@@ -1,0 +1,23 @@
+
+Bcom.excilys.cdb.service.ComputerService#count(Ljava/lang/String;)I¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java+ +("1*ñ
+1¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java,	 ,(™
+–
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java,	 ,((
+%0"com.excilys.cdb.dao.JpaComputerDao"__id*=*;)
+'com.excilys.cdb.service.ComputerService"
+computerJdaoöó
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java,	 ,(2	
+%1int"Kcom.excilys.cdb.dao.JpaComputerDao#countByNameContains(Ljava/lang/String;)I**
+(
+%0"com.excilys.cdb.dao.JpaComputerDao*
+
+keyWordjava.lang.String2'countByNameContains(Ljava/lang/String;)"¯
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java, ,(3
+"":
+keyWordjava.lang.StringB+)
+'com.excilys.cdb.service.ComputerService

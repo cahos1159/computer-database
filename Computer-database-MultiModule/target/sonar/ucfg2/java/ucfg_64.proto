@@ -1,0 +1,23 @@
+
+Ocom.excilys.cdb.service.ComputerService#read(I)Lcom/excilys/cdb/model/Computer;¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java/ /("1*ü
+1¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java0	 0(™
+–
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java0	 0((
+%0"com.excilys.cdb.dao.JpaComputerDao"__id*=*;)
+'com.excilys.cdb.service.ComputerService"
+computerJdaoáÞ
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java0	 0("$
+%1com.excilys.cdb.model.Computer"Ncom.excilys.cdb.dao.JpaComputerDao#findById(I)Lcom/excilys/cdb/model/Computer;**
+(
+%0"com.excilys.cdb.dao.JpaComputerDao*
+""2findById(I)"Ï
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java0 0(#&
+$
+%1com.excilys.cdb.model.Computer:
+""B+)
+'com.excilys.cdb.service.ComputerService

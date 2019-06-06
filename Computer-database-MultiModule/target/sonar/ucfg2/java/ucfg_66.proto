@@ -1,0 +1,15 @@
+
+Ncom.excilys.cdb.service.MyUserPrincipal#getAuthorities()Ljava/util/Collection;¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/MyUserPrincipal.java/ (="1*ý
+1¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/MyUserPrincipal.java	 (Ž
+‹
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/MyUserPrincipal.java	 ( 
+%0java.util.List"1java.util.Collections#emptyList()Ljava/util/List;*"
+java.util.Collections"¿
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/MyUserPrincipal.java (!
+
+%0java.util.ListB+)
+'com.excilys.cdb.service.MyUserPrincipal

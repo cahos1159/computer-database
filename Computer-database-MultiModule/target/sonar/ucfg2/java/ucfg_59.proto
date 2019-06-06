@@ -1,0 +1,52 @@
+
+‚com.excilys.cdb.service.ComputerService#listComputer(Ljava/lang/String;Lorg/springframework/data/domain/Pageable;)Ljava/util/List;¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java (#"1*À
+1¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java (Ó
+Ð
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java (
+%0java.io.PrintStream"__id*
+""Á¾
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java (
+
+%1void"0java.io.PrintStream#println(Ljava/lang/String;)V*
+
+%0java.io.PrintStream*
+
+keyWordjava.lang.String2println(Ljava/lang/String;)™
+–
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java7 (C(
+%2"com.excilys.cdb.dao.JpaComputerDao"__id*=*;)
+'com.excilys.cdb.service.ComputerService"
+computerJdaoÉÆ
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java7 (g*
+%3$org.springframework.data.domain.Page"œcom.excilys.cdb.dao.JpaComputerDao#findAllByNameContains(Ljava/lang/String;Lorg/springframework/data/domain/Pageable;)Lorg/springframework/data/domain/Page;**
+(
+%2"com.excilys.cdb.dao.JpaComputerDao*
+
+keyWordjava.lang.String*2
+0
+page(org.springframework.data.domain.Pageable2SfindAllByNameContains(Ljava/lang/String;Lorg/springframework/data/domain/Pageable;)‹
+ˆ
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java (h+
+tmp$org.springframework.data.domain.Page"__id*,
+*
+%3$org.springframework.data.domain.PageÁ¾
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java
+ (
+%4java.util.List"Borg.springframework.data.domain.Slice#getContent()Ljava/util/List;*-
++
+tmp$org.springframework.data.domain.Page2getContent()"¿
+¤
+™/home/excilys/eclipse-workspace/computer-database-master/Computer-database-MultiModule/service/src/main/java/com/excilys/cdb/service/ComputerService.java (
+
+%4java.util.List:
+keyWordjava.lang.String:0
+page(org.springframework.data.domain.PageableB+)
+'com.excilys.cdb.service.ComputerService
