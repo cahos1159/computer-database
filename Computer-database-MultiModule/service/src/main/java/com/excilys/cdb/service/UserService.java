@@ -25,7 +25,6 @@ public class UserService implements UserDetailsService {
 	
 	public void addUser(User us) {
 		BCryptPasswordEncoder hash = new BCryptPasswordEncoder();
-		System.out.println("coucou");
 		us.setPassword(hash.encode(us.getPassword()));
 		userJdao.save(us);
 	}

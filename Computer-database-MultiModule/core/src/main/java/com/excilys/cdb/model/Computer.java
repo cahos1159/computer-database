@@ -33,7 +33,7 @@ public class Computer  {
 	
 	public Computer() {}
 	
-	public Computer(int id, String name, Timestamp dateIntro, Timestamp dateDisc, Company manufacturer) {
+	public Computer(Integer id, String name, Timestamp dateIntro, Timestamp dateDisc, Company manufacturer) {
 		this.setId(id);
 		this.setName(name);
 		this.setDateIntro(dateIntro);
